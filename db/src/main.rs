@@ -1,21 +1,20 @@
 use sqlite;
 
-
 fn main() {
-
     let _connection = init_database();
 
     loop {
-
         break;
     }
 
     println!("Connection listener for app section not yet implemented.  Aborting. ")
-
 }
 
-fn init_database() -> sqlite::Connection{
-    let connection = sqlite::open("/Users/johnbootcamp/Desktop/kotlin/classroom_online/db/src/db/dbmain_database.sql").unwrap();
+fn init_database() -> sqlite::Connection {
+    let connection = sqlite::open(
+        "/Users/johnbootcamp/Desktop/kotlin/classroom_online/db/src/db/dbmain_database.sql",
+    )
+    .unwrap();
 
     // create users table. This is the basic information for all user types.
     let mut query = "
@@ -82,7 +81,7 @@ fn init_database() -> sqlite::Connection{
     ";
     connection.execute(query).unwrap();
 
-    // You can have regional administrators, therefore admins need to be able to be 
+    // You can have regional administrators, therefore admins need to be able to be
     // associated with more than one school
     query = "
         CREATE TABLE administrators_schools (
@@ -117,15 +116,16 @@ fn init_database() -> sqlite::Connection{
     ";
     connection.execute(query).unwrap();
 
-    // In the future we'll want to match this up with standards.
+    // In the future we'll want to match this up with standards -- if this ends up being used by anyone, anyway
     query = "
         CREATE TABLE subjects (
             subject_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             name STRING UINQUE NOT NULL,
             ap INTEGER DEFAULT 0 NOT NULL,
             ib INTEGER DEFAULT 0 NOT NULL,
-            
-        )
+            target_grade INTEGER,
+            discipline STRING
+        );
     ";
 
     connection.execute(query).unwrap();
@@ -133,13 +133,41 @@ fn init_database() -> sqlite::Connection{
     query = "
         CREATE TABLE classes (
             class_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            subject STRING
-        )
+            school_id NOT NULL,
+            subject_id INTEGER,
+            grade INTEGER,
+            start_day INTEGER,
+            end_day INTEGER,
+            start_time INTEGER,
+            end_time INTEGER,
+            days_scheduled STRING,
+            FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
+            FOREIGN KEY (school_id) REFERNCES schools(school_id)
+        );
+    ";
+
+    connection.execute(query).unwrap();
+
+    query = "
+        CREATE TABLE teachers_classes (
+            teacher_id INTEGER NOT NULL,
+            class_id INTEGER NOT NULL,
+            role TEXT,
+            FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
+            FOREIGN KEY (class_id) REFERENCES classes(class_id)
+        );
     ";
 
     connection.execute(query).unwrap();
     connection.execute(query).unwrap();
-
+    connection.execute(query).unwrap();
+    connection.execute(query).unwrap();
+    connection.execute(query).unwrap();
+    connection.execute(query).unwrap();
+    connection.execute(query).unwrap();
+    connection.execute(query).unwrap();
+    connection.execute(query).unwrap();
+    connection.execute(query).unwrap();
 
     connection
 }
