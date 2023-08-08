@@ -26,3 +26,4 @@ replay_pid*
 # rust files
 db/target
 db/Cargo.lock
+.DS_Store
