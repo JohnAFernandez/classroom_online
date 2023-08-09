@@ -17,15 +17,20 @@ fn init_database() -> sqlite::Connection {
     .unwrap();
 
     // create users table. This is the basic information for all user types.
+    // now, we usually can use email for logins, but many students will not have one.
+    // The intention is to be able to use either email or username for logins.
+    // But only family and student accounts can be registered without an email.
     let mut query = "
         CREATE TABLE users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            email STRING NOT NULL,
+            email STRING,
+            username STRING NOT NULL,
             password STRING NOT NULL,
             first_name STRING NOT NULL,
             last_name STRING NOT NULL,
-            type STRING NOT NULL,
-            date_registered STRING NOT NULL
+            birthday STRING_NOT_NULL,
+            date_registered STRING NOT NULL,
+            phone STRING
             );
     ";
     connection.execute(query).unwrap();
@@ -209,6 +214,20 @@ fn init_database() -> sqlite::Connection {
 
     connection.execute(query).unwrap();
 
+    // not all family members will have a user id assoicated
+    query = "
+        CREATE TABLE family_members (
+            member_id INTEGER,
+            user_id INTEGER,
+            notfication_methods STRING,
+            email STRING,
+            phone STRING,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        );
+    ";
+
+    connection.execute(query).unwrap();
+
     // grade scale needs a good way to be handled.
     // We literally could have anything there and SQL doesn't like doing just anything.
     query = "
@@ -243,7 +262,19 @@ fn init_database() -> sqlite::Connection {
             assignment_id INTEGER NOT NULL,
             contents STRING,
             FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id)
-        )
+        );
+    ";
+
+    connection.execute(query).unwrap();
+
+    query = "
+        CREATE TABLE user_change_log (
+            change_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            user_id INTEGER,
+            type INT,
+            old_value STRING,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        );
     ";
 
     connection.execute(query).unwrap();
