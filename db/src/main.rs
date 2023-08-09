@@ -24,7 +24,8 @@ fn init_database() -> sqlite::Connection {
             password STRING NOT NULL,
             first_name STRING NOT NULL,
             last_name STRING NOT NULL,
-            type STRING NOT NULL
+            type STRING NOT NULL,
+            date_registered STRING NOT NULL
             );
     ";
     connection.execute(query).unwrap();
@@ -141,8 +142,8 @@ fn init_database() -> sqlite::Connection {
             start_time INTEGER,
             end_time INTEGER,
             days_scheduled STRING,
-            FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),
-            FOREIGN KEY (school_id) REFERNCES schools(school_id)
+            FOREIGN KEY (subject_id) REFERENCES subjects (subject_id),
+            FOREIGN KEY (school_id) REFERENCES schools (school_id)
         );
     ";
 
@@ -159,11 +160,66 @@ fn init_database() -> sqlite::Connection {
     ";
 
     connection.execute(query).unwrap();
+
+    query = "
+        CREATE TABLE students (
+            student_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            user_id INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        );
+    ";
+
     connection.execute(query).unwrap();
+
+    query = "
+        CREATE TABLE students_classes (
+            student_id INTEGER,
+            class_id INTEGER,
+            PRIMARY KEY (student_id, class_id),
+            FOREIGN KEY (student_id) REFERENCES students(student_id),
+            FOREIGN KEY (class_id) REFERENCES classes(class_id)
+        )
+    ";
+
     connection.execute(query).unwrap();
+
+    query = "
+        CREATE TABLE guardian (
+            guardian_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            user_id INTEGER,
+            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        );
+    ";
+
     connection.execute(query).unwrap();
+
+    query = "
+        CREATE TABLE guardian_students (
+            guardian_id INTEGER,
+            student_id INTEGER,
+            guardian_relationship STRING,
+            PRIMARY KEY(guardian_id, student_id)
+        );
+    ";
+
     connection.execute(query).unwrap();
+
+    // grade scale needs a good way to be handled.  
+    // We literally could have anything there and SQL doesn't like doing just anything.
+    query = "
+        CREATE TABLE assignments (
+            assignment_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            required INT DEFAULT 0,
+            grade_scale STRING NOT NULL,
+            description STRING,
+            template STRING,
+        );
+    ";
+
     connection.execute(query).unwrap();
+
+
+
     connection.execute(query).unwrap();
     connection.execute(query).unwrap();
     connection.execute(query).unwrap();
