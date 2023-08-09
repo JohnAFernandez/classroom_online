@@ -8,11 +8,13 @@ pub fn init_database() -> sqlite::Connection {
     // now, we usually can use email for logins, but many students will not have one.
     // The intention is to be able to use either email or username for logins.
     // But only family and student accounts can be registered without an email.
+    // additionally, a username has to be unique. To enforce, usernames are assigned by 
+    // first and last name and numerical suffix.
     let mut query = "
         CREATE TABLE users (
             user_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             email STRING,
-            username STRING NOT NULL,
+            username STRING NOT NULL UNIQUE,
             password STRING NOT NULL,
             first_name STRING NOT NULL,
             last_name STRING NOT NULL,
