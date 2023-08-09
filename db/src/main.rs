@@ -183,46 +183,69 @@ fn init_database() -> sqlite::Connection {
 
     connection.execute(query).unwrap();
 
+    // at first we had guardian accounts, but this allows us to add
+    // arbitrary family members that want to be kept in the loop.
+    // you can all track each other via the
     query = "
-        CREATE TABLE guardian (
-            guardian_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        CREATE TABLE families (
+            family_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            name STRING
+        );
+    ";
+
+    connection.execute(query).unwrap();
+
+    // this is a little strange, but once you create a family, associate it with all family members
+    query = "
+        CREATE TABLE families_users (
+            family_id INTEGER,
             user_id INTEGER,
+            relationship STRING,
+            PRIMARY KEY(family_id, user_id),
+            FOREIGN KEY (family_id) REFERENCES families(family_id),
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
 
     connection.execute(query).unwrap();
 
-    query = "
-        CREATE TABLE guardian_students (
-            guardian_id INTEGER,
-            student_id INTEGER,
-            guardian_relationship STRING,
-            PRIMARY KEY(guardian_id, student_id)
-        );
-    ";
-
-    connection.execute(query).unwrap();
-
-    // grade scale needs a good way to be handled.  
+    // grade scale needs a good way to be handled.
     // We literally could have anything there and SQL doesn't like doing just anything.
     query = "
         CREATE TABLE assignments (
             assignment_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            class_id INTEGER,
             required INT DEFAULT 0,
             grade_scale STRING NOT NULL,
             description STRING,
             template STRING,
+            FOREIGN KEY (class_id) REFERENCES classes(class_id)
         );
     ";
 
     connection.execute(query).unwrap();
 
+    query = "
+        CREATE TABLE submissions (
+            submission_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            assignment_id INTEGER NOT NULL,
+            contents STRING,
+            grade STRING,
+            FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id)
+        )
+    ";
 
+    connection.execute(query).unwrap();
 
-    connection.execute(query).unwrap();
-    connection.execute(query).unwrap();
-    connection.execute(query).unwrap();
+    query = "
+        CREATE TABLE comments (
+            comment_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            assignment_id INTEGER NOT NULL,
+            contents STRING,
+            FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id)
+        )
+    ";
+
     connection.execute(query).unwrap();
 
     connection
