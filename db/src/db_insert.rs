@@ -215,7 +215,7 @@ impl I {
         template: &String
     ) {
         let query: String =
-            I::INSERT.to_owned() + "family_members (class_id, required, grade_scale, description, template)" 
+            I::INSERT.to_owned() + "assignments (class_id, required, grade_scale, description, template)" 
             + I::VALUES + class_id + I::AND + required + I::AND_S + grade_scale + I::S_AND_S + description + I::S_AND_S + template + I::S_END;
 
         println!("{}", query);
@@ -223,6 +223,50 @@ impl I {
         connection.execute(query).unwrap();
     }
 
+    pub fn insert_submission(
+        connection: &sqlite::Connection,
+        user_id: &String,
+        assignment_id: &String,
+        contents: &String,
+        grade: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "submissions (user_id, assignment_id, contents, grade)" 
+            + I::VALUES + user_id + I::AND + assignment_id + I::AND_S + contents + I::S_AND_S + grade + I::S_END;
 
+        println!("{}", query);
 
+        connection.execute(query).unwrap();
+    }
+
+    pub fn insert_comments(
+        connection: &sqlite::Connection,
+        user_id: &String,
+        assignment_id: &String,
+        contents: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "comments (user_id, assignment_id, contents)" 
+            + I::VALUES + user_id + I::AND + assignment_id + I::AND_S + contents + I::S_END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
+
+    pub fn insert_change_log(
+        connection: &sqlite::Connection,
+        source_name: &String,
+        type_of_change: &String,
+        old_value: &String,
+        timestamp: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "user_change_log (source_name, type_of_change, old_value, timestamp)" 
+            + I::VALUES_S + source_name + I::S_AND + type_of_change + I::AND_S + old_value + I::S_AND_S + timestamp + I::S_END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
 }
