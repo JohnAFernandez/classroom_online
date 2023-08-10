@@ -28,7 +28,7 @@ pub fn init_database() -> sqlite::Connection {
 
     // think school district
     query = "
-        CREATE TABLE organization (
+        CREATE TABLE organizations (
             organization_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             name STRING NOT NULL UNIQUE,
             address1 STRING,
@@ -102,7 +102,7 @@ pub fn init_database() -> sqlite::Connection {
     // this is a little complicated because a supervisor may not have an account.
     // So, add a name field.  That user can confirm later, if necessary.
     query = "
-        CREATE TABLE employee_supervisors (
+        CREATE TABLE employees_supervisors (
             supervisory_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             user_id INTEGER NOT NULL,
             administrator_id INTEGER,
@@ -212,7 +212,7 @@ pub fn init_database() -> sqlite::Connection {
     // not all family members will have a user id assoicated
     query = "
         CREATE TABLE family_members (
-            member_id INTEGER,
+            member_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             user_id INTEGER,
             notification_methods STRING,
             email STRING,
