@@ -60,4 +60,40 @@ impl V {
 
         return false;
     }
+
+    const AT : &str = "@";
+    const PERIOD : &str = ".";
+
+    pub fn check_email(to_check : String) -> bool{
+
+        let check = to_check.find(V::AT);
+
+        let loc : usize;
+
+        // no at symbol, or could be empty.
+        match check {
+            Some(x) => loc = x,
+            None => return false,
+        }
+
+        // bad email because there's no username
+        if loc < 1 {return false};
+
+        let check2 = to_check[loc..].find(V::PERIOD);
+        let loc2 : usize;
+
+        match check2 {
+            Some(x) => loc2 = x,
+            None => return false,
+        }
+
+        // bad domain name
+        if loc2 < 2  || loc2 == to_check[loc..].len() - 1 { return false};
+
+        // period at the end means bad domain name
+        if &to_check[to_check.len() - 1..] == "." { return false};
+ 
+        return true;
+    }
+
 }
