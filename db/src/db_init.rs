@@ -20,7 +20,8 @@ pub fn init_database() -> sqlite::Connection {
             last_name STRING NOT NULL,
             birthday STRING_NOT_NULL,
             date_registered STRING NOT NULL,
-            phone STRING
+            phone STRING,
+            icon STRING
             );
     ";
     connection.execute(query).unwrap();
@@ -49,8 +50,6 @@ pub fn init_database() -> sqlite::Connection {
             administrator_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             user_id INTEGER NOT NULL,
             level STRING NOT NULL,
-            supervisor_name STRING NOT NULL,
-            supervisor_id,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
@@ -94,7 +93,6 @@ pub fn init_database() -> sqlite::Connection {
         CREATE TABLE teachers (
             teacher_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             user_id INTEGER,
-            name STRING,
             icon STRING,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
@@ -129,7 +127,7 @@ pub fn init_database() -> sqlite::Connection {
     query = "
         CREATE TABLE classes (
             class_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            school_id NOT NULL,
+            school_id INTEGER NOT NULL,
             subject_id INTEGER,
             grade INTEGER,
             start_day INTEGER,
