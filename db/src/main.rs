@@ -1,11 +1,38 @@
 use sqlite;
 mod db_init;
 mod db_insert;
+mod db_verify;
 
 fn main() {
     // establish our database
     let connection = db_init::init_database();
 
+    test_insertion_functions(&connection);
+
+    db_verify::V::check_id(&connection, 2, db_verify::V::ADMINISTRATORS);
+    db_verify::V::check_id(&connection, 2, db_verify::V::ASSIGNMENTS);
+    db_verify::V::check_id(&connection, 2, db_verify::V::CLASSES);
+    db_verify::V::check_id(&connection, 5, db_verify::V::COMMENTS);
+    db_verify::V::check_id(&connection, 0, db_verify::V::EMPLOYEES_SUPERVISORS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::FAMILIES);
+    db_verify::V::check_id(&connection, 2, db_verify::V::FAMILY_MEMBERS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::ORGANIZATIONS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::SCHOOLS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::STUDENTS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::SUBJECTS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::SUBMISSIONS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::TEACHERS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::USERS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::USER_CHANGE_LOG);
+
+    //    loop {
+    //       break;
+    //    }
+
+    println!("Connection listener for app section not yet implemented.  Aborting. ")
+}
+
+fn test_insertion_functions(connection: &sqlite::Connection) {
     // do some basic testing
     db_insert::I::insert_user(
         &connection,
@@ -106,7 +133,7 @@ fn main() {
     );
     db_insert::I::insert_administrator_school(&connection, &"1".to_string(), &"1".to_string());
 
-    db_insert::I::insert_employee_supervisors(
+    db_insert::I::insert_employee_supervisor(
         &connection,
         &"1".to_string(),
         &"1".to_string(),
@@ -127,10 +154,4 @@ fn main() {
         &"1".to_string(),
         &"DAH BRO GUY".to_string(),
     );
-
-    //    loop {
-    //       break;
-    //    }
-
-    println!("Connection listener for app section not yet implemented.  Aborting. ")
 }
