@@ -24,6 +24,9 @@ fn main() {
     db_verify::V::check_id(&connection, 1, db_verify::V::TEACHERS);
     db_verify::V::check_id(&connection, 1, db_verify::V::USERS);
     db_verify::V::check_id(&connection, 1, db_verify::V::USER_CHANGE_LOG);
+    if cfg!(debug_assertions){
+        test_sever_level_email_verification();
+    }
 
     //    loop {
     //       break;
@@ -154,4 +157,93 @@ fn test_insertion_functions(connection: &sqlite::Connection) {
         &"1".to_string(),
         &"DAH BRO GUY".to_string(),
     );
+}
+
+fn test_sever_level_email_verification (){
+    if db_verify::V::check_email("animal".to_string()){
+        println!("Warning! animal passes" );
+    }
+
+    if db_verify::V::check_email("animal@".to_string()){
+        println!("Warning! animal@ passes" );
+    }
+
+    if db_verify::V::check_email("@animal".to_string()){
+        println!("Warning! @animal passes" );
+    }
+
+    if db_verify::V::check_email("@animal.com".to_string()){
+        println!("Warning! @animal.com passes" );
+    }
+
+    if db_verify::V::check_email("animal@h".to_string()){
+        println!("Warning! animal@h passes" );
+    }
+
+    if db_verify::V::check_email("@".to_string()){
+        println!("@ passes" );
+    } else {
+        println!("@ fails");
+    }
+
+    if db_verify::V::check_email("".to_string()){
+        println!("empty string passes" );
+    } else {
+        println!("empty string fails");
+    }
+
+    if db_verify::V::check_email("good.animal@bob.com".to_string()){
+        println!("good.animal@bob.com passes" );
+    } else {
+        println!("good.animal@bob.com fails");
+    }
+
+    if db_verify::V::check_email("animal@bob.com".to_string()){
+        println!("animal@bob.com passes" );
+    } else {
+        println!("animal@bob.com fails");
+    }
+    
+    if db_verify::V::check_email("good.animal@bob.".to_string()){
+        println!("good_animal@bob. passes" );
+    } else {
+        println!("good_animal@bob. fails");
+    }
+
+    if db_verify::V::check_email("good.animal@bob.y".to_string()){
+        println!("good_animal@bob.y passes" );
+    } else {
+        println!("good_animal@bob.y fails");
+    }
+
+    if db_verify::V::check_email("good.animal@.com".to_string()){
+        println!("good_animal@.com passes" );
+    } else {
+        println!("good_animal@.com fails");
+    }
+
+    if db_verify::V::check_email("good.animal@a.com".to_string()){
+        println!("good_animal@a.com passes" );
+    } else {
+        println!("good_animal@a.com fails");
+    }
+
+    if db_verify::V::check_email("b.e.s.t@abc.com".to_string()){
+        println!("b.e.s.t@abc.com passes" );
+    } else {
+        println!("b.e.s.t@abc.com fails");
+    }
+
+    if db_verify::V::check_email("b.e.s.t@abc.com.".to_string()){
+        println!("b.e.s.t@abc.com. passes" );
+    } else {
+        println!("b.e.s.t@abc.com. fails");
+    }
+
+    if db_verify::V::check_email("fine@ab@c.com.".to_string()){
+        println!("b.e.s.t@abc.com. passes" );
+    } else {
+        println!("b.e.s.t@abc.com. fails");
+    }
+
 }
