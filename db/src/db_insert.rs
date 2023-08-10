@@ -269,4 +269,92 @@ impl I {
 
         connection.execute(query).unwrap();
     }
+
+    pub fn insert_administrator_school(
+        connection: &sqlite::Connection,
+        administrator_id: &String,
+        school_id: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "administrators_schools (administrator_id, school_id)" 
+            + I::VALUES + administrator_id + I::AND + school_id + I::END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
+
+    pub fn insert_employee_supervisors(
+        connection: &sqlite::Connection,
+        user_id: &String,
+        administrator_id: &String,
+        supervisor_name: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "employee_supervisors (user_id, administrator_id, supervisor_name)" 
+            + I::VALUES + user_id + I::AND + administrator_id + I::AND_S + supervisor_name + I::S_END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
+
+    pub fn insert_teachers_schools(
+        connection: &sqlite::Connection,
+        teacher_id: &String,
+        school_id: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "teachers_schools (teacher_id, school_id)" 
+            + I::VALUES + teacher_id + I::AND + school_id + I::END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
+
+    pub fn insert_teachers_classes(
+        connection: &sqlite::Connection,
+        teacher_id: &String,
+        class_id: &String,
+        role: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "teachers_classes (teacher_id, class_id, role)" 
+            + I::VALUES + teacher_id + I::AND + class_id + I::AND_S + role + I::S_END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
+
+    pub fn insert_students_classes(
+        connection: &sqlite::Connection,
+        student_id: &String,
+        class_id: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "students_classes (student_id, class_id)" 
+            + I::VALUES + student_id + I::AND + class_id + I::END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
+
+    pub fn insert_families_users(
+        connection: &sqlite::Connection,
+        family_id: &String,
+        user_id: &String,
+        relationship: &String
+    ) {
+        let query: String =
+            I::INSERT.to_owned() + "families_users (family_id, user_id, relationship)" 
+            + I::VALUES + family_id + I::AND + user_id + I::AND_S + relationship + I::S_END;
+
+        println!("{}", query);
+
+        connection.execute(query).unwrap();
+    }
+
 }

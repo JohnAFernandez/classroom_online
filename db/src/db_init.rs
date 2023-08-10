@@ -8,7 +8,7 @@ pub fn init_database() -> sqlite::Connection {
     // now, we usually can use email for logins, but many students will not have one.
     // The intention is to be able to use either email or username for logins.
     // But only family and student accounts can be registered without an email.
-    // additionally, a username has to be unique. To enforce, usernames are assigned by 
+    // additionally, a username has to be unique. To enforce, usernames are assigned by
     // first and last name and numerical suffix.
     let mut query = "
         CREATE TABLE users (
@@ -114,7 +114,7 @@ pub fn init_database() -> sqlite::Connection {
     connection.execute(query).unwrap();
 
     query = "
-        CREATE TABLE teachers_school (
+        CREATE TABLE teachers_schools (
             teacher_id INTEGER NOT NULL,
             school_id INTEGER NOT NULL,
             PRIMARY KEY (teacher_id, school_id),
@@ -158,7 +158,7 @@ pub fn init_database() -> sqlite::Connection {
         CREATE TABLE teachers_classes (
             teacher_id INTEGER NOT NULL,
             class_id INTEGER NOT NULL,
-            role TEXT,
+            role STRING,
             FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
             FOREIGN KEY (class_id) REFERENCES classes(class_id)
         );
@@ -253,6 +253,7 @@ pub fn init_database() -> sqlite::Connection {
     query = "
         CREATE TABLE comments (
             comment_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            user_id INTEGER NOT NULL,
             assignment_id INTEGER NOT NULL,
             contents STRING,
             FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id)
@@ -263,9 +264,11 @@ pub fn init_database() -> sqlite::Connection {
     query = "
         CREATE TABLE user_change_log (
             change_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            source_name STRING,
             user_id INTEGER,
-            type INT,
+            type_of_change INT,
             old_value STRING,
+            timestamp STRING,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
