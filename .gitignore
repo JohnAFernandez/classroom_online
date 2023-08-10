@@ -27,3 +27,6 @@ replay_pid*
 db/target
 db/Cargo.lock
 .DS_Store
+
+# SQL files
+*.sql
