@@ -15,6 +15,11 @@ fn main() {
 
     db_insert::I::insert_subject(&connection, &"Math for Delinquents".to_string(), &"0".to_string(), &"0".to_string(), &"4".to_string(), &"MATH".to_string());
     db_insert::I::insert_class(&connection, &"1".to_string(), &"1".to_string(), &"7".to_string(), &"49".to_string(), &"99".to_string(), &"102".to_string(), &"110".to_string(), &"MWF".to_string());
+    db_insert::I::insert_student(&connection, &"1".to_string());
+    db_insert::I::insert_family(&connection, &"FERNANDEZ FAMILY".to_string());
+    db_insert::I::insert_family_member(&connection, &"1".to_string(), &"sms;email".to_string(), &"johnfernandez@familymembers.org".to_string(), &"8675309".to_string());
+
+    db_insert::I::insert_assignment(&connection, &"1".to_string(), &"1".to_string(),&"4 Point".to_string(),&"COUNT THE APPLES!".to_string(),&"".to_string());
     
 //    loop {
 //       break;

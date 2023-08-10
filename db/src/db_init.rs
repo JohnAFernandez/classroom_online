@@ -207,7 +207,7 @@ pub fn init_database() -> sqlite::Connection {
         CREATE TABLE family_members (
             member_id INTEGER,
             user_id INTEGER,
-            notfication_methods STRING,
+            notification_methods STRING,
             email STRING,
             phone STRING,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
