@@ -9,13 +9,13 @@ fn main() {
 
     test_insertion_functions(&connection);
 
-    db_verify::V::check_id(&connection, 2, db_verify::V::ADMINISTRATORS);
-    db_verify::V::check_id(&connection, 2, db_verify::V::ASSIGNMENTS);
-    db_verify::V::check_id(&connection, 2, db_verify::V::CLASSES);
-    db_verify::V::check_id(&connection, 5, db_verify::V::COMMENTS);
-    db_verify::V::check_id(&connection, 0, db_verify::V::EMPLOYEES_SUPERVISORS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::ADMINISTRATORS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::ASSIGNMENTS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::CLASSES);
+    db_verify::V::check_id(&connection, 1, db_verify::V::COMMENTS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::EMPLOYEES_SUPERVISORS);
     db_verify::V::check_id(&connection, 1, db_verify::V::FAMILIES);
-    db_verify::V::check_id(&connection, 2, db_verify::V::FAMILY_MEMBERS);
+    db_verify::V::check_id(&connection, 1, db_verify::V::FAMILY_MEMBERS);
     db_verify::V::check_id(&connection, 1, db_verify::V::ORGANIZATIONS);
     db_verify::V::check_id(&connection, 1, db_verify::V::SCHOOLS);
     db_verify::V::check_id(&connection, 1, db_verify::V::STUDENTS);
