@@ -99,6 +99,20 @@ pub fn init_database() -> sqlite::Connection {
     ";
     connection.execute(query).unwrap();
 
+    // this is a little complicated because a supervisor may not have an account.
+    // So, add a name field.  That user can confirm later, if necessary.
+    query = "
+        CREATE TABLE employee_supervisors (
+            supervisory_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            user_id INTEGER NOT NULL,
+            administrator_id INTEGER,
+            supervisor_name STRING, 
+            FOREIGN KEY (user_id) REFERENCES users(user_id),
+            FOREIGN KEY (administrator_id) REFERENCES administrators(administrator_id)
+        );
+    ";
+    connection.execute(query).unwrap();
+
     query = "
         CREATE TABLE teachers_school (
             teacher_id INTEGER NOT NULL,
@@ -121,7 +135,6 @@ pub fn init_database() -> sqlite::Connection {
             discipline STRING
         );
     ";
-
     connection.execute(query).unwrap();
 
     query = "
@@ -139,7 +152,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (school_id) REFERENCES schools (school_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     query = "
@@ -151,7 +163,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (class_id) REFERENCES classes(class_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     query = "
@@ -161,7 +172,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     query = "
@@ -173,7 +183,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (class_id) REFERENCES classes(class_id)
         )
     ";
-
     connection.execute(query).unwrap();
 
     // at first we had guardian accounts, but this allows us to add
@@ -185,7 +194,6 @@ pub fn init_database() -> sqlite::Connection {
             name STRING
         );
     ";
-
     connection.execute(query).unwrap();
 
     // this is a little strange, but once you create a family, associate it with all family members
@@ -199,7 +207,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     // not all family members will have a user id assoicated
@@ -213,7 +220,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     // grade scale needs a good way to be handled.
@@ -229,19 +235,19 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (class_id) REFERENCES classes(class_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     query = "
         CREATE TABLE submissions (
             submission_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+            user_id INTEGER NOT NULL,
             assignment_id INTEGER NOT NULL,
             contents STRING,
             grade STRING,
+            FOREIGN KEY (user_id) REFERENCES users(user_id),
             FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id)
         )
     ";
-
     connection.execute(query).unwrap();
 
     query = "
@@ -252,7 +258,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (assignment_id) REFERENCES assignments(assignment_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     query = "
@@ -264,7 +269,6 @@ pub fn init_database() -> sqlite::Connection {
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
-
     connection.execute(query).unwrap();
 
     connection
