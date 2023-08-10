@@ -30,3 +30,6 @@ db/Cargo.lock
 
 # SQL files
 *.sql
+
+# vscode
+.vscode
