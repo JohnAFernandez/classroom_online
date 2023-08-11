@@ -28,6 +28,16 @@ fn main() {
         test_sever_level_email_verification();
     }
 
+
+    db_verify::V::check_name(&"Bob".to_string());
+    db_verify::V::check_name(&"".to_string());
+    db_verify::V::check_name(&"Wolfeschlegel­steinhausen­bergerdorff­welche­vor­altern­waren­gewissenhaft­schafers­wessen­schafe­waren­wohl­gepflege­und­sorgfaltigkeit­beschutzen­vor­angreifen­durch­ihr­raubgierig­feinde­welche­vor­altern­zwolfhundert­tausend­jahres­voran­die­erscheinen­von­der­erste­erdemensch­der­raumschiff­genacht­mit­tungstein­und­sieben­iridium­elektrisch­motors­gebrauch­licht­als­sein­ursprung­von­kraft­gestart­sein­lange­fahrt­hinzwischen­sternartig­raum­auf­der­suchen­nachbarschaft­der­stern­welche­gehabt­bewohnbar­planeten­kreise­drehen­sich­und­wohin­der­neue­rasse­von­verstandig­menschlichkeit­konnte­fortpflanzen­und­sich­erfreuen­an­lebenslanglich­freude­und­ruhe­mit­nicht­ein­furcht­vor­angreifen­vor­anderer­intelligent­geschopfs­von­hinzwischen­sternartig­raum".to_string());
+    db_verify::V::check_name(&"123".to_string());
+    db_verify::V::check_name(&"Abby1".to_string());
+    db_verify::V::check_name(&"Turambar".to_string());
+    db_verify::V::check_name(&"!!BOB!!".to_string());
+    db_verify::V::check_name(&"!!!!".to_string());
+
     //    loop {
     //       break;
     //    }

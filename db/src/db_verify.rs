@@ -93,7 +93,39 @@ impl V {
         // period at the end means bad domain name
         if &to_check[to_check.len() - 1..] == "." { return false};
  
-        return true;
+        return true
+    }
+
+    const MAX_NAME_LENGTH : usize = 256;
+
+    pub fn check_name(name : &String) -> bool {
+
+        // if there's no text in a name, or it's bigger than 64 characters, then reject
+        if name.is_empty() || name.len() > V::MAX_NAME_LENGTH {
+            println!("{} failed 1", name);
+
+            return false
+        }
+
+        if !name.to_lowercase().bytes().all(|b| matches!(b, b'a'..=b'z'))  {
+            println!("{} failed 2", name);
+
+            return false
+        }
+
+        println!("{} passed", name);
+        return true
+    }
+
+    pub fn check_org_school_name(name : &String) -> bool {
+        if name.is_empty() || name.len() > V::MAX_NAME_LENGTH {
+            println!("{} failed 1", name);
+            return false;
+        }
+
+        
+
+        return true
     }
 
 }
