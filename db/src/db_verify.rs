@@ -1,4 +1,4 @@
-#[cfg(test)]
+
 
 // file for data verfication from insertion
 use chrono::Datelike;
@@ -6,6 +6,7 @@ use sqlite;
 
 pub struct V {}
 impl V {
+
     pub const USERS: usize = 0;
     pub const ORGANIZATIONS: usize = 1;
     pub const ADMINISTRATORS: usize = 2;
