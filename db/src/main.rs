@@ -1,40 +1,16 @@
-use sqlite;
-use std::env;
 mod db_init;
 mod db_insert;
 mod db_verify;
-use clap::Parser;
 mod tests;
-
-
+use clap::Parser;
+use std::path::PathBuf;
 
 fn main() {
 
     // establish our database
-    let connection = db_init::init_database();
+    let connection = db_init::init_database(PathBuf::from(".//src//db//main.sql"));
 
-
-    test_insertion_functions(&connection);
-
-    db_verify::V::check_id(&connection, 1, db_verify::V::ADMINISTRATORS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::ASSIGNMENTS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::CLASSES);
-    db_verify::V::check_id(&connection, 1, db_verify::V::COMMENTS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::EMPLOYEES_SUPERVISORS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::FAMILIES);
-    db_verify::V::check_id(&connection, 1, db_verify::V::FAMILY_MEMBERS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::ORGANIZATIONS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::SCHOOLS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::STUDENTS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::SUBJECTS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::SUBMISSIONS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::TEACHERS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::USERS);
-    db_verify::V::check_id(&connection, 1, db_verify::V::USER_CHANGE_LOG);
-
-
-
-
+    // establish server's services here.
     //    loop {
     //       break;
     //    }
@@ -43,126 +19,3 @@ fn main() {
 }
 
 
-fn test_insertion_functions(connection: &sqlite::Connection) {
-    // do some basic testing
-    db_insert::I::insert_user(
-        &connection,
-        &"John@gmail.com".to_string(),
-        &"JF1995".to_string(),
-        &"password123".to_string(),
-        &"John".to_string(),
-        &"Fernandez".to_string(),
-        &"01/01/2010".to_string(),
-        &"TODAY".to_string(),
-        &"8675309".to_string(),
-        &"".to_string(),
-    );
-    db_insert::I::insert_organization(
-        &connection,
-        &"John Fernandez Schools".to_string(),
-        &"123 Gandalf Way".to_string(),
-        &"APT 11111".to_string(),
-        &"John land".to_string(),
-        &"State of John".to_string(),
-        &"22222".to_string(),
-        &"8675309".to_string(),
-        &"Brazil".to_string(),
-    );
-    db_insert::I::insert_administrator(&connection, &"1".to_string(), &"John's boss.".to_string());
-    db_insert::I::insert_school(
-        &connection,
-        &"1".to_string(),
-        &"0".to_string(),
-        &"".to_string(),
-        &"JOHN FERNANDEZ SCHOOL".to_string(),
-        &"123 ABC WAY".to_string(),
-        &"UNIT 1".to_string(),
-        &"Albaquerque".to_string(),
-        &"NZ".to_string(),
-        &"28318".to_string(),
-        &"8675309".to_string(),
-        &"NEW ZEALAND".to_string(),
-    );
-    db_insert::I::insert_teacher(&connection, &"1".to_string());
-
-    db_insert::I::insert_subject(
-        &connection,
-        &"Math for Delinquents".to_string(),
-        &"0".to_string(),
-        &"0".to_string(),
-        &"4".to_string(),
-        &"MATH".to_string(),
-    );
-    db_insert::I::insert_class(
-        &connection,
-        &"1".to_string(),
-        &"1".to_string(),
-        &"7".to_string(),
-        &"49".to_string(),
-        &"99".to_string(),
-        &"102".to_string(),
-        &"110".to_string(),
-        &"MWF".to_string(),
-    );
-    db_insert::I::insert_student(&connection, &"1".to_string());
-    db_insert::I::insert_family(&connection, &"FERNANDEZ FAMILY".to_string());
-    db_insert::I::insert_family_member(
-        &connection,
-        &"1".to_string(),
-        &"sms;email".to_string(),
-        &"johnfernandez@familymembers.org".to_string(),
-        &"8675309".to_string(),
-    );
-
-    db_insert::I::insert_assignment(
-        &connection,
-        &"1".to_string(),
-        &"1".to_string(),
-        &"4 Point".to_string(),
-        &"COUNT THE APPLES!".to_string(),
-        &"".to_string(),
-    );
-    db_insert::I::insert_submission(
-        &connection,
-        &"1".to_string(),
-        &"1".to_string(),
-        &"I'm a submission of doom!".to_string(),
-        &"".to_string(),
-    );
-    db_insert::I::insert_comments(
-        &connection,
-        &"1".to_string(),
-        &"1".to_string(),
-        &"I'm a comment of doom!".to_string(),
-    );
-    db_insert::I::insert_change_log(
-        &connection,
-        &"THE APP CREATOR SINGULARITUS".to_string(),
-        &"1".to_string(),
-        &"I'm just testing stuff.".to_string(),
-        &"Pretty late....".to_string(),
-    );
-    db_insert::I::insert_administrator_school(&connection, &"1".to_string(), &"1".to_string());
-
-    db_insert::I::insert_employee_supervisor(
-        &connection,
-        &"1".to_string(),
-        &"1".to_string(),
-        &"John's boss Bob".to_string(),
-    );
-    db_insert::I::insert_teachers_schools(&connection, &"1".to_string(), &"1".to_string());
-    db_insert::I::insert_teachers_classes(
-        &connection,
-        &"1".to_string(),
-        &"1".to_string(),
-        &"Just a teacher, lol".to_string(),
-    );
-    db_insert::I::insert_students_classes(&connection, &"1".to_string(), &"1".to_string());
-
-    db_insert::I::insert_families_users(
-        &connection,
-        &"1".to_string(),
-        &"1".to_string(),
-        &"DAH BRO GUY".to_string(),
-    );
-}

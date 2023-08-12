@@ -1,8 +1,7 @@
-pub fn init_database() -> sqlite::Connection {
-    let connection = sqlite::open(
-        "/Users/johnbootcamp/Desktop/kotlin/classroom_online/db/src/db/dbmain_database.sql",
-    )
-    .unwrap();
+use std::path::PathBuf;
+
+pub fn init_database(path : PathBuf) -> sqlite::Connection {
+    let connection = sqlite::open(path).unwrap();
 
     // create users table. This is the basic information for all user types.
     // now, we usually can use email for logins, but many students will not have one.

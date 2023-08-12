@@ -136,17 +136,14 @@ impl V {
 
     pub fn check_org_school_name(name: &String) -> bool {
         if name.is_empty() || name.len() > V::MAX_NAME_LENGTH {
-            println!("{} failed 1", name);
             return false;
         }
 
         if name.chars().all(|x| char::is_numeric(x)) {
-            println!("{} failed 2", name);
             return false;
         }
 
         if !name.chars().all(|x| char::is_alphanumeric(x)){
-            println!("{} failed 3", name);
             return false;
         }
 
@@ -163,34 +160,28 @@ impl V {
         }
 
         if &bd[2..3] != "/" && &bd[2..3] != "\\" {
-            println!("{} failed 2a", bd);
             return false;
         }
 
         if &bd[5..6] != "/" && &bd[5..6] != "\\" {
-            println!("{} failed 2b", bd);
             return false;
         }
 
         if !bd[0..2].chars().all(|x| x.is_numeric()) {
-            println!("{} failed 3", bd);
             return false;
         }
 
         if !bd[3..5].chars().all(|x| x.is_numeric()) {
-            println!("{} failed 4", bd);
             return false;
         }
 
         if !bd[6..].chars().all(|x| x.is_numeric()) {
-            println!("{} failed 5 ", bd);
             return false;
         }
 
         let month: usize = bd[0..2].to_string().parse().unwrap();
 
         if month < 1 || month > 12 {
-            println!("{} failed 6, bad month", bd);
             return false;
         }
 
@@ -208,9 +199,9 @@ impl V {
         let current_year: usize = chrono::Utc::now().year() as usize;
 
         if year < current_year - 120 {
-            println!("{} failed 7, too old to be real.", bd);
+            return false;
         } else if year > current_year {
-            println!("{} failed 8, too young", bd);
+            return false;
         }
 
         // NOTE if we use this server long enough (after 2100), you will have to switch to a more complicated formula to check
@@ -224,30 +215,25 @@ impl V {
 
         // sorry, but validating the day of the month is a little logically complicated
         if day < 1 {
-            println!("{} failed 9", bd);
             return false;
 
         // check february
         } else if month == 2 {
             // check leap year
             if leap_year && day > 29 {
-                println!("{} failed 10", bd);
                 return false;
             // check regular february
             } else if !leap_year && day > 28 {
-                println!("{} failed 11", bd);
                 return false;
             }
         // check 30 day months
         } else {
             if month == 4 || month == 6 || month == 9 || month == 11 {
                 if day > 30 {
-                    println!("{} failed 12", bd);
                     return false;
                 }
             } else {
                 if day > 31 {
-                    println!("{} failed 13", bd);
                     return false;
                 }
             }
