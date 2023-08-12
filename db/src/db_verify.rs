@@ -1,3 +1,5 @@
+#[cfg(test)]
+
 // file for data verfication from insertion
 use chrono::Datelike;
 use sqlite;

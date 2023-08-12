@@ -1,11 +1,30 @@
 use sqlite;
+use std::env;
 mod db_init;
 mod db_insert;
 mod db_verify;
+use clap::Parser;
+mod tests;
+
+/// Simple program to greet a person
+#[derive(Parser, Debug)]
+#[command(author, version, about, long_about = None)]
+struct Args {
+    /// Name of the person to greet
+    #[arg(short, long)]
+    name: String,
+
+    /// Number of times to greet
+    #[arg(short, long, default_value_t = 1)]
+    count: u8,
+}
+
 
 fn main() {
+
     // establish our database
     let connection = db_init::init_database();
+
 
     test_insertion_functions(&connection);
 
@@ -24,19 +43,9 @@ fn main() {
     db_verify::V::check_id(&connection, 1, db_verify::V::TEACHERS);
     db_verify::V::check_id(&connection, 1, db_verify::V::USERS);
     db_verify::V::check_id(&connection, 1, db_verify::V::USER_CHANGE_LOG);
-    if cfg!(debug_assertions){
-        test_sever_level_email_verification();
-    }
 
 
-    db_verify::V::check_name(&"Bob".to_string());
-    db_verify::V::check_name(&"".to_string());
-    db_verify::V::check_name(&"Wolfeschlegel­steinhausen­bergerdorff­welche­vor­altern­waren­gewissenhaft­schafers­wessen­schafe­waren­wohl­gepflege­und­sorgfaltigkeit­beschutzen­vor­angreifen­durch­ihr­raubgierig­feinde­welche­vor­altern­zwolfhundert­tausend­jahres­voran­die­erscheinen­von­der­erste­erdemensch­der­raumschiff­genacht­mit­tungstein­und­sieben­iridium­elektrisch­motors­gebrauch­licht­als­sein­ursprung­von­kraft­gestart­sein­lange­fahrt­hinzwischen­sternartig­raum­auf­der­suchen­nachbarschaft­der­stern­welche­gehabt­bewohnbar­planeten­kreise­drehen­sich­und­wohin­der­neue­rasse­von­verstandig­menschlichkeit­konnte­fortpflanzen­und­sich­erfreuen­an­lebenslanglich­freude­und­ruhe­mit­nicht­ein­furcht­vor­angreifen­vor­anderer­intelligent­geschopfs­von­hinzwischen­sternartig­raum".to_string());
-    db_verify::V::check_name(&"123".to_string());
-    db_verify::V::check_name(&"Abby1".to_string());
-    db_verify::V::check_name(&"Turambar".to_string());
-    db_verify::V::check_name(&"!!BOB!!".to_string());
-    db_verify::V::check_name(&"!!!!".to_string());
+
 
     //    loop {
     //       break;
@@ -44,6 +53,7 @@ fn main() {
 
     println!("Connection listener for app section not yet implemented.  Aborting. ")
 }
+
 
 fn test_insertion_functions(connection: &sqlite::Connection) {
     // do some basic testing
@@ -167,93 +177,4 @@ fn test_insertion_functions(connection: &sqlite::Connection) {
         &"1".to_string(),
         &"DAH BRO GUY".to_string(),
     );
-}
-
-fn test_sever_level_email_verification (){
-    if db_verify::V::check_email("animal".to_string()){
-        println!("Warning! animal passes" );
-    }
-
-    if db_verify::V::check_email("animal@".to_string()){
-        println!("Warning! animal@ passes" );
-    }
-
-    if db_verify::V::check_email("@animal".to_string()){
-        println!("Warning! @animal passes" );
-    }
-
-    if db_verify::V::check_email("@animal.com".to_string()){
-        println!("Warning! @animal.com passes" );
-    }
-
-    if db_verify::V::check_email("animal@h".to_string()){
-        println!("Warning! animal@h passes" );
-    }
-
-    if db_verify::V::check_email("@".to_string()){
-        println!("@ passes" );
-    } else {
-        println!("@ fails");
-    }
-
-    if db_verify::V::check_email("".to_string()){
-        println!("empty string passes" );
-    } else {
-        println!("empty string fails");
-    }
-
-    if db_verify::V::check_email("good.animal@bob.com".to_string()){
-        println!("good.animal@bob.com passes" );
-    } else {
-        println!("good.animal@bob.com fails");
-    }
-
-    if db_verify::V::check_email("animal@bob.com".to_string()){
-        println!("animal@bob.com passes" );
-    } else {
-        println!("animal@bob.com fails");
-    }
-    
-    if db_verify::V::check_email("good.animal@bob.".to_string()){
-        println!("good_animal@bob. passes" );
-    } else {
-        println!("good_animal@bob. fails");
-    }
-
-    if db_verify::V::check_email("good.animal@bob.y".to_string()){
-        println!("good_animal@bob.y passes" );
-    } else {
-        println!("good_animal@bob.y fails");
-    }
-
-    if db_verify::V::check_email("good.animal@.com".to_string()){
-        println!("good_animal@.com passes" );
-    } else {
-        println!("good_animal@.com fails");
-    }
-
-    if db_verify::V::check_email("good.animal@a.com".to_string()){
-        println!("good_animal@a.com passes" );
-    } else {
-        println!("good_animal@a.com fails");
-    }
-
-    if db_verify::V::check_email("b.e.s.t@abc.com".to_string()){
-        println!("b.e.s.t@abc.com passes" );
-    } else {
-        println!("b.e.s.t@abc.com fails");
-    }
-
-    if db_verify::V::check_email("b.e.s.t@abc.com.".to_string()){
-        println!("b.e.s.t@abc.com. passes" );
-    } else {
-        println!("b.e.s.t@abc.com. fails");
-    }
-
-    if db_verify::V::check_email("fine@ab@c.com.".to_string()){
-        println!("b.e.s.t@abc.com. passes" );
-    } else {
-        println!("b.e.s.t@abc.com. fails");
-    }
-
 }
