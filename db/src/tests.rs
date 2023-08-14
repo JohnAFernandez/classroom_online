@@ -133,7 +133,8 @@ fn test_insertion_functions() {
 
     let connection = db_init::init_database(PathBuf::from(".//src//db//test_insertion.sql"));
     // do some basic testing
-    (I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string()));
+    I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+    
     I::insert_organization(
         &connection,
         &"John Fernandez Schools".to_string(),
@@ -243,5 +244,4 @@ fn test_insertion_functions() {
         &"DAH BRO GUY".to_string(),
     );
 
-    
 }
