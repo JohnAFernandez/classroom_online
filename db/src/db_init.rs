@@ -1,6 +1,10 @@
 use std::path::PathBuf;
 
 pub fn init_database(path : PathBuf) -> sqlite::Connection {
+    if path.exists() {
+        return sqlite::open(path).unwrap();;
+    } 
+
     let connection = sqlite::open(path).unwrap();
 
     // create users table. This is the basic information for all user types.
