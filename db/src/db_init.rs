@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 pub fn init_database(path : PathBuf) -> sqlite::Connection {
     if path.exists() {
-        return sqlite::open(path).unwrap();;
+        return sqlite::open(path).unwrap();
     } 
 
     let connection = sqlite::open(path).unwrap();
@@ -24,7 +24,9 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
             birthday STRING_NOT_NULL,
             date_registered STRING NOT NULL,
             phone STRING,
-            icon STRING
+            icon STRING,
+            hidden INTEGER DEFAULT 0,
+            deleted INTEGER DEFAULT 0
             );
     ";
     connection.execute(query).unwrap();
@@ -40,7 +42,8 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
             state STRING,
             zip STRING,
             phone STRING,
-            country STRING
+            country STRING,
+            deactivated INTEGER DEFAULT 0
         );
     ";
     connection.execute(query).unwrap();
@@ -51,7 +54,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
     query = "
         CREATE TABLE administrators (
             administrator_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            user_id INTEGER NOT NULL,
+            user_id INTEGER NOT NULL UNIQUE,
             level STRING NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
@@ -95,7 +98,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
     query = "
         CREATE TABLE teachers (
             teacher_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            user_id INTEGER,
+            user_id INTEGER UNIQUE,
             icon STRING,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
@@ -107,7 +110,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
     query = "
         CREATE TABLE employees_supervisors (
             supervisory_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            user_id INTEGER NOT NULL,
+            user_id INTEGER,
             administrator_id INTEGER,
             supervisor_name STRING, 
             FOREIGN KEY (user_id) REFERENCES users(user_id),
@@ -171,7 +174,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
     query = "
         CREATE TABLE students (
             student_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            user_id INTEGER,
+            user_id INTEGER UNIQUE,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
@@ -216,7 +219,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
     query = "
         CREATE TABLE family_members (
             member_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            user_id INTEGER,
+            user_id INTEGER UNIQUE,
             notification_methods STRING,
             email STRING,
             phone STRING,
