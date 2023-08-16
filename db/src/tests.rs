@@ -1,7 +1,9 @@
 use crate::db_verify::V;
 use crate::db_init;
 use crate::db_insert::I;
+use crate::db_delete::D;
 use std::path::PathBuf;
+
 
 #[cfg(test)]
 
@@ -25,6 +27,7 @@ fn test_database_creation_and_initialization(){
     V::check_id(&connection, 1, V::USERS);
     V::check_id(&connection, 1, V::USER_CHANGE_LOG);
 
+    println!("\"Deleted\" user 1? {}", D::delete_user(&connection, 1));
 
     connection;
 }
