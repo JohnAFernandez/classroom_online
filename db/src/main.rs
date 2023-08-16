@@ -2,6 +2,7 @@ mod db_init;
 mod db_insert;
 mod db_verify;
 mod db_delete;
+mod db_retrieve;
 mod tests;
 use std::path::PathBuf;
 
