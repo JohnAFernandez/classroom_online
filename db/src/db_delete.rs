@@ -15,12 +15,14 @@ impl D {
             return false;
         }
         
-        let query = "UPDATE users SET deleted = 0 WHERE user_id = ".to_owned()
+        let query = "UPDATE users SET deleted = 1 WHERE user_id = ".to_owned()
         + &user_id.to_string();
 
-        connection.execute(query);
+        match connection.execute(query){
+            Ok(_) => return true,
+            Err(_) => return false
+        }
 
-        return true;
     }
 
 }

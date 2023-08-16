@@ -26,10 +26,6 @@ fn test_database_creation_and_initialization(){
     V::check_id(&connection, 1, V::TEACHERS);
     V::check_id(&connection, 1, V::USERS);
     V::check_id(&connection, 1, V::USER_CHANGE_LOG);
-
-    println!("\"Deleted\" user 1? {}", D::delete_user(&connection, 1));
-
-    connection;
 }
 
 #[test]
@@ -132,9 +128,9 @@ fn test_sever_level_name_verification() {
 }
 
 #[test]
-fn test_insertion_functions() {
+fn test_insertion_and_deletion_functions() {
 
-    let connection = db_init::init_database(PathBuf::from(".//src//db//test_insertion.sql"));
+    let connection = db_init::init_database(PathBuf::from(".//src//db//test_data_updates.sql"));
     // do some basic testing
     I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
     
@@ -246,5 +242,10 @@ fn test_insertion_functions() {
         &"1".to_string(),
         &"DAH BRO GUY".to_string(),
     );
+
+    let connection = db_init::init_database(PathBuf::from(".//src//db//test_data_updates.sql"));
+
+
+    assert!(D::delete_user(&connection, 1));
 
 }
