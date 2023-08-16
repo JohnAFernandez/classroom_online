@@ -1,6 +1,7 @@
 mod db_init;
 mod db_insert;
 mod db_verify;
+mod db_delete;
 mod tests;
 use clap::Parser;
 use std::path::PathBuf;
