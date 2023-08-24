@@ -133,7 +133,9 @@ fn test_insertion_and_deletion_functions() {
     let connection = db_init::init_database(PathBuf::from(".//src//db//test_data_updates.sql"));
     // do some basic testing
     I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
-    
+
+    I::insert_user(&connection, &"John2@gmail.com".to_string(), &"JF1999".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+
     I::insert_organization(
         &connection,
         &"John Fernandez Schools".to_string(),
@@ -245,7 +247,75 @@ fn test_insertion_and_deletion_functions() {
 
     let connection = db_init::init_database(PathBuf::from(".//src//db//test_data_updates.sql"));
 
+    // This user has accounts associated
+    let mut result = D::delete_user(&connection, 1);
+    //assert!(!result.0, "{}", result.1);
 
-    assert!(D::delete_user(&connection, 1));
+    // This user does not
+    result = D::delete_user(&connection, 2);
+    assert!(result.0, "{}", result.1);
+
+    // This user should not exist
+    result = D::delete_user(&connection, 3);
+    assert!(!result.0, "{}", result.1);
+    
+    I::insert_user(&connection, &"John3@gmail.com".to_string(), &"JF2005".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+    I::insert_administrator(&connection, &"3".to_string(), &"Necromancer".to_string());
+    
+    result = D::delete_administrator(&connection, 2);
+    assert!(result.0, "{}", result.1);
+
+    I::insert_school(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"".to_string(),
+        &"JOHN FERNANDEZ OTHER SCHOOL".to_string(),
+        &"1234 BBQ ST".to_string(),
+        &"UNIT 18".to_string(),
+        &"Albaquerque".to_string(),
+        &"NZ".to_string(),
+        &"12345".to_string(),
+        &"8675309".to_string(),
+        &"NEW ZEALAND".to_string(),
+    );
+
+    // this school has no associated classes, and should be deletable
+    result = D::delete_school(&connection, 2);
+    assert!(result.0, "{}", result.1);
+    
+    // this school does not exist so deletion should fail.
+    result = D::delete_school(&connection, 4);
+    assert!(!result.0, "{}", result.1);
+
+
+    I::insert_organization(
+        &connection,
+        &"John Fernandez's Other Schools".to_string(),
+        &"1234 Gandalf Way".to_string(),
+        &"APT 111".to_string(),
+        &"John landIO".to_string(),
+        &"State of BOB".to_string(),
+        &"22222".to_string(),
+        &"8675309".to_string(),
+        &"Brazil".to_string(),
+    );
+
+
+    result = D::delete_organization(&connection, 2);
+    assert!(result.0, "{}", result.1);
+
+    result = D::delete_organization(&connection, 4);
+    assert!(!result.0, "{}", result.1);
+
+
+    I::insert_teacher(&connection, &"2".to_string());
+
+    result = D::delete_teacher(&connection, 2);
+    assert!(result.0, "{}", result.1);
+
+    result = D::delete_teacher(&connection, 4);
+    assert!(!result.0, "{}", result.1);
+
 
 }

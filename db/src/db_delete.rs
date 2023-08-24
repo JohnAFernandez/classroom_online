@@ -31,12 +31,12 @@ impl D {
         if !V::check_id(connection, admin_id, V::ADMINISTRATORS) {
             return (false, "Admin ID ".to_owned() + &admin_id.to_string()  + " does not exist in administrator table.");
         }
-        let query = "DELETE FROM administrators WHERE admin_id = ".to_owned()
+        let query = "DELETE FROM administrators WHERE administrator_id = ".to_owned()
         + &admin_id.to_string();
 
         match connection.execute(query){
             Ok(_) => return (true, "Admin record ".to_owned() + &admin_id.to_string() + " successfully deleted."),
-            Err(x) => return (false, "Failed to deleted Admin record of Id ".to_owned() + &admin_id.to_string() +  &"but deletion returned error of " + &x.to_string())
+            Err(x) => return (false, "Failed to deleted Admin record of ID ".to_owned() + &admin_id.to_string() +  &" but deletion returned error of " + &x.to_string())
         }
 
     }
@@ -48,10 +48,17 @@ impl D {
             return (false, "School ID ".to_owned() + &school_id.to_string()  + " does not exist in schools table.");
         }
 
+        let result: Result<sqlite::Statement<'_>, sqlite::Error> = R::retrieve_classes_from_school(connection, school_id);
+
         // only delete a school if there are no associated classes
-        match R::retrieve_classes_from_school(connection, school_id) {
-            Ok(values) => if values.into_iter().next().is_none() { return (false, "Could not delete School ID ".to_owned() + &school_id.to_string()  + " because there are still classes associated with this school.");},
-            Err(x) =>  return (false, "Retrieving classes for School ID ".to_owned() + &school_id.to_string()  + " encountered an error of " + &x.to_string()) 
+        match result {
+            Err(x) =>  return (false, "Retrieving classes for School ID ".to_owned() + &school_id.to_string()  + " encountered an error of " + &x.to_string()),
+            Ok(_) => (),
+        }
+
+        match result.into_iter().size_hint().1 {
+            None => return (false, "Could not delete School ID ".to_owned() + &school_id.to_string()  + " because there are still classes associated with this school."),
+            Some(_) => (),
         }
 
         let query = "DELETE FROM schools WHERE school_id = ".to_owned()
@@ -71,10 +78,17 @@ impl D {
             return (false, "Organization ID ".to_owned() + &organization_id.to_string()  + " does not exist in organizations table.");
         }
 
+        let result: Result<sqlite::Statement<'_>, sqlite::Error> = R::retrieve_schools_from_organization(connection, organization_id);
+        
         // only delete an organization if there are no associated schools
-        match R::retrieve_schools_from_organization(connection, organization_id) {
-            Ok(values) => if values.into_iter().next().is_none() { return (false, "Could not delete Organization ID ".to_owned() + &organization_id.to_string()  + " because there are still schools associated with this organization.");},
-            Err(x) =>  return (false, "Retrieving schools for Organization ID ".to_owned() + &organization_id.to_string()  + " encountered an error of " + &x.to_string()) 
+        match result {
+            Err(x) =>  return (false, "Retrieving schools for Organization ID ".to_owned() + &organization_id.to_string()  + " encountered an error of " + &x.to_string()),
+            Ok(_) => (),
+        }
+
+        match result.into_iter().size_hint().1 {
+            None =>  return (false, "Could not delete Organization ID ".to_owned() + &organization_id.to_string()  + " because there are still schools associated with this organization."),
+            Some(_) => ()
         }
 
         let query = "DELETE FROM organizations WHERE organization_id = ".to_owned()
