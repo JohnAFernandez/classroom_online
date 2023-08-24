@@ -110,5 +110,11 @@ impl R {
         return connection.prepare(query);
     }
 
+    pub fn retrieve_assignments_from_class(connection : &sqlite::Connection, class_id : i64) -> Result<Statement<'_>, sqlite::Error> {
+        let query = "SELECT assignment_id FROM assignments WHERE class_id = ".to_owned()
+            + &class_id.to_string();
+    
+        return connection.prepare(query);
+    }
 
 }
