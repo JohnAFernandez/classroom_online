@@ -1,31 +1,187 @@
+use sqlite::CursorWithOwnership;
+
 use crate::db_verify::V;
 use crate::db_init;
 use crate::db_insert::I;
 use crate::db_delete::D;
+use crate::db_retrieve::R;
 use std::path::PathBuf;
+use std::fs;
 
 
 #[cfg(test)]
 
 #[test]
-fn test_database_creation_and_initialization(){
-    let connection = db_init::init_database(PathBuf::from(".//src//db//test_creation.sql"));
+fn test_database_creation_and_insertion(){
+    let location = ".//src//db//test_creation.sql";
+    let connection = db_init::init_database(PathBuf::from(location));
 
-    V::check_id(&connection, 1, V::ADMINISTRATORS);
-    V::check_id(&connection, 1, V::ASSIGNMENTS);
-    V::check_id(&connection, 1, V::CLASSES);
-    V::check_id(&connection, 1, V::COMMENTS);
-    V::check_id(&connection, 1, V::EMPLOYEES_SUPERVISORS);
-    V::check_id(&connection, 1, V::FAMILIES);
-    V::check_id(&connection, 1, V::FAMILY_MEMBERS);
-    V::check_id(&connection, 1, V::ORGANIZATIONS);
-    V::check_id(&connection, 1, V::SCHOOLS);
-    V::check_id(&connection, 1, V::STUDENTS);
-    V::check_id(&connection, 1, V::SUBJECTS);
-    V::check_id(&connection, 1, V::SUBMISSIONS);
-    V::check_id(&connection, 1, V::TEACHERS);
-    V::check_id(&connection, 1, V::USERS);
-    V::check_id(&connection, 1, V::USER_CHANGE_LOG);
+    assert!(!V::check_id(&connection, 1, V::ADMINISTRATORS));
+    assert!(!V::check_id(&connection, 1, V::ASSIGNMENTS));
+    assert!(!V::check_id(&connection, 1, V::CLASSES));
+    assert!(!V::check_id(&connection, 1, V::COMMENTS));
+    assert!(!V::check_id(&connection, 1, V::EMPLOYEES_SUPERVISORS));
+    assert!(!V::check_id(&connection, 1, V::FAMILIES));
+    assert!(!V::check_id(&connection, 1, V::FAMILY_MEMBERS));
+    assert!(!V::check_id(&connection, 1, V::ORGANIZATIONS));
+    assert!(!V::check_id(&connection, 1, V::SCHOOLS));
+    assert!(!V::check_id(&connection, 1, V::STUDENTS));
+    assert!(!V::check_id(&connection, 1, V::SUBJECTS));
+    assert!(!V::check_id(&connection, 1, V::SUBMISSIONS));
+    assert!(!V::check_id(&connection, 1, V::TEACHERS));
+    assert!(!V::check_id(&connection, 1, V::USERS));
+    assert!(!V::check_id(&connection, 1, V::USER_CHANGE_LOG));
+
+    I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+
+    I::insert_organization(
+        &connection,
+        &"John Fernandez Schools".to_string(),
+        &"123 Gandalf Way".to_string(),
+        &"APT 11111".to_string(),
+        &"John land".to_string(),
+        &"State of John".to_string(),
+        &"22222".to_string(),
+        &"8675309".to_string(),
+        &"Brazil".to_string(),
+    );
+    I::insert_administrator(&connection, &"1".to_string(), &"John's boss.".to_string());
+    I::insert_school(
+        &connection,
+        &"1".to_string(),
+        &"0".to_string(),
+        &"".to_string(),
+        &"JOHN FERNANDEZ SCHOOL".to_string(),
+        &"123 ABC WAY".to_string(),
+        &"UNIT 1".to_string(),
+        &"Albaquerque".to_string(),
+        &"NZ".to_string(),
+        &"28318".to_string(),
+        &"8675309".to_string(),
+        &"NEW ZEALAND".to_string(),
+    );
+    I::insert_teacher(&connection, &"1".to_string());
+
+    I::insert_subject(
+        &connection,
+        &"Math for Delinquents".to_string(),
+        &"0".to_string(),
+        &"0".to_string(),
+        &"4".to_string(),
+        &"MATH".to_string(),
+    );
+    I::insert_class(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"7".to_string(),
+        &"49".to_string(),
+        &"99".to_string(),
+        &"102".to_string(),
+        &"110".to_string(),
+        &"MWF".to_string(),
+    );
+    I::insert_student(&connection, &"1".to_string());
+    I::insert_family(&connection, &"FERNANDEZ FAMILY".to_string());
+    I::insert_family_member(
+        &connection,
+        &"1".to_string(),
+        &"sms;email".to_string(),
+        &"johnfernandez@familymembers.org".to_string(),
+        &"8675309".to_string(),
+    );
+
+    I::insert_assignment(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"4 Point".to_string(),
+        &"COUNT THE APPLES!".to_string(),
+        &"".to_string(),
+    );
+    I::insert_submission(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"I'm a submission of doom!".to_string(),
+        &"".to_string(),
+    );
+    I::insert_comments(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"I'm a comment of doom!".to_string(),
+    );
+    I::insert_change_log(
+        &connection,
+        &"THE APP CREATOR SINGULARITUS".to_string(),
+        &"1".to_string(),
+        &"I'm just testing stuff.".to_string(),
+        &"Pretty late....".to_string(),
+    );
+    I::insert_administrator_school(&connection, &"1".to_string(), &"1".to_string());
+
+    I::insert_employee_supervisor(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"John's boss Bob".to_string(),
+    );
+    I::insert_teachers_schools(&connection, &"1".to_string(), &"1".to_string());
+    I::insert_teachers_classes(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"Just a teacher, lol".to_string(),
+    );
+    I::insert_students_classes(&connection, &"1".to_string(), &"1".to_string());
+
+    I::insert_families_users(
+        &connection,
+        &"1".to_string(),
+        &"1".to_string(),
+        &"DAH BRO GUY".to_string(),
+    );
+
+    assert!(V::check_id(&connection, 1, V::ADMINISTRATORS));
+    assert!(V::check_id(&connection, 1, V::ASSIGNMENTS));
+    assert!(V::check_id(&connection, 1, V::CLASSES));
+    assert!(V::check_id(&connection, 1, V::COMMENTS));
+    assert!(V::check_id(&connection, 1, V::EMPLOYEES_SUPERVISORS));
+    assert!(V::check_id(&connection, 1, V::FAMILIES));
+    assert!(V::check_id(&connection, 1, V::FAMILY_MEMBERS));
+    assert!(V::check_id(&connection, 1, V::ORGANIZATIONS));
+    assert!(V::check_id(&connection, 1, V::SCHOOLS));
+    assert!(V::check_id(&connection, 1, V::STUDENTS));
+    assert!(V::check_id(&connection, 1, V::SUBJECTS));
+    assert!(V::check_id(&connection, 1, V::SUBMISSIONS));
+    assert!(V::check_id(&connection, 1, V::TEACHERS));
+    assert!(V::check_id(&connection, 1, V::USERS));
+    assert!(V::check_id(&connection, 1, V::USER_CHANGE_LOG));
+
+}
+
+
+#[test]
+fn test_retrieve_details() {
+    let location = ".//src//db//test_creation.sql";
+    let connection = db_init::init_database(PathBuf::from(location));
+
+    let mut iter: CursorWithOwnership<'_>;
+    let mut output: String = "".to_string();
+    let mut result = R::retrieve_details(&connection,R::ADMINISTRATORS, "1".to_string());
+
+    match result {
+        Ok(x) => {iter = x.into_iter(); while iter.next() == None { output += }},
+        Err(_) => panic!("Retrieval paniced."),
+    }
+
+    assert!();
+
+    match fs::remove_file(location) {
+        Ok(_) => (),
+        Err(_) => println!("Could not delete test database {}", location),
+    };
 }
 
 #[test]
@@ -128,9 +284,10 @@ fn test_sever_level_name_verification() {
 }
 
 #[test]
-fn test_insertion_and_deletion_functions() {
+fn test_deletion() {
 
-    let connection = db_init::init_database(PathBuf::from(".//src//db//test_data_updates.sql"));
+    let location = ".//src//db//test_data_updates.sql";
+    let connection = db_init::init_database(PathBuf::from(location));
     // do some basic testing
     I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
 
@@ -245,8 +402,6 @@ fn test_insertion_and_deletion_functions() {
         &"DAH BRO GUY".to_string(),
     );
 
-    let connection = db_init::init_database(PathBuf::from(".//src//db//test_data_updates.sql"));
-
     // This user has accounts associated
     let mut result = D::delete_user(&connection, 1);
     //assert!(!result.0, "{}", result.1);
@@ -317,5 +472,10 @@ fn test_insertion_and_deletion_functions() {
     result = D::delete_teacher(&connection, 4);
     assert!(!result.0, "{}", result.1);
 
+    match fs::remove_file(location) {
+        Ok(_) => (),
+        Err(_) => println!("Could not delete test database {}", location),
+    };
 
 }
+
