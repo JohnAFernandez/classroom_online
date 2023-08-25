@@ -5,6 +5,7 @@ use chrono::Datelike;
 use sqlite;
 
 pub struct V {}
+
 impl V {
 
     pub const USERS: usize = 0;
