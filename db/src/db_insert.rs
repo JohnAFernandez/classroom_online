@@ -273,11 +273,12 @@ impl I {
         connection: &sqlite::Connection,
         user_id: &String,
         administrator_id: &String,
-        supervisor_name: &String
+        supervisor_name: &String,
+        organization_id: &String,
     ) {
         let query: String =
             I::INSERT.to_owned() + "employees_supervisors (user_id, administrator_id, supervisor_name, organization_id)" 
-            + I::VALUES + user_id + I::AND + administrator_id + I::AND_S + supervisor_name + I::S_AND + I::END;
+            + I::VALUES + user_id + I::AND + administrator_id + I::AND_S + supervisor_name + I::S_AND + organization_id + I::END;
 
         
         connection.execute(query).unwrap();

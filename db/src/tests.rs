@@ -12,7 +12,7 @@ use std::fs;
 #[cfg(test)]
 
 #[test]
-fn test_database_creation_and_insertion(){
+fn test_database_creation_insertion_retrieval(){
     let location = ".//src//db//test_creation.sql";
     let connection = db_init::init_database(PathBuf::from(location));
 
@@ -126,6 +126,7 @@ fn test_database_creation_and_insertion(){
         &"1".to_string(),
         &"1".to_string(),
         &"John's boss Bob".to_string(),
+        &"1".to_string(),
     );
     I::insert_teachers_schools(&connection, &"1".to_string(), &"1".to_string());
     I::insert_teachers_classes(
@@ -159,13 +160,6 @@ fn test_database_creation_and_insertion(){
     assert!(V::check_id(&connection, 1, V::USERS));
     assert!(V::check_id(&connection, 1, V::USER_CHANGE_LOG));
 
-}
-
-
-#[test]
-fn test_retrieve_details() {
-    let location = ".//src//db//test_creation.sql";
-    let connection = db_init::init_database(PathBuf::from(location));
 
     let mut iter: CursorWithOwnership<'_>;
     let mut output: String = "".to_string();
@@ -385,6 +379,7 @@ fn test_deletion() {
         &"1".to_string(),
         &"1".to_string(),
         &"John's boss Bob".to_string(),
+        &"1".to_string(),
     );
     I::insert_teachers_schools(&connection, &"1".to_string(), &"1".to_string());
     I::insert_teachers_classes(

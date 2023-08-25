@@ -116,7 +116,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
             organization_id INTEGER, 
             FOREIGN KEY (user_id) REFERENCES users(user_id),
             FOREIGN KEY (administrator_id) REFERENCES administrators(administrator_id),
-            FOREIGN KEY (organzation_id) REFERENCES organizations(organization_id)
+            FOREIGN KEY (organization_id) REFERENCES organizations(organization_id)
         );
     ";
     connection.execute(query).unwrap();
