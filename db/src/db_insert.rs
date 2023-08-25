@@ -276,8 +276,8 @@ impl I {
         supervisor_name: &String
     ) {
         let query: String =
-            I::INSERT.to_owned() + "employees_supervisors (user_id, administrator_id, supervisor_name)" 
-            + I::VALUES + user_id + I::AND + administrator_id + I::AND_S + supervisor_name + I::S_END;
+            I::INSERT.to_owned() + "employees_supervisors (user_id, administrator_id, supervisor_name, organization_id)" 
+            + I::VALUES + user_id + I::AND + administrator_id + I::AND_S + supervisor_name + I::S_AND + I::END;
 
         
         connection.execute(query).unwrap();
