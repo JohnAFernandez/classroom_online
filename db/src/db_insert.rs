@@ -127,11 +127,11 @@ impl I {
         name: &String,
         ap: &String,
         ib: &String,
-        target_grade: &String,
+        target_year: &String,
         discipline: &String,
     ) {
         let query: String = I::INSERT.to_owned()
-            + "subjects (name, ap, ib, target_grade, discipline)"
+            + "subjects (name, ap, ib, target_year, discipline)"
             + I::VALUES_S
             + name
             + I::S_AND
@@ -139,7 +139,7 @@ impl I {
             + I::AND
             + ib
             + I::AND
-            + target_grade
+            + target_year
             + I::AND_S
             + discipline
             + I::S_END;
