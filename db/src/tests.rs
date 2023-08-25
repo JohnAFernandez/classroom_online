@@ -172,11 +172,11 @@ fn test_retrieve_details() {
     let mut result = R::retrieve_details(&connection,R::ADMINISTRATORS, "1".to_string());
 
     match result {
-        Ok(x) => {iter = x.into_iter(); while iter.next() == None { output += }},
+        Ok(x) => (),//{iter = x.into_iter(); while iter.next().is_some() { output += }},
         Err(_) => panic!("Retrieval paniced."),
     }
 
-    assert!();
+//    assert!();
 
     match fs::remove_file(location) {
         Ok(_) => (),
