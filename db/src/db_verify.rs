@@ -44,10 +44,6 @@ impl V {
 
     pub fn check_id(connection: &sqlite::Connection, id: i64, table_id: usize) -> bool {
         if table_id > V::USER_CHANGE_LOG {
-            println!(
-                "You dun goofed, and sent a bad id of {} to table_id.  Gotta CRASH!",
-                table_id
-            );
             panic!("FUNDAMENTAL ERROR IN YOUR SERVER PROGRAMMING! FIX ME!");
         }
 
@@ -62,11 +58,8 @@ impl V {
         let mut result = connection.prepare(query).unwrap();
 
         while let Ok(sqlite::State::Row) = result.next() {
-            println!("{} {} Exists ", table_id, id);
             return true;
         }
-
-        println!("{} {} does not exist.", table_id, id);
 
         return false;
     }
@@ -116,8 +109,6 @@ impl V {
     pub fn check_name(name: &String) -> bool {
         // if there's no text in a name, or it's bigger than 64 characters, then reject
         if name.is_empty() || name.len() > V::MAX_NAME_LENGTH {
-            println!("{} failed 1", name);
-
             return false;
         }
 
@@ -126,12 +117,9 @@ impl V {
             .bytes()
             .all(|b| matches!(b, b'a'..=b'z'))
         {
-            println!("{} failed 2", name);
-
             return false;
         }
 
-        println!("{} passed", name);
         return true;
     }
 
@@ -156,7 +144,6 @@ impl V {
 
     pub fn check_birthday(bd: &String) -> bool {
         if bd.len() != V::MMDDYY_LENGTH && bd.len() != V::MMDDYYYY_LENGTH {
-            println!("{} failed 1", bd);
             return false;
         }
 
@@ -240,7 +227,6 @@ impl V {
             }
         }
 
-        println!("{} passed", bd);
         return true;
     }
 }
