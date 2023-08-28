@@ -1,6 +1,5 @@
 // need these to print results and make sure we can test against each other.
-#[derive(PartialEq, Eq)]
-#[derive(Debug)]
+#[derive(PartialEq, Eq, Debug)]
 pub struct User {
     id: i64,
     email: String,
@@ -46,6 +45,8 @@ pub fn build_user(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
+
 pub struct Organization {
     id: i64,
     name: String,
@@ -82,20 +83,18 @@ pub fn build_organization(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Administrator {
     id: i64,
     user_id: i64,
-    supervisor_name: String,
+    level: String,
 }
 
-pub fn build_administrator(id: i64, user_id: i64, supervisor_name: String) -> Administrator {
-    Administrator {
-        id,
-        user_id,
-        supervisor_name,
-    }
+pub fn build_administrator(id: i64, user_id: i64, level: String) -> Administrator {
+    Administrator { id, user_id, level }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct School {
     id: i64,
     organization_id: i64,
@@ -141,6 +140,7 @@ pub fn build_school(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Administrator_School {
     admin_id: i64,
     school_id: i64,
@@ -153,6 +153,7 @@ pub fn build_administrator_school(admin_id: i64, school_id: i64) -> Administrato
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Teacher {
     teacher_id: i64,
     user_id: i64,
@@ -165,6 +166,7 @@ pub fn build_teacher(teacher_id: i64, user_id: i64) -> Teacher {
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Employee_Supervisor {
     id: i64,
     user_id: i64,
@@ -186,6 +188,7 @@ pub fn build_employee_supervisor(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Teacher_School {
     teacher_id: i64,
     school_id: i64,
@@ -198,6 +201,7 @@ pub fn build_teacher_school(teacher_id: i64, school_id: i64) -> Teacher_School {
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Subject {
     id: i64,
     name: String,
@@ -225,6 +229,7 @@ pub fn build_subject(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Class {
     id: i64,
     school_id: i64,
@@ -261,6 +266,7 @@ pub fn build_class(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Teacher_Class {
     teacher_id: i64,
     class_id: i64,
@@ -275,6 +281,7 @@ pub fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> Teac
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Student {
     id: i64,
     user_id: i64,
@@ -284,6 +291,7 @@ pub fn build_student(id: i64, user_id: i64) -> Student {
     Student { id, user_id }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Student_Class {
     student_id: i64,
     class_id: i64,
@@ -296,6 +304,7 @@ pub fn build_student_class(student_id: i64, class_id: i64) -> Student_Class {
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Family {
     family_id: i64,
     name: String,
@@ -305,6 +314,7 @@ pub fn build_family(family_id: i64, name: String) -> Family {
     Family { family_id, name }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Family_User {
     family_id: i64,
     user_id: i64,
@@ -319,6 +329,7 @@ pub fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> 
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Family_Member {
     id: i64,
     user_id: i64,
@@ -343,6 +354,7 @@ pub fn build_family_member(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Assignment {
     id: i64,
     class_id: i64,
@@ -370,6 +382,7 @@ pub fn build_assignment(
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Submission {
     id: i64,
     user_id: i64,
@@ -386,6 +399,7 @@ pub fn build_submission(id: i64, user_id: i64, contents: String, grade: String) 
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Comment {
     id: i64,
     user_id: i64,
@@ -402,6 +416,7 @@ pub fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String
     }
 }
 
+#[derive(PartialEq, Eq, Debug)]
 pub struct Change_Log_Item {
     id: i64,
     source_name: String,
