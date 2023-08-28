@@ -5,15 +5,25 @@ use crate::db_init;
 use crate::db_insert::I;
 use crate::db_delete::D;
 use crate::db_retrieve::R;
+use crate::db_types as types;
+use crate::db_row_to_object as rto;
 use std::path::PathBuf;
 use std::fs;
+use std::env;
 
 
 #[cfg(test)]
 
 #[test]
 fn test_database_creation_insertion_retrieval(){
+    env::set_var("RUST_BACKTRACE", "1");
     let location = ".//src//db//test_creation.sql";
+
+    match fs::remove_file(location) {
+        Ok(_) => (),
+        Err(_) => println!("Could not delete test database {}", location),
+    };
+
     let connection = db_init::init_database(PathBuf::from(location));
 
     assert!(!V::check_id(&connection, 1, V::ADMINISTRATORS));
@@ -32,7 +42,9 @@ fn test_database_creation_insertion_retrieval(){
     assert!(!V::check_id(&connection, 1, V::USERS));
     assert!(!V::check_id(&connection, 1, V::USER_CHANGE_LOG));
 
-    I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+    I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"(305)8675309".to_string(), &"".to_string());
+
+    let test_user = types::build_user(1, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);
 
     I::insert_organization(
         &connection,
@@ -41,8 +53,8 @@ fn test_database_creation_insertion_retrieval(){
         &"APT 11111".to_string(),
         &"John land".to_string(),
         &"State of John".to_string(),
-        &"22222".to_string(),
-        &"8675309".to_string(),
+        &"z22222".to_string(),
+        &"(305)8675309".to_string(),
         &"Brazil".to_string(),
     );
     I::insert_administrator(&connection, &"1".to_string(), &"John's boss.".to_string());
@@ -56,8 +68,8 @@ fn test_database_creation_insertion_retrieval(){
         &"UNIT 1".to_string(),
         &"Albaquerque".to_string(),
         &"NZ".to_string(),
-        &"28318".to_string(),
-        &"8675309".to_string(),
+        &"z28318".to_string(),
+        &"(305)8675309".to_string(),
         &"NEW ZEALAND".to_string(),
     );
     I::insert_teacher(&connection, &"1".to_string());
@@ -160,22 +172,22 @@ fn test_database_creation_insertion_retrieval(){
     assert!(V::check_id(&connection, 1, V::USERS));
     assert!(V::check_id(&connection, 1, V::USER_CHANGE_LOG));
 
-
-    let mut iter: CursorWithOwnership<'_>;
-    let mut output: String = "".to_string();
-    let mut result = R::retrieve_details(&connection,R::ADMINISTRATORS, "1".to_string());
+    // test user retrieval
+    let mut result = R::retrieve_details(&connection,R::USERS, "1".to_string());
+    let mut user : types::User = types::build_user(1, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);
 
     match result {
-        Ok(x) => (),//{iter = x.into_iter(); while iter.next().is_some() { output += }},
-        Err(_) => panic!("Retrieval paniced."),
+        Ok(x) => {for row in x.into_iter().map(|row| row.unwrap()) {
+            user = rto::row_to_user(&row);
+        }},
+        Err(_) => panic!("Retrieval panicked."),
     }
 
-//    assert!();
+    assert!(user == test_user);
 
-    match fs::remove_file(location) {
-        Ok(_) => (),
-        Err(_) => println!("Could not delete test database {}", location),
-    };
+    // test
+
+//    assert!();
 }
 
 #[test]

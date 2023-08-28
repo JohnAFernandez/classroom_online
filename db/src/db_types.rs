@@ -1,3 +1,6 @@
+// need these to print results and make sure we can test against each other.
+#[derive(PartialEq, Eq)]
+#[derive(Debug)]
 pub struct User {
     id: i64,
     email: String,
