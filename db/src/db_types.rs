@@ -1,4 +1,4 @@
-struct User {
+pub struct User {
     id: i64,
     email: String,
     username: String,
@@ -13,7 +13,7 @@ struct User {
     deleted: bool,
 }
 
-fn build_user(
+pub fn build_user(
     id: i64,
     email: String,
     username: String,
@@ -43,7 +43,7 @@ fn build_user(
     }
 }
 
-struct Organization {
+pub struct Organization {
     id: i64,
     name: String,
     address1: String,
@@ -55,7 +55,7 @@ struct Organization {
     country: String,
 }
 
-fn build_organization(
+pub fn build_organization(
     id: i64,
     name: String,
     address1: String,
@@ -75,17 +75,17 @@ fn build_organization(
         state,
         zip,
         phone,
-        county,
+        country,
     }
 }
 
-struct Administrator {
+pub struct Administrator {
     id: i64,
     user_id: i64,
     supervisor_name: String,
 }
 
-fn build_administrator(id: i64, user_id: i64, supervisor_name: String) -> Administrator {
+pub fn build_administrator(id: i64, user_id: i64, supervisor_name: String) -> Administrator {
     Administrator {
         id,
         user_id,
@@ -93,7 +93,7 @@ fn build_administrator(id: i64, user_id: i64, supervisor_name: String) -> Admini
     }
 }
 
-struct School {
+pub struct School {
     id: i64,
     organization_id: i64,
     super_administrator_id: i64,
@@ -108,7 +108,7 @@ struct School {
     country: String,
 }
 
-fn build_school(
+pub fn build_school(
     id: i64,
     organization_id: i64,
     super_administrator_id: i64,
@@ -138,38 +138,38 @@ fn build_school(
     }
 }
 
-struct Administrator_School {
+pub struct Administrator_School {
     admin_id: i64,
     school_id: i64,
 }
 
-fn build_administrator_school(admin_id: i64, school_id: i64) -> Administrator_School {
+pub fn build_administrator_school(admin_id: i64, school_id: i64) -> Administrator_School {
     Administrator_School {
         admin_id,
         school_id,
     }
 }
 
-struct teacher {
+pub struct Teacher {
     teacher_id: i64,
     user_id: i64,
 }
 
-fn build_teacher(teacher_id: i64, user_id: i64) {
+pub fn build_teacher(teacher_id: i64, user_id: i64) -> Teacher {
     Teacher {
         teacher_id,
         user_id,
     }
 }
 
-struct Employee_Supervisor {
+pub struct Employee_Supervisor {
     id: i64,
     user_id: i64,
     administrator_id: i64,
     supervisor_name: String,
 }
 
-fn build_employee_supervisor(
+pub fn build_employee_supervisor(
     id: i64,
     user_id: i64,
     administrator_id: i64,
@@ -188,14 +188,14 @@ struct Teacher_School {
     school_id: i64,
 }
 
-fn build_teacher_school(teacher_id: i64, school_id: i64) -> Teacher_School {
+pub fn build_teacher_school(teacher_id: i64, school_id: i64) -> Teacher_School {
     Teacher_School {
         teacher_id,
         school_id,
     }
 }
 
-struct subject {
+struct Subject {
     id: i64,
     name: String,
     ap: bool,
@@ -204,7 +204,7 @@ struct subject {
     discipline: String,
 }
 
-fn build_subject(
+pub fn build_subject(
     id: i64,
     name: String,
     ap: bool,
@@ -222,7 +222,7 @@ fn build_subject(
     }
 }
 
-struct Class {
+pub struct Class {
     id: i64,
     school_id: i64,
     subject_id: i64,
@@ -234,7 +234,7 @@ struct Class {
     days_scheduled: String,
 }
 
-fn build_class(
+pub fn build_class(
     id: i64,
     school_id: i64,
     subject_id: i64,
@@ -246,6 +246,7 @@ fn build_class(
     days_scheduled: String,
 ) -> Class {
     Class {
+        id,
         school_id,
         subject_id,
         year,
@@ -257,13 +258,13 @@ fn build_class(
     }
 }
 
-struct Teacher_Class {
+pub struct Teacher_Class {
     teacher_id: i64,
     class_id: i64,
     role: String,
 }
 
-fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> Teacher_Class {
+pub fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> Teacher_Class {
     Teacher_Class {
         teacher_id,
         class_id,
@@ -271,43 +272,43 @@ fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> Teacher_
     }
 }
 
-struct Student {
+pub struct Student {
     id: i64,
     user_id: i64,
 }
 
-fn build_student(id: i64, user_id: i64) -> Student {
+pub fn build_student(id: i64, user_id: i64) -> Student {
     Student { id, user_id }
 }
 
-struct Student_Class {
+pub struct Student_Class {
     student_id: i64,
     class_id: i64,
 }
 
-fn build_student_class(student_id: i64, class_id: i64) -> Student_Class {
+pub fn build_student_class(student_id: i64, class_id: i64) -> Student_Class {
     Student_Class {
         student_id,
         class_id,
     }
 }
 
-struct Family {
+pub struct Family {
     family_id: i64,
     name: String,
 }
 
-fn build_family(family_id: i64, name: String) -> Family {
+pub fn build_family(family_id: i64, name: String) -> Family {
     Family { family_id, name }
 }
 
-struct Family_User {
+pub struct Family_User {
     family_id: i64,
     user_id: i64,
     relationship: String,
 }
 
-fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> Family_User {
+pub fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> Family_User {
     Family_User {
         family_id,
         user_id,
@@ -315,7 +316,7 @@ fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> Fami
     }
 }
 
-struct Family_Member {
+pub struct Family_Member {
     id: i64,
     user_id: i64,
     notification_methods: String,
@@ -323,7 +324,7 @@ struct Family_Member {
     phone: String,
 }
 
-fn build_family_member(
+pub fn build_family_member(
     id: i64,
     user_id: i64,
     notification_methods: String,
@@ -331,6 +332,7 @@ fn build_family_member(
     phone: String,
 ) -> Family_Member {
     Family_Member {
+        id,
         user_id,
         notification_methods,
         email,
@@ -338,7 +340,7 @@ fn build_family_member(
     }
 }
 
-struct Assignment {
+pub struct Assignment {
     id: i64,
     class_id: i64,
     required: bool,
@@ -347,7 +349,7 @@ struct Assignment {
     template: String,
 }
 
-fn build_assignment(
+pub fn build_assignment(
     id: i64,
     class_id: i64,
     required: bool,
@@ -365,14 +367,14 @@ fn build_assignment(
     }
 }
 
-struct Submission {
+pub struct Submission {
     id: i64,
     user_id: i64,
     contents: String,
     grade: String,
 }
 
-fn build_submission(id: i64, user_id: i64, contents: String, grade: String) -> Submission {
+pub fn build_submission(id: i64, user_id: i64, contents: String, grade: String) -> Submission {
     Submission {
         id,
         user_id,
@@ -381,14 +383,14 @@ fn build_submission(id: i64, user_id: i64, contents: String, grade: String) -> S
     }
 }
 
-struct Comment {
+pub struct Comment {
     id: i64,
     user_id: i64,
     assignment_id: i64,
     contents: String,
 }
 
-fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String) {
+pub fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String) -> Comment {
     Comment {
         id,
         user_id,
@@ -397,14 +399,14 @@ fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String) {
     }
 }
 
-struct Change_Log_Item {
+pub struct Change_Log_Item {
     id: i64,
     source_name: String,
     change_type: i32,
     old_value: String,
 }
 
-fn build_change_log_item(
+pub fn build_change_log_item(
     id: i64,
     source_name: String,
     change_type: i32,
