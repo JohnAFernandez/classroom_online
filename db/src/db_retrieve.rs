@@ -42,7 +42,7 @@ impl R {
         ("user_change_log", "change_id"),
     ];
 
-    const USER_FIELDS : [&str; 9] = ["user_id", "email", "username", "first_name", "last_name", "birthday", "date_registered", "phone", "icon"];
+    const USER_FIELDS : [&str; 11] = ["user_id", "email", "username", "first_name", "last_name", "birthday", "date_registered", "phone", "icon", "hidden", "deleted"];
     const ORGANIZATION_FIELDS : [&str; 9] = ["organization_id","name","address1","address2","city","state","zip","phone","country"];
     const ADMINISTRATOR_FIELDS : [&str; 3] = ["administrator_id", "user_id", "level"];
     const SCHOOL_FIELDS : [&str; 12] = ["school_id", "organization_id", "super_administrator_id", "icon", "name", "address1", "address2", "city", "state", "zip", "phone", "country"];
@@ -134,6 +134,8 @@ impl R {
             R::ADMINISTRATORS_SCHOOLS => panic!("Not yet implemented"),
             _=> panic!("Bad table type of {} sent to retrieve_details", table_id),
         }
+
+        println!("{}",query);
 
         return connection.prepare(query);       
 
