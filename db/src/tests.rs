@@ -57,7 +57,13 @@ fn test_database_creation_insertion_retrieval(){
         &"(305)8675309".to_string(),
         &"Brazil".to_string(),
     );
+
+    let old_org:types::Organization = types::build_organization(1, "John Fernandez Schools".to_string(), "123 Gandalf Way".to_string(), "APT 11111".to_string(), "John land".to_string(), "State of John".to_string(), "z22222".to_string(), "(305)8675309".to_string(), "Brazil".to_string());
+
     I::insert_administrator(&connection, &"1".to_string(), &"John's boss.".to_string());
+
+    let old_admin: types::Administrator = types::build_administrator(1, 1, "John's boss.".to_string());
+
     I::insert_school(
         &connection,
         &"1".to_string(),
@@ -173,8 +179,8 @@ fn test_database_creation_insertion_retrieval(){
     assert!(V::check_id(&connection, 1, V::USER_CHANGE_LOG));
 
     // test user retrieval
+    let mut user : types::User = types::build_user(0, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);
     let mut result = R::retrieve_details(&connection,R::USERS, "1".to_string());
-    let mut user : types::User = types::build_user(1, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);
 
     match result {
         Ok(x) => {for row in x.into_iter().map(|row| row.unwrap()) {
@@ -185,9 +191,30 @@ fn test_database_creation_insertion_retrieval(){
 
     assert!(user == test_user);
 
-    // test
+    let mut admin : types::Administrator = types::build_administrator(0, 0, "none".to_string());
+    result = R::retrieve_details(&connection,R::ADMINISTRATORS, "1".to_string());
 
-//    assert!();
+    match result {
+        Ok(x) => {for row in x.into_iter().map(|row| row.unwrap()) {
+            admin = rto::row_to_administrator(&row);
+        }},
+        Err(_) => panic!("Retrieval panicked."),
+    }
+
+    assert!(admin == old_admin);
+    
+    let mut org : types::Organization = types::build_organization(0, "none".to_string(), "none".to_string(), "none".to_string(), "none".to_string(), "none".to_string(), "none".to_string(), "none".to_string(), "none".to_string());
+    result = R::retrieve_details(&connection,R::ORGANIZATIONS, "1".to_string());
+
+    match result {
+        Ok(x) => {for row in x.into_iter().map(|row| row.unwrap()) {
+            org = rto::row_to_organization(&row);
+        }},
+        Err(_) => panic!("Retrieval panicked."),
+    }
+
+    println!("{:?}\n{:?}", org, old_org);
+    assert!(org == old_org);
 }
 
 #[test]
