@@ -183,7 +183,7 @@ pub fn build_employee_supervisor(
     }
 }
 
-struct Teacher_School {
+pub struct Teacher_School {
     teacher_id: i64,
     school_id: i64,
 }
@@ -195,7 +195,7 @@ pub fn build_teacher_school(teacher_id: i64, school_id: i64) -> Teacher_School {
     }
 }
 
-struct Subject {
+pub struct Subject {
     id: i64,
     name: String,
     ap: bool,
