@@ -3,6 +3,8 @@ mod db_insert;
 mod db_verify;
 mod db_delete;
 mod db_retrieve;
+mod db_types;
+mod db_row_to_object;
 mod tests;
 use std::path::PathBuf;
 
