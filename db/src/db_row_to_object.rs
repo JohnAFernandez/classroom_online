@@ -50,7 +50,7 @@ pub fn row_to_subject(row : &sqlite::Row) -> types::Subject {
 
 pub fn row_to_class(row : &sqlite::Row) -> types::Class {
 
-    types::build_class(row.read::<i64, _>("class_id"), row.read::<i64, _>("school_id"), row.read::<i64, _>("subject_id"), row.read::<&str, _>("year").to_string(), row.read::<&str, _>("start_day").to_string(), row.read::<&str, _>("end_day").to_string(), row.read::<i32, _>("start_time"), row.read::<i32, _>("end_time"), row.read::<&str, _>("days_scheduled").to_string())
+    types::build_class(row.read::<i64, _>("class_id"), row.read::<i64, _>("school_id"), row.read::<i64, _>("subject_id"), row.read::<&str, _>("year").to_string(), row.read::<&str, _>("start_day").to_string(), row.read::<&str, _>("end_day").to_string(), row.read::<i64, _>("start_time") as i32, row.read::<i64, _>("end_time") as i32, row.read::<&str, _>("days_scheduled").to_string())
 }
 
 pub fn row_to_student_class(row : &sqlite::Row) -> types::Student_Class {
@@ -63,6 +63,33 @@ pub fn row_to_family(row : &sqlite::Row) -> types::Family {
     types::build_family(row.read::<i64, _>("family_id"), row.read::<&str, _>("name").to_string())
 }
 
-pub fn row_to_family_user {
+pub fn row_to_family_user(row : &sqlite::Row) -> types::Family_User {
 
+    types::build_family_user(row.read::<i64, _>("family_id"), row.read::<i64, _>("user_id"),row.read::<&str, _>("relationship").to_string())
 }
+
+pub fn row_to_family_member(row : &sqlite::Row) -> types::Family_Member {
+
+    types::build_family_member(row.read::<i64, _>("member_id"), row.read::<i64, _>("user_id"),row.read::<&str, _>("notification_methods").to_string(), row.read::<&str, _>("email").to_string(), row.read::<&str, _>("phone").to_string())
+}
+
+pub fn row_to_assignment(row : &sqlite::Row) -> types::Assignment {
+    
+    types::build_assignment(row.read::<i64, _>("assignment_id"), row.read::<i64, _>("class_id"), if row.read::<i64, _>("required") == 1 { true } else { false }, row.read::<&str, _>("grade_scale").to_string(), row.read::<&str, _>("description").to_string(), row.read::<&str, _>("template").to_string())
+}
+
+pub fn row_to_submission(row : &sqlite::Row) -> types::Submission {
+
+    types::build_submission(row.read::<i64, _>("submission_id"), row.read::<i64, _>("user_id"), row.read::<&str, _>("contents").to_string(), row.read::<&str, _>("grade").to_string())
+}
+
+pub fn row_to_comment(row : &sqlite::Row) -> types::Comment {
+
+    types::build_comment(row.read::<i64, _>("comment_id"), row.read::<i64, _>("user_id"), row.read::<i64, _>("assignment_id"), row.read::<&str, _>("contents").to_string())
+}
+
+pub fn row_to_log_item(row : &sqlite::Row) -> types::Change_Log_Item {
+
+    types::build_change_log_item(row.read::<i64, _>("change_id"), row.read::<&str, _>("source_name").to_string(), row.read::<i64, _>("type") as i32, row.read::<&str, _>("old_value").to_string())
+}
+
