@@ -320,6 +320,12 @@ fn test_sever_level_name_verification() {
 fn test_deletion() {
 
     let location = ".//src//db//test_data_updates.sql";
+
+    match fs::remove_file(location) {
+        Ok(_) => (),
+        Err(_) => println!("Could not delete test database {}", location),
+    };
+
     let connection = db_init::init_database(PathBuf::from(location));
     // do some basic testing
     I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
@@ -505,11 +511,6 @@ fn test_deletion() {
 
     result = D::delete_teacher(&connection, 4);
     assert!(!result.0, "{}", result.1);
-
-    match fs::remove_file(location) {
-        Ok(_) => (),
-        Err(_) => println!("Could not delete test database {}", location),
-    };
 
 }
 
