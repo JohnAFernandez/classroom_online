@@ -7,6 +7,7 @@ use crate::db_delete::D;
 use crate::db_retrieve::R;
 use crate::db_types as types;
 use crate::db_row_to_object as rto;
+use crate::db_object_to_row as otr;
 use std::path::PathBuf;
 use std::fs;
 use std::env;
@@ -177,6 +178,13 @@ fn test_database_creation_insertion_retrieval(){
     assert!(V::check_id(&connection, 1, V::TEACHERS));
     assert!(V::check_id(&connection, 1, V::USERS));
     assert!(V::check_id(&connection, 1, V::USER_CHANGE_LOG));
+
+
+    assert!(otr::administrator_school_to_row(&connection, types::build_administrator_school(1, 1)).0);
+    assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(1, 5)).0);
+    assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(5, 1)).0);
+    assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(10, 10)).0);
+
 
     // test user retrieval
     let mut user : types::User = types::build_user(0, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);

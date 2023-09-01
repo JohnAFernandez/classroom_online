@@ -283,7 +283,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_AdministratorSchool(
+    pub fn insert_administrator_school(
         connection: &sqlite::Connection,
         administrator_id: &String,
         school_id: &String,

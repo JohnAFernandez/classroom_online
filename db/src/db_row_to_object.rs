@@ -67,7 +67,7 @@ pub fn row_to_school(row: &sqlite::Row) -> types::School {
 }
 
 pub fn row_to_AdministratorSchool(row: &sqlite::Row) -> types::AdministratorSchool {
-    types::build_AdministratorSchool(
+    types::build_administrator_school(
         row.read::<i64, _>("admin_id"),
         row.read::<i64, _>("school_id"),
     )

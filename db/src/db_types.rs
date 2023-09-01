@@ -52,45 +52,41 @@ impl User {
     }
 
     pub fn email(&self) -> String {
-        return self.email;
+        return self.email.clone();
     }
 
     pub fn username(&self) -> String {
-        return self.username;
+        return self.username.clone();
     }
 
     // this should not be used to send information to a client. This should only be used
     // for inbound information being applied to the database
     pub fn password(&self) -> String {
-        return self.password;
+        return self.password.clone();
     }
 
     pub fn first_name(&self) -> String {
-        return self.first_name;
+        return self.first_name.clone();
     }
 
     pub fn last_name(&self) -> String {
-        return self.last_name;
+        return self.last_name.clone();
     }
 
     pub fn birthday(&self) -> String {
-        return self.birthday;
-    }
-
-    pub fn username(&self) -> String {
-        return self.username;
+        return self.birthday.clone();
     }
 
     pub fn date_registered(&self) -> String {
-        return self.date_registered;
+        return self.date_registered.clone();
     }
 
     pub fn phone(&self) -> String {
-        return self.phone;
+        return self.phone.clone();
     }
 
     pub fn icon(&self) -> String {
-        return self.String;
+        return self.icon.clone();
     }
 
     pub fn hidden(&self) -> bool {
@@ -140,40 +136,40 @@ pub fn build_organization(
 }
 
 impl Organization {
-    pub fn organization_id(&self) -> i64 {
-        return self.organization_id;
+    pub fn id(&self) -> i64 {
+        return self.id;
     }
 
     pub fn name(&self) -> String {
-        return self.name;
+        return self.name.clone();
     }
 
     pub fn address1(&self) -> String {
-        return self.address1;
+        return self.address1.clone();
     }
 
     pub fn address2(&self) -> String {
-        return self.address2;
+        return self.address2.clone();
     }
 
     pub fn city(&self) -> String {
-        return self.city;
+        return self.city.clone();
     }
 
     pub fn state(&self) -> String {
-        return self.state;
+        return self.state.clone();
     }
 
     pub fn zip(&self) -> String {
-        return self.zip;
+        return self.zip.clone();
     }
 
     pub fn phone(&self) -> String {
-        return self.phone;
+        return self.phone.clone();
     }
 
     pub fn country(&self) -> String {
-        return self.country;
+        return self.country.clone();
     }
 }
 
@@ -198,7 +194,7 @@ impl Administrator {
     }
 
     pub fn level(&self) -> String {
-        return self.level;
+        return self.level.clone();
     }
 }
 
@@ -257,44 +253,44 @@ impl School {
         return self.organization_id;
     }
 
-    pub fn super_administrator_id(&self) -> String {
+    pub fn super_administrator_id(&self) -> i64 {
         return self.super_administrator_id;
     }
 
     pub fn icon(&self) -> String {
-        return self.icon;
+        return self.icon.clone();
     }
 
     pub fn name(&self) -> String {
-        return self.name;
+        return self.name.clone();
     }
 
     pub fn address1(&self) -> String {
-        return self.address1;
+        return self.address1.clone();
     }
 
     pub fn address2(&self) -> String {
-        return self.address2;
+        return self.address2.clone();
     }
 
     pub fn city(&self) -> String {
-        return self.city;
+        return self.city.clone();
     }
 
     pub fn state(&self) -> String {
-        return self.state;
+        return self.state.clone();
     }
 
     pub fn zip(&self) -> String {
-        return self.zip;
+        return self.zip.clone();
     }
 
     pub fn phone(&self) -> String {
-        return self.phone;
+        return self.phone.clone();
     }
 
     pub fn country(&self) -> String {
-        return self.country;
+        return self.country.clone();
     }
 }
 
@@ -316,7 +312,7 @@ impl AdministratorSchool {
         return self.admin_id;
     }
 
-    pub fn school_id(&self) -> String {
+    pub fn school_id(&self) -> i64 {
         return self.school_id;
     }
 }
@@ -380,7 +376,7 @@ impl EmployeeSupervisor {
     }
 
     pub fn supervisor_name(&self) -> String {
-        return self.supervisor_name;
+        return self.supervisor_name.clone();
     }
 }
 
@@ -442,7 +438,7 @@ impl Subject {
     }
 
     pub fn name(&self) -> String {
-        return self.name;
+        return self.name.clone();
     }
 
     pub fn ap(&self) -> bool {
@@ -454,11 +450,11 @@ impl Subject {
     }
 
     pub fn target_year(&self) -> String {
-        return self.target_year;
+        return self.target_year.clone();
     }
 
     pub fn discipline(&self) -> String {
-        return self.discipline;
+        return self.discipline.clone();
     }
 
 }
@@ -514,15 +510,15 @@ impl Class {
     }
 
     pub fn year(&self) -> String {
-        return self.year;
+        return self.year.clone();
     }
 
     pub fn start_day(&self) -> String {
-        return self.start_day;
+        return self.start_day.clone();
     }
 
     pub fn end_day(&self) -> String {
-        return self.end_day;
+        return self.end_day.clone();
     }
 
     pub fn start_time(&self) -> i32 {
@@ -534,7 +530,7 @@ impl Class {
     }
 
     pub fn days_scheduled(&self) -> String {
-        return self.days_scheduled;
+        return self.days_scheduled.clone();
     }
 
 }
@@ -564,7 +560,7 @@ impl TeacherClass {
     }
 
     pub fn role(&self) -> String {
-        return self.role;
+        return self.role.clone();
     }
 }
 
@@ -628,7 +624,7 @@ impl Family {
     }
 
     pub fn name(&self) -> String {
-        return self.name;
+        return self.name.clone();
     }
 
 }
@@ -658,7 +654,7 @@ impl FamilyUser {
     }
 
     pub fn relationship(&self) -> String {
-        return self.relationship;
+        return self.relationship.clone();
     }
 
 }
@@ -698,15 +694,15 @@ impl FamilyMember {
     }
 
     pub fn notification_methods(&self) -> String {
-        return self.notification_methods;
+        return self.notification_methods.clone();
     }
 
     pub fn email(&self) -> String {
-        return self.email;
+        return self.email.clone();
     }
 
     pub fn phone(&self) -> String {
-        return self.phone;
+        return self.phone.clone();
     }
 
 }
@@ -753,15 +749,15 @@ impl Assignment {
     }
 
     pub fn grade_scale(&self) -> String {
-        return self.grade_scale;
+        return self.grade_scale.clone();
     }
 
     pub fn description(&self) -> String {
-        return self.description;
+        return self.description.clone();
     }
 
     pub fn template(&self) -> String {
-        return self.template;
+        return self.template.clone();
     }
 
 }
@@ -793,11 +789,11 @@ impl Submission {
     }
 
     pub fn contents(&self) -> String {
-        return self.contents;
+        return self.contents.clone();
     }
 
     pub fn grade(&self) -> String {
-        return self.grade;
+        return self.grade.clone();
     }
 
 }
@@ -833,7 +829,7 @@ impl Comment {
     }
 
     pub fn contents(&self) -> String {
-        return self.contents;
+        return self.contents.clone();
     }
 
 }
@@ -866,7 +862,7 @@ impl ChangeLogItem {
     }
 
     pub fn source_name(&self) -> String {
-        return self.source_name;
+        return self.source_name.clone();
     }
 
     pub fn change_type(&self) -> i32 {
@@ -874,7 +870,7 @@ impl ChangeLogItem {
     }
 
     pub fn old_value(&self) -> String {
-        return self.old_value;
+        return self.old_value.clone();
     }
 
 }
