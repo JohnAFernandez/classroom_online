@@ -87,7 +87,7 @@ impl V {
             + V::STRINGS[table_id].1
             + " = "
             + &id_1.to_string()
-            + ", "
+            + " AND "
             + V::STRINGS[table_id].2
             + " = "
             + &id_2.to_string()
