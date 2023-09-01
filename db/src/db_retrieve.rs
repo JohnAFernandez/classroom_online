@@ -42,103 +42,325 @@ impl R {
         ("user_change_log", "change_id"),
     ];
 
-    const USER_FIELDS : [&str; 11] = ["user_id", "email", "username", "first_name", "last_name", "birthday", "date_registered", "phone", "icon", "hidden", "deleted"];
-    const ORGANIZATION_FIELDS : [&str; 9] = ["organization_id","name","address1","address2","city","state","zip","phone","country"];
-    const ADMINISTRATOR_FIELDS : [&str; 3] = ["administrator_id", "user_id", "level"];
-    const SCHOOL_FIELDS : [&str; 12] = ["school_id", "organization_id", "super_administrator_id", "icon", "name", "address1", "address2", "city", "state", "zip", "phone", "country"];
+    const USER_FIELDS: [&str; 11] = [
+        "user_id",
+        "email",
+        "username",
+        "first_name",
+        "last_name",
+        "birthday",
+        "date_registered",
+        "phone",
+        "icon",
+        "hidden",
+        "deleted",
+    ];
+    const ORGANIZATION_FIELDS: [&str; 9] = [
+        "organization_id",
+        "name",
+        "address1",
+        "address2",
+        "city",
+        "state",
+        "zip",
+        "phone",
+        "country",
+    ];
+    const ADMINISTRATOR_FIELDS: [&str; 3] = ["administrator_id", "user_id", "level"];
+    const SCHOOL_FIELDS: [&str; 12] = [
+        "school_id",
+        "organization_id",
+        "super_administrator_id",
+        "icon",
+        "name",
+        "address1",
+        "address2",
+        "city",
+        "state",
+        "zip",
+        "phone",
+        "country",
+    ];
     const TEACHER_FIELDS: [&str; 3] = ["teacher_id", "user_id", "icon"];
-    const EMPLOYEES_SUPERVISOR_FIELDS: [&str; 5] = ["supervisory_id", "user_id", "administrator_id", "supervisor_name", "organization_id"];
-    const SUBJECT_FIELDS: [&str; 6] = ["subject_id", "name", "ap", "ib", "target_year", "discipline"];
-    const CLASS_FIELDS: [&str; 9] = ["class_id", "school_id", "subject_id", "grade", "start_day", "end_day", "start_time", "end_time", "days_scheduled"];
+    const EMPLOYEES_SUPERVISOR_FIELDS: [&str; 5] = [
+        "supervisory_id",
+        "user_id",
+        "administrator_id",
+        "supervisor_name",
+        "organization_id",
+    ];
+    const SUBJECT_FIELDS: [&str; 6] = [
+        "subject_id",
+        "name",
+        "ap",
+        "ib",
+        "target_year",
+        "discipline",
+    ];
+    const CLASS_FIELDS: [&str; 9] = [
+        "class_id",
+        "school_id",
+        "subject_id",
+        "grade",
+        "start_day",
+        "end_day",
+        "start_time",
+        "end_time",
+        "days_scheduled",
+    ];
     const STUDENT_FIELDS: [&str; 2] = ["student_id", "user_id"];
     const FAMILY_FIELDS: [&str; 2] = ["family_id", "name"];
-    const FAMILY_MEMBER_FIELDS: [&str; 5] = ["member_id", "user_id", "notification_methods", "email", "phone"];
-    const ASSIGNMENT_FIELDS: [&str; 6] = ["assignment_id", "class_id", "required", "grade_scale", "description", "template"];
-    const SUBMISSION_FIELDS: [&str; 5] = ["submission_id", "user_id", "assignment_id", "contents", "grade"];
+    const FAMILY_MEMBER_FIELDS: [&str; 5] = [
+        "member_id",
+        "user_id",
+        "notification_methods",
+        "email",
+        "phone",
+    ];
+    const ASSIGNMENT_FIELDS: [&str; 6] = [
+        "assignment_id",
+        "class_id",
+        "required",
+        "grade_scale",
+        "description",
+        "template",
+    ];
+    const SUBMISSION_FIELDS: [&str; 5] = [
+        "submission_id",
+        "user_id",
+        "assignment_id",
+        "contents",
+        "grade",
+    ];
     const COMMENT_FIELDS: [&str; 4] = ["comment_id", "user_id", "assignment_id", "contents"];
-    const USER_CHANGE_LOG_FIELDS: [&str; 6] = ["change_id", "source_name", "user_id", "type_of_change", "old_value", "timestamp"];
+    const USER_CHANGE_LOG_FIELDS: [&str; 6] = [
+        "change_id",
+        "source_name",
+        "user_id",
+        "type_of_change",
+        "old_value",
+        "timestamp",
+    ];
     const FAMILIES_USERS_FIELDS: [&str; 3] = ["family_id", "user_id", "relationship"];
     const STUDENT_CLASS_FIELDS: [&str; 2] = ["student_id", "class_id"];
     const TEACHER_CLASS_FIELDS: [&str; 3] = ["teacher_id", "class_id", "role"];
     const TEACHER_SCHOOL_FIELDS: [&str; 2] = ["teacher_id", "school_id"];
-    const ADMINISTRATOR_SCHOOL_FIELDS: [&str; 2] = ["administrator_id", "school_id"];
-    
-    pub fn retrieve_details(connection: &sqlite::Connection, table_id : usize, item_id : String) -> Result<Statement<'_>, sqlite::Error>{
+    const AdministratorSchool_FIELDS: [&str; 2] = ["administrator_id", "school_id"];
+
+    pub fn retrieve_details(
+        connection: &sqlite::Connection,
+        table_id: usize,
+        item_id: String,
+    ) -> Result<Statement<'_>, sqlite::Error> {
         let mut query: String = "SELECT ".to_string();
 
-        match table_id{
-            R::USERS => { 
-                for i in 0..R::USER_FIELDS.len()-1 
-                    { query = query + R::USER_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::USER_FIELDS[R::USER_FIELDS.len() - 1] + &" FROM ".to_string() + R::STRINGS[R::USERS].0 + " WHERE " + R::STRINGS[R::USERS].1 + " = " + &item_id},
-            R::ORGANIZATIONS => { 
-                for i in 0..R::ORGANIZATION_FIELDS.len()-1 
-                    { query = query + R::ORGANIZATION_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::ORGANIZATION_FIELDS[R::ORGANIZATION_FIELDS.len() - 1] + &" FROM ".to_string() + R::STRINGS[R::ORGANIZATIONS].0 + " WHERE " + R::STRINGS[R::ORGANIZATIONS].1 + " = " + &item_id},
-            R::ADMINISTRATORS => { 
-                for i in 0..R::ADMINISTRATOR_FIELDS.len()-1 
-                    { query = query + R::ADMINISTRATOR_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::ADMINISTRATOR_FIELDS[R::ADMINISTRATOR_FIELDS.len() - 1] + &" FROM ".to_string() + R::STRINGS[R::ADMINISTRATORS].0 + " WHERE " + R::STRINGS[R::ADMINISTRATORS].1 + " = " + &item_id},
-            R::SCHOOLS => { 
-                for i in 0..R::SCHOOL_FIELDS.len()-1 
-                    { query = query + R::SCHOOL_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::SCHOOL_FIELDS[R::SCHOOL_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::SCHOOLS].0 + " WHERE " + R::STRINGS[R::SCHOOLS].1 + " = " + &item_id},
-            R::TEACHERS => { 
-                for i in 0..R::TEACHER_FIELDS.len()-1 
-                    { query = query + R::TEACHER_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::TEACHER_FIELDS[R::TEACHER_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::TEACHERS].0 + " WHERE " + R::STRINGS[R::TEACHERS].1 + " = " + &item_id},
-            R::EMPLOYEES_SUPERVISORS => { 
-                for i in 0..R::EMPLOYEES_SUPERVISOR_FIELDS.len()-1 
-                    { query = query + R::EMPLOYEES_SUPERVISOR_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::EMPLOYEES_SUPERVISOR_FIELDS[R::EMPLOYEES_SUPERVISOR_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::EMPLOYEES_SUPERVISORS].0 + " WHERE " + R::STRINGS[R::EMPLOYEES_SUPERVISORS].1 + " = " + &item_id},
-            R::SUBJECTS => { 
-                for i in 0..R::SUBJECT_FIELDS.len()-1 
-                    { query = query + R::SUBJECT_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::SUBJECT_FIELDS[R::SUBJECT_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::SUBJECTS].0 + " WHERE " + R::STRINGS[R::SUBJECTS].1 + " = " + &item_id},
-            R::CLASSES => { 
-                for i in 0..R::CLASS_FIELDS.len()-1 
-                    { query = query + R::CLASS_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::CLASS_FIELDS[R::CLASS_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::CLASSES].0 + " WHERE " + R::STRINGS[R::CLASSES].1 + " = " + &item_id},
-            R::STUDENTS => { 
-                for i in 0..R::STUDENT_FIELDS.len()-1 
-                    { query = query + R::STUDENT_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::STUDENT_FIELDS[R::STUDENT_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::STUDENTS].0 + " WHERE " + R::STRINGS[R::STUDENTS].1 + " = " + &item_id},
-            R::FAMILIES => { 
-                for i in 0..R::FAMILY_FIELDS.len()-1 
-                    { query = query + R::FAMILY_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::FAMILY_FIELDS[R::FAMILY_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::FAMILIES].0 + " WHERE " + R::STRINGS[R::FAMILIES].1 + " = " + &item_id},
-            R::FAMILY_MEMBERS => { 
-                for i in 0..R::FAMILY_MEMBER_FIELDS.len()-1 
-                    { query = query + R::FAMILY_MEMBER_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::FAMILY_MEMBER_FIELDS[R::FAMILY_MEMBER_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::FAMILY_MEMBERS].0 + " WHERE " + R::STRINGS[R::FAMILY_MEMBERS].1 + " = " + &item_id},
-            R::ASSIGNMENTS => { 
-                for i in 0..R::ASSIGNMENT_FIELDS.len()-1 
-                    { query = query + R::ASSIGNMENT_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::ASSIGNMENT_FIELDS[R::ASSIGNMENT_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::ASSIGNMENTS].0 + " WHERE " + R::STRINGS[R::ASSIGNMENTS].1 + " = " + &item_id},
-            R::SUBMISSIONS => { 
-                for i in 0..R::SUBMISSION_FIELDS.len()-1 
-                    { query = query + R::SUBMISSION_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::SUBMISSION_FIELDS[R::SUBMISSION_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::SUBMISSIONS].0 + " WHERE " + R::STRINGS[R::SUBMISSIONS].1 + " = " + &item_id},
-            R::COMMENTS => { 
-                for i in 0..R::COMMENT_FIELDS.len()-1 
-                    { query = query + R::COMMENT_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::COMMENT_FIELDS[R::COMMENT_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::COMMENTS].0 + " WHERE " + R::STRINGS[R::COMMENTS].1 + " = " + &item_id},
-            R::USER_CHANGE_LOG => { 
-                for i in 0..R::USER_CHANGE_LOG_FIELDS.len()-1 
-                    { query = query + R::USER_CHANGE_LOG_FIELDS[i] + &", ".to_string() }; 
-                query = query + R::USER_CHANGE_LOG_FIELDS[R::USER_CHANGE_LOG_FIELDS.len()] + &" FROM ".to_string() + R::STRINGS[R::USER_CHANGE_LOG].0 + " WHERE " + R::STRINGS[R::USER_CHANGE_LOG].1 + " = " + &item_id},
+        match table_id {
+            R::USERS => {
+                for i in 0..R::USER_FIELDS.len() - 1 {
+                    query = query + R::USER_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::USER_FIELDS[R::USER_FIELDS.len() - 1]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::USERS].0
+                    + " WHERE "
+                    + R::STRINGS[R::USERS].1
+                    + " = "
+                    + &item_id
+            }
+            R::ORGANIZATIONS => {
+                for i in 0..R::ORGANIZATION_FIELDS.len() - 1 {
+                    query = query + R::ORGANIZATION_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::ORGANIZATION_FIELDS[R::ORGANIZATION_FIELDS.len() - 1]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::ORGANIZATIONS].0
+                    + " WHERE "
+                    + R::STRINGS[R::ORGANIZATIONS].1
+                    + " = "
+                    + &item_id
+            }
+            R::ADMINISTRATORS => {
+                for i in 0..R::ADMINISTRATOR_FIELDS.len() - 1 {
+                    query = query + R::ADMINISTRATOR_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::ADMINISTRATOR_FIELDS[R::ADMINISTRATOR_FIELDS.len() - 1]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::ADMINISTRATORS].0
+                    + " WHERE "
+                    + R::STRINGS[R::ADMINISTRATORS].1
+                    + " = "
+                    + &item_id
+            }
+            R::SCHOOLS => {
+                for i in 0..R::SCHOOL_FIELDS.len() - 1 {
+                    query = query + R::SCHOOL_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::SCHOOL_FIELDS[R::SCHOOL_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::SCHOOLS].0
+                    + " WHERE "
+                    + R::STRINGS[R::SCHOOLS].1
+                    + " = "
+                    + &item_id
+            }
+            R::TEACHERS => {
+                for i in 0..R::TEACHER_FIELDS.len() - 1 {
+                    query = query + R::TEACHER_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::TEACHER_FIELDS[R::TEACHER_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::TEACHERS].0
+                    + " WHERE "
+                    + R::STRINGS[R::TEACHERS].1
+                    + " = "
+                    + &item_id
+            }
+            R::EMPLOYEES_SUPERVISORS => {
+                for i in 0..R::EMPLOYEES_SUPERVISOR_FIELDS.len() - 1 {
+                    query = query + R::EMPLOYEES_SUPERVISOR_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::EMPLOYEES_SUPERVISOR_FIELDS[R::EMPLOYEES_SUPERVISOR_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::EMPLOYEES_SUPERVISORS].0
+                    + " WHERE "
+                    + R::STRINGS[R::EMPLOYEES_SUPERVISORS].1
+                    + " = "
+                    + &item_id
+            }
+            R::SUBJECTS => {
+                for i in 0..R::SUBJECT_FIELDS.len() - 1 {
+                    query = query + R::SUBJECT_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::SUBJECT_FIELDS[R::SUBJECT_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::SUBJECTS].0
+                    + " WHERE "
+                    + R::STRINGS[R::SUBJECTS].1
+                    + " = "
+                    + &item_id
+            }
+            R::CLASSES => {
+                for i in 0..R::CLASS_FIELDS.len() - 1 {
+                    query = query + R::CLASS_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::CLASS_FIELDS[R::CLASS_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::CLASSES].0
+                    + " WHERE "
+                    + R::STRINGS[R::CLASSES].1
+                    + " = "
+                    + &item_id
+            }
+            R::STUDENTS => {
+                for i in 0..R::STUDENT_FIELDS.len() - 1 {
+                    query = query + R::STUDENT_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::STUDENT_FIELDS[R::STUDENT_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::STUDENTS].0
+                    + " WHERE "
+                    + R::STRINGS[R::STUDENTS].1
+                    + " = "
+                    + &item_id
+            }
+            R::FAMILIES => {
+                for i in 0..R::FAMILY_FIELDS.len() - 1 {
+                    query = query + R::FAMILY_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::FAMILY_FIELDS[R::FAMILY_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::FAMILIES].0
+                    + " WHERE "
+                    + R::STRINGS[R::FAMILIES].1
+                    + " = "
+                    + &item_id
+            }
+            R::FAMILY_MEMBERS => {
+                for i in 0..R::FAMILY_MEMBER_FIELDS.len() - 1 {
+                    query = query + R::FAMILY_MEMBER_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::FAMILY_MEMBER_FIELDS[R::FAMILY_MEMBER_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::FAMILY_MEMBERS].0
+                    + " WHERE "
+                    + R::STRINGS[R::FAMILY_MEMBERS].1
+                    + " = "
+                    + &item_id
+            }
+            R::ASSIGNMENTS => {
+                for i in 0..R::ASSIGNMENT_FIELDS.len() - 1 {
+                    query = query + R::ASSIGNMENT_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::ASSIGNMENT_FIELDS[R::ASSIGNMENT_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::ASSIGNMENTS].0
+                    + " WHERE "
+                    + R::STRINGS[R::ASSIGNMENTS].1
+                    + " = "
+                    + &item_id
+            }
+            R::SUBMISSIONS => {
+                for i in 0..R::SUBMISSION_FIELDS.len() - 1 {
+                    query = query + R::SUBMISSION_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::SUBMISSION_FIELDS[R::SUBMISSION_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::SUBMISSIONS].0
+                    + " WHERE "
+                    + R::STRINGS[R::SUBMISSIONS].1
+                    + " = "
+                    + &item_id
+            }
+            R::COMMENTS => {
+                for i in 0..R::COMMENT_FIELDS.len() - 1 {
+                    query = query + R::COMMENT_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::COMMENT_FIELDS[R::COMMENT_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::COMMENTS].0
+                    + " WHERE "
+                    + R::STRINGS[R::COMMENTS].1
+                    + " = "
+                    + &item_id
+            }
+            R::USER_CHANGE_LOG => {
+                for i in 0..R::USER_CHANGE_LOG_FIELDS.len() - 1 {
+                    query = query + R::USER_CHANGE_LOG_FIELDS[i] + &", ".to_string()
+                }
+                query = query
+                    + R::USER_CHANGE_LOG_FIELDS[R::USER_CHANGE_LOG_FIELDS.len()]
+                    + &" FROM ".to_string()
+                    + R::STRINGS[R::USER_CHANGE_LOG].0
+                    + " WHERE "
+                    + R::STRINGS[R::USER_CHANGE_LOG].1
+                    + " = "
+                    + &item_id
+            }
             R::FAMILIES_USERS => panic!("Not yet implemented"),
             R::STUDENTS_CLASSES => panic!("Not yet implemented"),
             R::TEACHER_CLASSES => panic!("Not yet implemented"),
             R::TEACHERS_SCHOOLS => panic!("Not yet implemented"),
             R::ADMINISTRATORS_SCHOOLS => panic!("Not yet implemented"),
-            _=> panic!("Bad table type of {} sent to retrieve_details", table_id),
+            _ => panic!("Bad table type of {} sent to retrieve_details", table_id),
         }
 
-        println!("{}",query);
+        println!("{}", query);
 
-        return connection.prepare(query);       
-
+        return connection.prepare(query);
     }
 
     pub fn retrieve_classes_from_school(
@@ -305,6 +527,4 @@ impl R {
 
         return connection.prepare(query);
     }
-
-
 }

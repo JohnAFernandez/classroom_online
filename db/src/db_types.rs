@@ -45,8 +45,64 @@ pub fn build_user(
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+// some getter functions, because I don't want data to get clobbered by accident.
+impl User {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
 
+    pub fn email(&self) -> String {
+        return self.email;
+    }
+
+    pub fn username(&self) -> String {
+        return self.username;
+    }
+
+    // this should not be used to send information to a client. This should only be used
+    // for inbound information being applied to the database
+    pub fn password(&self) -> String {
+        return self.password;
+    }
+
+    pub fn first_name(&self) -> String {
+        return self.first_name;
+    }
+
+    pub fn last_name(&self) -> String {
+        return self.last_name;
+    }
+
+    pub fn birthday(&self) -> String {
+        return self.birthday;
+    }
+
+    pub fn username(&self) -> String {
+        return self.username;
+    }
+
+    pub fn date_registered(&self) -> String {
+        return self.date_registered;
+    }
+
+    pub fn phone(&self) -> String {
+        return self.phone;
+    }
+
+    pub fn icon(&self) -> String {
+        return self.String;
+    }
+
+    pub fn hidden(&self) -> bool {
+        return self.hidden;
+    }
+
+    pub fn deleted(&self) -> bool {
+        return self.deleted;
+    }
+}
+
+#[derive(PartialEq, Eq, Debug)]
 pub struct Organization {
     id: i64,
     name: String,
@@ -83,6 +139,44 @@ pub fn build_organization(
     }
 }
 
+impl Organization {
+    pub fn organization_id(&self) -> i64 {
+        return self.organization_id;
+    }
+
+    pub fn name(&self) -> String {
+        return self.name;
+    }
+
+    pub fn address1(&self) -> String {
+        return self.address1;
+    }
+
+    pub fn address2(&self) -> String {
+        return self.address2;
+    }
+
+    pub fn city(&self) -> String {
+        return self.city;
+    }
+
+    pub fn state(&self) -> String {
+        return self.state;
+    }
+
+    pub fn zip(&self) -> String {
+        return self.zip;
+    }
+
+    pub fn phone(&self) -> String {
+        return self.phone;
+    }
+
+    pub fn country(&self) -> String {
+        return self.country;
+    }
+}
+
 #[derive(PartialEq, Eq, Debug)]
 pub struct Administrator {
     id: i64,
@@ -92,6 +186,20 @@ pub struct Administrator {
 
 pub fn build_administrator(id: i64, user_id: i64, level: String) -> Administrator {
     Administrator { id, user_id, level }
+}
+
+impl Administrator {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+
+    pub fn level(&self) -> String {
+        return self.level;
+    }
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -140,16 +248,76 @@ pub fn build_school(
     }
 }
 
+impl School {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn organization_id(&self) -> i64 {
+        return self.organization_id;
+    }
+
+    pub fn super_administrator_id(&self) -> String {
+        return self.super_administrator_id;
+    }
+
+    pub fn icon(&self) -> String {
+        return self.icon;
+    }
+
+    pub fn name(&self) -> String {
+        return self.name;
+    }
+
+    pub fn address1(&self) -> String {
+        return self.address1;
+    }
+
+    pub fn address2(&self) -> String {
+        return self.address2;
+    }
+
+    pub fn city(&self) -> String {
+        return self.city;
+    }
+
+    pub fn state(&self) -> String {
+        return self.state;
+    }
+
+    pub fn zip(&self) -> String {
+        return self.zip;
+    }
+
+    pub fn phone(&self) -> String {
+        return self.phone;
+    }
+
+    pub fn country(&self) -> String {
+        return self.country;
+    }
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Administrator_School {
+pub struct AdministratorSchool {
     admin_id: i64,
     school_id: i64,
 }
 
-pub fn build_administrator_school(admin_id: i64, school_id: i64) -> Administrator_School {
-    Administrator_School {
+pub fn build_administrator_school(admin_id: i64, school_id: i64) -> AdministratorSchool {
+    AdministratorSchool {
         admin_id,
         school_id,
+    }
+}
+
+impl AdministratorSchool {
+    pub fn admin_id(&self) -> i64 {
+        return self.admin_id;
+    }
+
+    pub fn school_id(&self) -> String {
+        return self.school_id;
     }
 }
 
@@ -166,8 +334,18 @@ pub fn build_teacher(teacher_id: i64, user_id: i64) -> Teacher {
     }
 }
 
+impl Teacher {
+    pub fn teacher_id(&self) -> i64 {
+        return self.teacher_id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Employee_Supervisor {
+pub struct EmployeeSupervisor {
     id: i64,
     user_id: i64,
     administrator_id: i64,
@@ -179,8 +357,8 @@ pub fn build_employee_supervisor(
     user_id: i64,
     administrator_id: i64,
     supervisor_name: String,
-) -> Employee_Supervisor {
-    Employee_Supervisor {
+) -> EmployeeSupervisor {
+    EmployeeSupervisor {
         id,
         user_id,
         administrator_id,
@@ -188,17 +366,46 @@ pub fn build_employee_supervisor(
     }
 }
 
+impl EmployeeSupervisor {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+
+    pub fn administrator_id(&self) -> i64 {
+        return self.administrator_id;
+    }
+
+    pub fn supervisor_name(&self) -> String {
+        return self.supervisor_name;
+    }
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Teacher_School {
+pub struct TeacherSchool {
     teacher_id: i64,
     school_id: i64,
 }
 
-pub fn build_teacher_school(teacher_id: i64, school_id: i64) -> Teacher_School {
-    Teacher_School {
+pub fn build_teacher_school(teacher_id: i64, school_id: i64) -> TeacherSchool {
+    TeacherSchool {
         teacher_id,
         school_id,
     }
+}
+
+impl TeacherSchool {
+    pub fn teacher_id(&self) -> i64 {
+        return self.teacher_id;
+    }
+
+    pub fn school_id(&self) -> i64 {
+        return self.school_id;
+    }
+
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -227,6 +434,33 @@ pub fn build_subject(
         target_year,
         discipline,
     }
+}
+
+impl Subject {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn name(&self) -> String {
+        return self.name;
+    }
+
+    pub fn ap(&self) -> bool {
+        return self.ap;
+    }
+
+    pub fn ib(&self) -> bool {
+        return self.ib;
+    }
+
+    pub fn target_year(&self) -> String {
+        return self.target_year;
+    }
+
+    pub fn discipline(&self) -> String {
+        return self.discipline;
+    }
+
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -266,18 +500,71 @@ pub fn build_class(
     }
 }
 
+impl Class {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn school_id(&self) -> i64 {
+        return self.school_id;
+    }
+
+    pub fn subject_id(&self) -> i64 {
+        return self.subject_id;
+    }
+
+    pub fn year(&self) -> String {
+        return self.year;
+    }
+
+    pub fn start_day(&self) -> String {
+        return self.start_day;
+    }
+
+    pub fn end_day(&self) -> String {
+        return self.end_day;
+    }
+
+    pub fn start_time(&self) -> i32 {
+        return self.start_time;
+    }
+
+    pub fn end_time(&self) -> i32 {
+        return self.end_time;
+    }
+
+    pub fn days_scheduled(&self) -> String {
+        return self.days_scheduled;
+    }
+
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Teacher_Class {
+pub struct TeacherClass {
     teacher_id: i64,
     class_id: i64,
     role: String,
 }
 
-pub fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> Teacher_Class {
-    Teacher_Class {
+pub fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> TeacherClass {
+    TeacherClass {
         teacher_id,
         class_id,
         role,
+    }
+}
+
+impl TeacherClass {
+    pub fn teacher_id(&self) -> i64 {
+        return self.teacher_id;
+    }
+
+        pub fn class_id(&self) -> i64 {
+        return self.class_id;
+    }
+
+    pub fn role(&self) -> String {
+        return self.role;
     }
 }
 
@@ -291,17 +578,38 @@ pub fn build_student(id: i64, user_id: i64) -> Student {
     Student { id, user_id }
 }
 
+impl Student {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Student_Class {
+pub struct StudentClass {
     student_id: i64,
     class_id: i64,
 }
 
-pub fn build_student_class(student_id: i64, class_id: i64) -> Student_Class {
-    Student_Class {
+pub fn build_student_class(student_id: i64, class_id: i64) -> StudentClass {
+    StudentClass {
         student_id,
         class_id,
     }
+}
+
+impl StudentClass {
+    pub fn student_id(&self) -> i64 {
+        return self.student_id;
+    }
+
+    pub fn class_id(&self) -> i64 {
+        return self.class_id;
+    }
+
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -314,23 +622,49 @@ pub fn build_family(family_id: i64, name: String) -> Family {
     Family { family_id, name }
 }
 
+impl Family {
+    pub fn family_id(&self) -> i64 {
+        return self.family_id;
+    }
+
+    pub fn name(&self) -> String {
+        return self.name;
+    }
+
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Family_User {
+pub struct FamilyUser {
     family_id: i64,
     user_id: i64,
     relationship: String,
 }
 
-pub fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> Family_User {
-    Family_User {
+pub fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> FamilyUser {
+    FamilyUser {
         family_id,
         user_id,
         relationship,
     }
 }
 
+impl FamilyUser {
+    pub fn family_id(&self) -> i64 {
+        return self.family_id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+
+    pub fn relationship(&self) -> String {
+        return self.relationship;
+    }
+
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Family_Member {
+pub struct FamilyMember {
     id: i64,
     user_id: i64,
     notification_methods: String,
@@ -344,14 +678,37 @@ pub fn build_family_member(
     notification_methods: String,
     email: String,
     phone: String,
-) -> Family_Member {
-    Family_Member {
+) -> FamilyMember {
+    FamilyMember {
         id,
         user_id,
         notification_methods,
         email,
         phone,
     }
+}
+
+impl FamilyMember {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+
+    pub fn notification_methods(&self) -> String {
+        return self.notification_methods;
+    }
+
+    pub fn email(&self) -> String {
+        return self.email;
+    }
+
+    pub fn phone(&self) -> String {
+        return self.phone;
+    }
+
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -382,6 +739,33 @@ pub fn build_assignment(
     }
 }
 
+impl Assignment {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn class_id(&self) -> i64 {
+        return self.class_id;
+    }
+
+    pub fn required(&self) -> bool {
+        return self.required;
+    }
+
+    pub fn grade_scale(&self) -> String {
+        return self.grade_scale;
+    }
+
+    pub fn description(&self) -> String {
+        return self.description;
+    }
+
+    pub fn template(&self) -> String {
+        return self.template;
+    }
+
+}
+
 #[derive(PartialEq, Eq, Debug)]
 pub struct Submission {
     id: i64,
@@ -397,6 +781,25 @@ pub fn build_submission(id: i64, user_id: i64, contents: String, grade: String) 
         contents,
         grade,
     }
+}
+
+impl Submission {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+
+    pub fn contents(&self) -> String {
+        return self.contents;
+    }
+
+    pub fn grade(&self) -> String {
+        return self.grade;
+    }
+
 }
 
 #[derive(PartialEq, Eq, Debug)]
@@ -416,8 +819,27 @@ pub fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String
     }
 }
 
+impl Comment {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn user_id(&self) -> i64 {
+        return self.user_id;
+    }
+
+    pub fn assignment_id(&self) -> i64 {
+        return self.assignment_id;
+    }
+
+    pub fn contents(&self) -> String {
+        return self.contents;
+    }
+
+}
+
 #[derive(PartialEq, Eq, Debug)]
-pub struct Change_Log_Item {
+pub struct ChangeLogItem {
     id: i64,
     source_name: String,
     change_type: i32,
@@ -429,11 +851,30 @@ pub fn build_change_log_item(
     source_name: String,
     change_type: i32,
     old_value: String,
-) -> Change_Log_Item {
-    Change_Log_Item {
+) -> ChangeLogItem {
+    ChangeLogItem {
         id,
         source_name,
         change_type,
         old_value,
     }
+}
+
+impl ChangeLogItem {
+    pub fn id(&self) -> i64 {
+        return self.id;
+    }
+
+    pub fn source_name(&self) -> String {
+        return self.source_name;
+    }
+
+    pub fn change_type(&self) -> i32 {
+        return self.change_type;
+    }
+
+    pub fn old_value(&self) -> String {
+        return self.old_value;
+    }
+
 }
