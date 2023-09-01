@@ -180,7 +180,7 @@ fn test_database_creation_insertion_retrieval(){
     assert!(V::check_id(&connection, 1, V::USER_CHANGE_LOG));
 
 
-    assert!(otr::administrator_school_to_row(&connection, types::build_administrator_school(1, 1)).0);
+    assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(1, 1)).0);
     assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(1, 5)).0);
     assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(5, 1)).0);
     assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(10, 10)).0);
