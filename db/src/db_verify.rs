@@ -22,25 +22,37 @@ impl V {
     pub const ASSIGNMENTS: usize = 11;
     pub const SUBMISSIONS: usize = 12;
     pub const COMMENTS: usize = 13;
-    pub const USER_CHANGE_LOG: usize = 14;
+    pub const ADMINISTRATORS_SCHOOLS: usize = 14;
+    pub const TEACHERS_SCHOOLS: usize = 15;
+    pub const TEACHERS_CLASSES: usize = 16;
+    pub const STUDENTS_CLASSES: usize = 17;
+    pub const FAMILIES_USERS: usize = 18;
+    pub const USER_CHANGE_LOG: usize = 19;
 
-    const STRINGS: [(&str, &str); (V::USER_CHANGE_LOG + 1) as usize] = [
-        ("users", "user_id"),
-        ("organizations", "organization_id"),
-        ("administrators", "administrator_id"),
-        ("schools", "school_id"),
-        ("teachers", "teacher_id"),
-        ("employees_supervisors", "supervisory_id"),
-        ("subjects", "subject_id"),
-        ("classes", "class_id"),
-        ("students", "student_id"),
-        ("families", "family_id"),
-        ("family_members", "member_id"),
-        ("assignments", "assignment_id"),
-        ("submissions", "submission_id"),
-        ("comments", "comment_id"),
-        ("user_change_log", "change_id"),
+    const STRINGS: [(&str, &str, &str); (V::USER_CHANGE_LOG + 1) as usize] = [
+        ("users", "user_id", ""),
+        ("organizations", "organization_id", ""),
+        ("administrators", "administrator_id", ""),
+        ("schools", "school_id", ""),
+        ("teachers", "teacher_id", ""),
+        ("employees_supervisors", "supervisory_id", ""),
+        ("subjects", "subject_id", ""),
+        ("classes", "class_id", ""),
+        ("students", "student_id", ""),
+        ("families", "family_id", ""),
+        ("family_members", "member_id", ""),
+        ("assignments", "assignment_id", ""),
+        ("submissions", "submission_id", ""),
+        ("comments", "comment_id", ""),
+        ("administrators_schools", "administrator_id", "school_id"),
+        ("teachers_schools", "teacher_id", "school_id"),
+        ("teachers_classes", "teacher_id", "class_id"),
+        ("students_classes", "student_id", "class_id"),
+        ("families_users", "family_id", "user_id"),
+        ("user_change_log", "change_id", ""),
     ];
+
+
 
     pub fn check_id(connection: &sqlite::Connection, id: i64, table_id: usize) -> bool {
         if table_id > V::USER_CHANGE_LOG {
@@ -62,6 +74,33 @@ impl V {
         }
 
         return false;
+    }
+
+    pub fn check_id_pair(connection: &sqlite::Connection, id_1: i64, id_2 : i64, table_id: usize) -> bool {
+        if table_id > V::USER_CHANGE_LOG {
+            panic!("FUNDAMENTAL ERROR IN YOUR SERVER PROGRAMMING! FIX ME!");
+        }
+
+        let query: String = "SELECT * FROM ".to_owned()
+            + V::STRINGS[table_id].0
+            + " WHERE "
+            + V::STRINGS[table_id].1
+            + " = "
+            + &id_1.to_string()
+            + ", "
+            + V::STRINGS[table_id].2
+            + " = "
+            + &id_2.to_string()
+            + " LIMIT 1";
+
+        let mut result = connection.prepare(query).unwrap();
+
+        while let Ok(sqlite::State::Row) = result.next() {
+            return true;
+        }
+
+        return false;
+            
     }
 
     const AT: &str = "@";
