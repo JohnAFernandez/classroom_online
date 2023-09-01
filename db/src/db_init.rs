@@ -139,7 +139,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
             name STRING UINQUE NOT NULL,
             ap INTEGER DEFAULT 0 NOT NULL,
             ib INTEGER DEFAULT 0 NOT NULL,
-            target_year INTEGER,
+            target_year STRING,
             discipline STRING
         );
     ";

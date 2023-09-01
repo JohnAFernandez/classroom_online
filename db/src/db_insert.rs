@@ -138,9 +138,9 @@ impl I {
             + ap
             + I::AND
             + ib
-            + I::AND
-            + target_year
             + I::AND_S
+            + target_year
+            + I::S_AND_S
             + discipline
             + I::S_END;
 
