@@ -1,25 +1,61 @@
 use crate::db_insert::I;
-use crate::db_types as types;
+use crate::db_retrieve::R;
+use crate::db_update::U;
 use crate::db_verify::V;
+use crate::db_types as types;
+
 use sqlite;
 
 pub fn employee_supervisor_to_row(connection: &sqlite::Connection, employee_supervisor: types::EmployeeSupervisor) -> (bool, String) {
     if !V::check_id(connection, employee_supervisor.user_id(), V::USERS) {
-        return (false, "Not able to add family-user record, since family id ".to_string() + &employee_supervisor.user_id().to_string() + " does not have a corresponding record." )
+        return (false, "Not able to add employee_supervisor record, since user id ".to_string() + &employee_supervisor.user_id().to_string() + " does not have a corresponding record." )
     }
 
-    if !V::check_id(connection, employee_supervisor.administrator_id(), V::ADMINISTRATORS) {
-    
-        if employee_supervisor.supervisor_name().is_empty() {
-            return (false, "Not able to add family-user record, since user id ".to_string() + &employee_supervisor.administrator_id().to_string() + " does not have a corresponding record." );
+    if !V::check_id(connection, employee_supervisor.organization_id(), V::ORGANIZATIONS) {
+        return (false, "Not able to add employee_supervisor record, since organization id ".to_string() + &employee_supervisor.user_id().to_string() + " does not have a corresponding record." )
+    }
+
+    let found_super_id = V::check_id(connection, employee_supervisor.administrator_id(), V::ADMINISTRATORS);
+
+    if !found_super_id && employee_supervisor.supervisor_name().is_empty() {
+        return (false, "Not able to add employee_supervisor record, since administrator id ".to_string() + &employee_supervisor.user_id().to_string() + " does not have a corresponding record and the supervisor name field is empty." )
+    }
+
+    let mut log : String = "employee_supervisor_to_row log\n".to_string();
+
+    if found_super_id && employee_supervisor.supervisor_name().is_empty() {
+        // need to add some functionality here that attempts to populate the name friom the database
+        match R::retrieve_user_from_administrator(connection, employee_supervisor.administrator_id()){
+
+            Ok(x)=> { 
+                match R::retrieve_details(connection, R::USERS, x.to_string()) {
+                    Ok(x) => for row in x.into_iter().map(|row| row.unwrap()){
+                        let mut name : String = "".to_owned();
+                        name += row.read::<&str, _>("first_name");
+                        
+                        if !name.is_empty(){
+                            name += " ";
+                        }
+                        
+                        name += row.read::<&str, _>("last_name");
+
+                        if !name.is_empty(){
+                            employee_supervisor.set_supervisor_name(name);
+                        }
+                        break;
+                    },
+                    Err(x) => log = log + "Tried to add supervisor name to employee_supervisor table, but we ran into " + &x.to_string() + ".\n",
+                }
+            
+            },
+            Err(_)=>(),
         }
-    } else if employee_supervisor.supervisor_name().is_empty() {
-        
     }
 
-    if 
 
-    if V::check_id_pair(connection, employee_supervisor.family_id(), employee_supervisor.user_id(), V::FAMILIES_USERS){
+
+
+    if V::check_id(connection, employee_supervisor.family_id(), employee_supervisor.user_id(), V::FAMILIES_USERS){
         return (false, "Not able to add family-user record, since that relationship already exists in the table.".to_string())
     }
 

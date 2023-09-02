@@ -446,11 +446,20 @@ impl R {
     pub fn retrieve_user_from_administrator(
         connection: &sqlite::Connection,
         administrator_id: i64,
-    ) -> Result<Statement<'_>, sqlite::Error> {
+    ) -> Result<i64, sqlite::Error>{
         let query = "SELECT user_id FROM administrators WHERE administrator_id = ".to_owned()
             + &administrator_id.to_string();
 
-        return connection.prepare(query);
+        match connection.prepare(query){
+            Ok(x)=> {
+                for row in x.into_iter().map(|row| row.unwrap()) {
+                    return x.read::<i64, _>(R::STRINGS[R::USERS].1);
+                } 
+
+                panic!("retrieve_user_from_administrator had no results, but did not encounter an error.  Investigate!");
+            },
+            Err(x)=>return Err(x),
+        }
     }
 
     pub fn retrieve_user_from_family_member(

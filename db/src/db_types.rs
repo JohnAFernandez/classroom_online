@@ -381,6 +381,14 @@ impl EmployeeSupervisor {
     pub fn supervisor_name(&self) -> String {
         return self.supervisor_name.clone();
     }
+
+    pub fn set_supervisor_name(&self, name_in : String) {
+        self.supervisor_name = name_in;
+    }
+
+    pub fn organization_id(&self) -> i64 {
+        return self.organization_id;
+    }
 }
 
 #[derive(PartialEq, Eq, Debug)]
