@@ -382,7 +382,7 @@ impl EmployeeSupervisor {
         return self.supervisor_name.clone();
     }
 
-    pub fn set_supervisor_name(&self, name_in : String) {
+    pub fn set_supervisor_name(&mut self, name_in : String) {
         self.supervisor_name = name_in;
     }
 

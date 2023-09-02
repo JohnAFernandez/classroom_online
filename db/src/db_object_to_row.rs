@@ -6,7 +6,7 @@ use crate::db_types as types;
 
 use sqlite;
 
-pub fn employee_supervisor_to_row(connection: &sqlite::Connection, employee_supervisor: types::EmployeeSupervisor) -> (bool, String) {
+pub fn employee_supervisor_to_row(connection: &sqlite::Connection, mut employee_supervisor: types::EmployeeSupervisor) -> (bool, String) {
     if !V::check_id(connection, employee_supervisor.user_id(), V::USERS) {
         return (false, "Not able to add employee_supervisor record, since user id ".to_string() + &employee_supervisor.user_id().to_string() + " does not have a corresponding record." )
     }
@@ -21,7 +21,7 @@ pub fn employee_supervisor_to_row(connection: &sqlite::Connection, employee_supe
         return (false, "Not able to add employee_supervisor record, since administrator id ".to_string() + &employee_supervisor.user_id().to_string() + " does not have a corresponding record and the supervisor name field is empty." )
     }
 
-    let mut log : String = "employee_supervisor_to_row log\n".to_string();
+    let mut log : String = "employee_supervisor_to_row log:\n".to_string();
 
     if found_super_id && employee_supervisor.supervisor_name().is_empty() {
         // need to add some functionality here that attempts to populate the name friom the database
@@ -40,28 +40,23 @@ pub fn employee_supervisor_to_row(connection: &sqlite::Connection, employee_supe
                         name += row.read::<&str, _>("last_name");
 
                         if !name.is_empty(){
+                            log = log + "Successfully found supervisor name \"" + &name + "\"";
                             employee_supervisor.set_supervisor_name(name);
                         }
+
                         break;
                     },
                     Err(x) => log = log + "Tried to add supervisor name to employee_supervisor table, but we ran into " + &x.to_string() + ".\n",
                 }
             
             },
-            Err(_)=>(),
+            Err(x) => log = log + "Tried to add supervisor name to employee_supervisor table, but we ran into " + &x.to_string() + ".\n",
         }
     }
 
+    I::insert_employee_supervisor(connection, &employee_supervisor.user_id().to_string(), &employee_supervisor.administrator_id().to_string(), &employee_supervisor.supervisor_name().to_string(), &employee_supervisor.organization_id().to_string());
 
-
-
-    if V::check_id(connection, employee_supervisor.family_id(), employee_supervisor.user_id(), V::FAMILIES_USERS){
-        return (false, "Not able to add family-user record, since that relationship already exists in the table.".to_string())
-    }
-
-    I::insert_employee_supervisor(connection, &employee_supervisor.user_id().to_string(), &employee_supervisor.administrator_id().to_string(), &employee_supervisor.supervisor_name().to_string(), employee_supervisor.);
-
-    return(true, "".to_string());
+    return(true, log);
 
 }
 

@@ -453,7 +453,7 @@ impl R {
         match connection.prepare(query){
             Ok(x)=> {
                 for row in x.into_iter().map(|row| row.unwrap()) {
-                    return x.read::<i64, _>(R::STRINGS[R::USERS].1);
+                    return Ok(row.read::<i64, _>(R::STRINGS[R::USERS].1));
                 } 
 
                 panic!("retrieve_user_from_administrator had no results, but did not encounter an error.  Investigate!");
