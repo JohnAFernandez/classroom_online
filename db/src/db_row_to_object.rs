@@ -86,6 +86,7 @@ pub fn row_to_employee_supervisor(row: &sqlite::Row) -> types::EmployeeSuperviso
         row.read::<i64, _>("user_id"),
         row.read::<i64, _>("administrator_id"),
         row.read::<&str, _>("supervisor_name").to_string(),
+        row.read::<i64, _>("organization_id"),
     )
 }
 

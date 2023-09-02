@@ -346,6 +346,7 @@ pub struct EmployeeSupervisor {
     user_id: i64,
     administrator_id: i64,
     supervisor_name: String,
+    organization_id : i64,
 }
 
 pub fn build_employee_supervisor(
@@ -353,12 +354,14 @@ pub fn build_employee_supervisor(
     user_id: i64,
     administrator_id: i64,
     supervisor_name: String,
+    organization_id: i64,
 ) -> EmployeeSupervisor {
     EmployeeSupervisor {
         id,
         user_id,
         administrator_id,
         supervisor_name,
+        organization_id,
     }
 }
 
