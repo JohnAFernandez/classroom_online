@@ -8,20 +8,22 @@ pub fn employee_supervisor_to_row(connection: &sqlite::Connection, employee_supe
         return (false, "Not able to add family-user record, since family id ".to_string() + &employee_supervisor.user_id().to_string() + " does not have a corresponding record." )
     }
 
-    if !V::check_id(connection, employee_supervisor.administrator_id(), V::USERS) {
+    if !V::check_id(connection, employee_supervisor.administrator_id(), V::ADMINISTRATORS) {
     
         if employee_supervisor.supervisor_name().is_empty() {
-            return (false, "Not able to add family-user record, since user id ".to_string() + &employee_supervisor.administrator_id().to_string() + " does not have a corresponding record." )
-        else {
-            
+            return (false, "Not able to add family-user record, since user id ".to_string() + &employee_supervisor.administrator_id().to_string() + " does not have a corresponding record." );
         }
+    } else if employee_supervisor.supervisor_name().is_empty() {
+        
     }
+
+    if 
 
     if V::check_id_pair(connection, employee_supervisor.family_id(), employee_supervisor.user_id(), V::FAMILIES_USERS){
         return (false, "Not able to add family-user record, since that relationship already exists in the table.".to_string())
     }
 
-    I::insert_employee_supervisor(connection, &employee_supervisor.family_id().to_string(), &employee_supervisor.user_id().to_string());
+    I::insert_employee_supervisor(connection, &employee_supervisor.user_id().to_string(), &employee_supervisor.administrator_id().to_string(), &employee_supervisor.supervisor_name().to_string(), employee_supervisor.);
 
     return(true, "".to_string());
 
