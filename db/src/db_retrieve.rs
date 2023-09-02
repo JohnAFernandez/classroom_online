@@ -145,7 +145,7 @@ impl R {
     const STUDENT_CLASS_FIELDS: [&str; 2] = ["student_id", "class_id"];
     const TEACHER_CLASS_FIELDS: [&str; 3] = ["teacher_id", "class_id", "role"];
     const TEACHER_SCHOOL_FIELDS: [&str; 2] = ["teacher_id", "school_id"];
-    const AdministratorSchool_FIELDS: [&str; 2] = ["administrator_id", "school_id"];
+    const ADMINISTRATOR_SCHOOL_FIELDS: [&str; 2] = ["administrator_id", "school_id"];
 
     pub fn retrieve_details(
         connection: &sqlite::Connection,
