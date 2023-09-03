@@ -724,6 +724,7 @@ pub struct Assignment {
     class_id: i64,
     required: bool,
     grade_scale: String,
+    name: String,
     description: String,
     template: String,
 }
@@ -733,6 +734,7 @@ pub fn build_assignment(
     class_id: i64,
     required: bool,
     grade_scale: String,
+    name: String,
     description: String,
     template: String,
 ) -> Assignment {
@@ -741,6 +743,7 @@ pub fn build_assignment(
         class_id,
         required,
         grade_scale,
+        name,
         description,
         template,
     }
@@ -761,6 +764,10 @@ impl Assignment {
 
     pub fn grade_scale(&self) -> String {
         return self.grade_scale.clone();
+    }
+
+    pub fn name(&self) -> String {
+        return self.name.clone();
     }
 
     pub fn description(&self) -> String {

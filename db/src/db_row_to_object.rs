@@ -172,6 +172,7 @@ pub fn row_to_assignment(row: &sqlite::Row) -> types::Assignment {
             false
         },
         row.read::<&str, _>("grade_scale").to_string(),
+        row.read::<&str, _>("name").to_string(),
         row.read::<&str, _>("description").to_string(),
         row.read::<&str, _>("template").to_string(),
     )

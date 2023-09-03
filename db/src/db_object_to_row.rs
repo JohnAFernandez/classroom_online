@@ -5,6 +5,26 @@ use crate::db_types as types;
 
 use sqlite;
 
+pub fn assignment_to_row(connection: &sqlite::Connection, assignment: types::Assignment) -> (bool, String){
+    if !V::check_id(connection, assignment.class_id(), V::CLASSES){
+        return (false, "Not able to add assignment record, since class id ".to_string() + &assignment.class_id().to_string() + " does not have a corresponding record." )
+    }
+
+    if assignment.name().is_empty(){
+        return (false, "Assignment requires a name before it can be added to the assignment record.".to_string())
+    }
+
+    if assignment.grade_scale().is_empty(){
+        return (false, "Assignment requires a grade scale before it can be added to the assignment record.".to_string())
+    }
+
+
+    I::insert_assignment(connection, &assignment.class_id().to_string(), if assignment.required() {"1".to_string()} else {"0".to_string()}, &assignment.grade_scale().to_string(), &assignment.name(), &assignment.description(), &assignment.template());
+
+    return (true, "".to_string());
+
+}
+
 pub fn submission_to_row(connection: &sqlite::Connection, submission: types::Submission) -> (bool, String){
     if !V::check_id(connection, submission.user_id(), V::USERS) {
         return (false, "Not able to add comment record, since user id ".to_string() + &submission.user_id().to_string() + " does not have a corresponding record." )

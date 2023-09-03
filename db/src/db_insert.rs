@@ -198,19 +198,22 @@ impl I {
     pub fn insert_assignment(
         connection: &sqlite::Connection,
         class_id: &String,
-        required: &String,
+        required: String,
         grade_scale: &String,
+        name: &String,
         description: &String,
         template: &String,
     ) {
         let query: String = I::INSERT.to_owned()
-            + "assignments (class_id, required, grade_scale, description, template)"
+            + "assignments (class_id, required, grade_scale, name, description, template)"
             + I::VALUES
             + class_id
             + I::AND
             + required
             + I::AND_S
             + grade_scale
+            + I::S_AND_S
+            + name
             + I::S_AND_S
             + description
             + I::S_AND_S

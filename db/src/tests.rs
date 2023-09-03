@@ -116,6 +116,7 @@ fn test_database_creation_insertion_retrieval(){
         &"1".to_string(),
         &"4 Point".to_string(),
         &"COUNT THE APPLES!".to_string(),
+        &"Look at the picture, then figure out how many apples there are!".to_string(),
         &"".to_string(),
     );
     I::insert_submission(
@@ -403,6 +404,7 @@ fn test_deletion() {
         &"1".to_string(),
         &"4 Point".to_string(),
         &"COUNT THE APPLES!".to_string(),
+        &"Look at the picture, then figure out how many apples there are!".to_string(),
         &"".to_string(),
     );
     I::insert_submission(
