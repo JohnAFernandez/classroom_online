@@ -5,6 +5,47 @@ use crate::db_types as types;
 
 use sqlite;
 
+pub fn class_to_row(connection: &sqlite::Connection, class: types::Class) -> (bool, String){
+    if !V::check_id(connection, class.school_id(), V::SCHOOLS){
+        return (false, "Not able to add class record, since school id ".to_string() + &class.school_id().to_string() + " does not have a corresponding record." );
+    }
+
+    if !V::check_id(connection, class.subject_id(), V::CLASSES){
+        return (false, "Not able to add class record, since subject id ".to_string() + &class.subject_id().to_string() + " does not have a corresponding record." );
+    }
+
+    // TODO, add more checks, like normal.  Time and days are probably next.
+
+    I::insert_class(connection, &class.school_id().to_string(), &class.subject_id().to_string(), &class.year().to_string(), &class.start_day(), &class.end_day(), &class.start_time().to_string(), &class.end_time().to_string(), &class.days_scheduled());
+    (true, "".to_string())
+}
+
+pub fn administrator_to_row(connection: &sqlite::Connection, administrator: types::Administrator) -> (bool, String){
+    if !V::check_id(connection, administrator.user_id(), V::ADMINISTRATORS){
+        return (false, "Not able to add administrator record, since user id ".to_string() + &administrator.user_id().to_string() + " does not have a corresponding record." );
+    }
+
+    I::insert_administrator(connection, &administrator.user_id().to_string(), &administrator.level());
+    (true, "".to_string())
+}
+
+pub fn student_to_row(connection: &sqlite::Connection, student: types::Student) -> (bool, String){
+    if !V::check_id(connection, student.user_id(), V::USERS){
+        return (false, "Not able to add student record, since user id ".to_string() + &student.user_id().to_string() + " does not have a corresponding record." );
+    }
+
+    I::insert_student(connection, &student.user_id().to_string());
+    (true, "".to_string())
+}
+
+pub fn teacher_to_row(connection: &sqlite::Connection, teacher: types::Teacher) -> (bool, String){
+    if !V::check_id(connection, teacher.user_id(), V::TEACHERS) {
+        return (false, "Not able to add teacher record, since user id ".to_string() + &teacher.user_id().to_string() + " does not have a corresponding record." );
+    }
+
+    I::insert_teacher(connection, &teacher.user_id().to_string());
+    (true, "".to_string())
+}
 
 pub fn family_member_to_row(connection: &sqlite::Connection, family_member: types::FamilyMember) -> (bool, String){
 
