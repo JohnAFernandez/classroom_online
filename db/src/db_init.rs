@@ -7,6 +7,10 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
 
     let connection = sqlite::open(path).unwrap();
 
+    // TODO!  WE need some anscillary tables that will have to be checked.
+    // Not states, that can be done at the rust level.  But we will need to do zip codes 
+    // like that.  Also we need to do Disciplines .... Hmmmm
+
     // create users table. This is the basic information for all user types.
     // now, we usually can use email for logins, but many students will not have one.
     // The intention is to be able to use either email or username for logins.

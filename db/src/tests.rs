@@ -83,11 +83,11 @@ fn test_database_creation_insertion_retrieval(){
 
     I::insert_subject(
         &connection,
-        &"Math for Delinquents".to_string(),
-        &"0".to_string(),
-        &"0".to_string(),
-        &"4".to_string(),
-        &"MATH".to_string(),
+        "Math for Delinquents".to_string(),
+        "0".to_string(),
+        "0".to_string(),
+        "4".to_string(),
+        "MATH".to_string(),
     );
     I::insert_class(
         &connection,
@@ -370,11 +370,11 @@ fn test_deletion() {
 
     I::insert_subject(
         &connection,
-        &"Math for Delinquents".to_string(),
-        &"0".to_string(),
-        &"0".to_string(),
-        &"4".to_string(),
-        &"MATH".to_string(),
+        "Math for Delinquents".to_string(),
+        "0".to_string(),
+        "0".to_string(),
+        "4".to_string(),
+        "MATH".to_string(),
     );
     I::insert_class(
         &connection,

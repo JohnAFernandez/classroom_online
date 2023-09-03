@@ -1,10 +1,58 @@
 use crate::db_insert::I;
 use crate::db_retrieve::R;
-use crate::db_update::U;
 use crate::db_verify::V;
 use crate::db_types as types;
 
 use sqlite;
+
+pub fn submission_to_row(connection: &sqlite::Connection, submission: types::Submission) -> (bool, String){
+    if !V::check_id(connection, submission.user_id(), V::USERS) {
+        return (false, "Not able to add comment record, since user id ".to_string() + &submission.user_id().to_string() + " does not have a corresponding record." )
+    }
+
+    if !V::check_id(connection, submission.assignment_id(), V::ASSIGNMENTS) {
+        return (false, "Not able to add comment record, since assignment id ".to_string() + &submission.assignment_id().to_string() + " does not have a corresponding record." )
+    }
+
+    if submission.contents().is_empty(){
+        return (false, "Not able to add submission record, since the submission is empty.".to_string())
+    }
+
+    I::insert_submission(connection, &submission.user_id().to_string(), &submission.assignment_id().to_string(), &submission.contents(), &submission.grade());
+
+    (true, "".to_string())
+
+}
+
+pub fn comment_to_row(connection: &sqlite::Connection, comment: types::Comment) -> (bool, String) {
+    if !V::check_id(connection, comment.user_id(), V::USERS) {
+        return (false, "Not able to add comment record, since user id ".to_string() + &comment.user_id().to_string() + " does not have a corresponding record." )
+    }
+
+    if !V::check_id(connection, comment.assignment_id(), V::ASSIGNMENTS) {
+        return (false, "Not able to add comment record, since assignment id ".to_string() + &comment.assignment_id().to_string() + " does not have a corresponding record." )
+    }
+
+    if comment.contents().is_empty() {
+        return (false, "Not able to add comment because the comment has no contents.".to_string())        
+    }
+
+    I::insert_comments(connection, &comment.user_id().to_string(), &comment.assignment_id().to_string(), &comment.contents());
+    return (true, "".to_string());
+}
+
+
+pub fn user_change_log_to_row(connection: &sqlite::Connection, log_item: types::ChangeLogItem){
+    I::insert_change_log(connection, &log_item.source_name(), &log_item.change_type().to_string(), &log_item.old_value().to_string(), &log_item.timestamp())
+
+}
+
+pub fn subject_to_row(connection: &sqlite::Connection, subject: types::Subject){
+    // TODO create some tables and checks for this object type.
+
+    I::insert_subject(connection, subject.name(), if subject.ap() {"1".to_string()} else {"0".to_string()}, if subject.ib() {"1".to_string()} else {"0".to_string()}, subject.target_year(), subject.discipline());
+
+}
 
 pub fn employee_supervisor_to_row(connection: &sqlite::Connection, mut employee_supervisor: types::EmployeeSupervisor) -> (bool, String) {
     if !V::check_id(connection, employee_supervisor.user_id(), V::USERS) {

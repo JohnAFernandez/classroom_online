@@ -777,14 +777,16 @@ impl Assignment {
 pub struct Submission {
     id: i64,
     user_id: i64,
+    assignment_id: i64,
     contents: String,
     grade: String,
 }
 
-pub fn build_submission(id: i64, user_id: i64, contents: String, grade: String) -> Submission {
+pub fn build_submission(id: i64, user_id: i64, assignment_id: i64, contents: String, grade: String) -> Submission {
     Submission {
         id,
         user_id,
+        assignment_id,
         contents,
         grade,
     }
@@ -797,6 +799,10 @@ impl Submission {
 
     pub fn user_id(&self) -> i64 {
         return self.user_id;
+    }
+
+    pub fn assignment_id(&self) -> i64{
+        return self.assignment_id;
     }
 
     pub fn contents(&self) -> String {
@@ -851,6 +857,7 @@ pub struct ChangeLogItem {
     source_name: String,
     change_type: i32,
     old_value: String,
+    timestamp: String,
 }
 
 pub fn build_change_log_item(
@@ -858,12 +865,14 @@ pub fn build_change_log_item(
     source_name: String,
     change_type: i32,
     old_value: String,
+    timestamp: String,
 ) -> ChangeLogItem {
     ChangeLogItem {
         id,
         source_name,
         change_type,
         old_value,
+        timestamp,
     }
 }
 
@@ -884,4 +893,7 @@ impl ChangeLogItem {
         return self.old_value.clone();
     }
 
+    pub fn timestamp(&self) -> String {
+        return self.timestamp.clone();
+    }
 }

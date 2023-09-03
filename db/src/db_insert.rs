@@ -119,24 +119,24 @@ impl I {
 
     pub fn insert_subject(
         connection: &sqlite::Connection,
-        name: &String,
-        ap: &String,
-        ib: &String,
-        target_year: &String,
-        discipline: &String,
+        name: String,
+        ap: String,
+        ib: String,
+        target_year: String,
+        discipline: String,
     ) {
         let query: String = I::INSERT.to_owned()
             + "subjects (name, ap, ib, target_year, discipline)"
             + I::VALUES_S
-            + name
+            + &name
             + I::S_AND
-            + ap
+            + &ap
             + I::AND
-            + ib
+            + &ib
             + I::AND_S
-            + target_year
+            + &target_year
             + I::S_AND_S
-            + discipline
+            + &discipline
             + I::S_END;
 
         connection.execute(query).unwrap();

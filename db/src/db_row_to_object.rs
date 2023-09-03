@@ -66,7 +66,7 @@ pub fn row_to_school(row: &sqlite::Row) -> types::School {
     )
 }
 
-pub fn row_to_AdministratorSchool(row: &sqlite::Row) -> types::AdministratorSchool {
+pub fn row_to_administrator_school(row: &sqlite::Row) -> types::AdministratorSchool {
     types::build_administrator_school(
         row.read::<i64, _>("admin_id"),
         row.read::<i64, _>("school_id"),
@@ -181,6 +181,7 @@ pub fn row_to_submission(row: &sqlite::Row) -> types::Submission {
     types::build_submission(
         row.read::<i64, _>("submission_id"),
         row.read::<i64, _>("user_id"),
+        row.read::<i64, _>("assignment_id"),
         row.read::<&str, _>("contents").to_string(),
         row.read::<&str, _>("grade").to_string(),
     )
@@ -201,5 +202,6 @@ pub fn row_to_log_item(row: &sqlite::Row) -> types::ChangeLogItem {
         row.read::<&str, _>("source_name").to_string(),
         row.read::<i64, _>("type") as i32,
         row.read::<&str, _>("old_value").to_string(),
+        row.read::<&str, _>("timestamp").to_string(),
     )
 }
