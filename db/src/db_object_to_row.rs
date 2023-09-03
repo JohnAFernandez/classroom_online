@@ -5,6 +5,48 @@ use crate::db_types as types;
 
 use sqlite;
 
+pub fn users_to_row(connection: &sqlite::Connection, user: types::User) -> (bool, String) {
+    if !V::check_birthday(&user.birthday()) {
+        return (false, "Birthday is not valid. A valid birthday must be submitted.".to_string())
+    }
+
+    if !V::check_email(user.email()){
+        return (false, "Email was invalid.  Create an account without an email, or provide a valid email.".to_string());
+    }
+
+    if user.first_name().is_empty() {
+        return (false, "A first name must be specified for a new user.".to_string());
+    }
+
+    if user.last_name().is_empty() {
+        return (false, "A last name must be specified for a new user.".to_string())
+    }
+
+    if user.password().is_empty() {
+        return (false, "New users must have a password.  If using API, a randomly generated initial password is acceptable.".to_string());
+    }
+    // TODO Add phone number check
+
+    let mut log: String = "User insertion log:\n".to_string();
+
+    if !user.username().is_empty() {
+        log = log + "Username is automatically generated, ignorning supplied username.\n";
+    }
+
+    if user.deleted() {
+        log = log + "You cannot specify a new account as deleted, ignoring.\n";
+    }
+
+    if user.hidden() {
+        log = log + "You cannot specify a new account as hidden, ignoring.\n";
+    }
+
+    I::insert_user(connection, user.email(), )
+
+    (true, "".to_string())
+}
+
+
 pub fn class_to_row(connection: &sqlite::Connection, class: types::Class) -> (bool, String){
     if !V::check_id(connection, class.school_id(), V::SCHOOLS){
         return (false, "Not able to add class record, since school id ".to_string() + &class.school_id().to_string() + " does not have a corresponding record." );

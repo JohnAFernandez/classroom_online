@@ -29,7 +29,6 @@ impl I {
     pub fn insert_user(
         connection: &sqlite::Connection,
         email: &String,
-        username: &String,
         password: &String,
         first_name: &String,
         last_name: &String,
@@ -38,8 +37,12 @@ impl I {
         phone: &String,
         icon: &String,
     ) {
+        let username: String = "troggy".to_string() + rng;
+
         let query: String = I::INSERT.to_owned() + "users (email, username, password, first_name, last_name, birthday, date_registered, phone, icon)" 
-        + I::VALUES_S + email + I::S_AND_S + username + I::S_AND_S + password + I::S_AND_S + first_name + I::S_AND_S + last_name + I::S_AND_S + birthday + I::S_AND_S + date_registered + I::S_AND_S + phone + I::S_AND_S + icon + I::S_END;
+        + I::VALUES_S + email + I::S_AND_S + &username + I::S_AND_S + password + I::S_AND_S + first_name + I::S_AND_S + last_name + I::S_AND_S + birthday + I::S_AND_S + date_registered + I::S_AND_S + phone + I::S_AND_S + icon + I::S_END;
+
+        // TODO! This runction needs to alter the created user account to add the date registered 
 
         connection.execute(query).unwrap();
     }
