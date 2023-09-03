@@ -2,6 +2,7 @@
 // Data needs to be validated before these functions are called.
 
 use sqlite;
+use rand::Rng;
 
 pub struct I {}
 
@@ -37,7 +38,12 @@ impl I {
         phone: &String,
         icon: &String,
     ) {
-        let username: String = "troggy".to_string() + rng;
+        // temporarily random until we can figure out a safe way to increment the suffix
+        // actually it should be easy using 
+        let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
+        let suffix: i32 = rng.gen();
+
+        let username: String = "troggy".to_string() + &suffix.to_string();
 
         let query: String = I::INSERT.to_owned() + "users (email, username, password, first_name, last_name, birthday, date_registered, phone, icon)" 
         + I::VALUES_S + email + I::S_AND_S + &username + I::S_AND_S + password + I::S_AND_S + first_name + I::S_AND_S + last_name + I::S_AND_S + birthday + I::S_AND_S + date_registered + I::S_AND_S + phone + I::S_AND_S + icon + I::S_END;

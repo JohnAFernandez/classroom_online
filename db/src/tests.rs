@@ -43,7 +43,7 @@ fn test_database_creation_insertion_retrieval(){
     assert!(!V::check_id(&connection, 1, V::USERS));
     assert!(!V::check_id(&connection, 1, V::USER_CHANGE_LOG));
 
-    I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"(305)8675309".to_string(), &"".to_string());
+    I::insert_user(&connection, &"John@gmail.com".to_string(),  &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"(305)8675309".to_string(), &"".to_string());
 
     let test_user = types::build_user(1, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);
 
@@ -113,7 +113,7 @@ fn test_database_creation_insertion_retrieval(){
     I::insert_assignment(
         &connection,
         &"1".to_string(),
-        &"1".to_string(),
+        "1".to_string(),
         &"4 Point".to_string(),
         &"COUNT THE APPLES!".to_string(),
         &"Look at the picture, then figure out how many apples there are!".to_string(),
@@ -188,7 +188,7 @@ fn test_database_creation_insertion_retrieval(){
 
 
     // test user retrieval
-    let mut user : types::User = types::build_user(0, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);
+    let mut user : types::User = types::build_user(1, "John@gmail.com".to_string(), "JF1995".to_string(), "".to_string(), "John".to_string(), "Fernandez".to_string(), "01/01/2010".to_string(), "TODAY".to_string(), "(305)8675309".to_string(), "".to_string(), false, false);
     let mut result = R::retrieve_details(&connection,R::USERS, "1".to_string());
 
     match result {
@@ -197,6 +197,11 @@ fn test_database_creation_insertion_retrieval(){
         }},
         Err(_) => panic!("Retrieval panicked."),
     }
+
+
+    println!("\n\nUser: {:?}", user);
+    println!("\nTEST user{:?}\n\n", test_user);
+
 
     assert!(user == test_user);
 
@@ -337,9 +342,9 @@ fn test_deletion() {
 
     let connection = db_init::init_database(PathBuf::from(location));
     // do some basic testing
-    I::insert_user(&connection, &"John@gmail.com".to_string(), &"JF1995".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+    I::insert_user(&connection, &"John@gmail.com".to_string(),  &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
 
-    I::insert_user(&connection, &"John2@gmail.com".to_string(), &"JF1999".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+    I::insert_user(&connection, &"John2@gmail.com".to_string(),  &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
 
     I::insert_organization(
         &connection,
@@ -464,7 +469,7 @@ fn test_deletion() {
     result = D::delete_user(&connection, 3);
     assert!(!result.0, "{}", result.1);
     
-    I::insert_user(&connection, &"John3@gmail.com".to_string(), &"JF2005".to_string(), &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
+    I::insert_user(&connection, &"John3@gmail.com".to_string(),  &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"8675309".to_string(), &"".to_string());
     I::insert_administrator(&connection, &"3".to_string(), &"Necromancer".to_string());
     
     result = D::delete_administrator(&connection, 2);

@@ -5,6 +5,43 @@ use crate::db_types as types;
 
 use sqlite;
 
+pub fn family_to_row(connection: &sqlite::Connection, family: types::Family) -> (bool, String){
+    if family.name().is_empty() {
+        return (false, "Cannot add family without a family name.".to_string())
+    }
+
+    I::insert_family(connection, &family.name());
+
+    (true, "".to_string())
+}
+
+
+pub fn school_to_row(connection: &sqlite::Connection, school: types::School) -> (bool, String) {
+    if !V::check_id(connection, school.organization_id(), V::SCHOOLS){
+        return (false, "School record cannot be added because the organization id of ".to_string() + &school.organization_id().to_string() + " is not in the organizations table.")
+    }
+    
+    if !V::check_name(&school.name()) {
+        return (false, "School record cannot be added because schools need a name!".to_string())
+    }
+
+    (true, "".to_string())
+}
+
+pub fn organization_to_row(connection: &sqlite::Connection, organization: types::Organization) -> (bool, String) {
+    if !V::check_org_school_name(&organization.name()){
+        return(false, "Adding an organization requires an organization name.".to_string());
+    }
+
+    // TODO, add address checks
+
+    // TODO, add phone number check
+
+    I::insert_organization(connection, &organization.name(), &organization.address1(), &organization.address2(), &organization.city(), &organization.state(), &organization.zip(), &organization.phone(), &organization.country());
+
+    return (true, "".to_string())
+}
+
 pub fn users_to_row(connection: &sqlite::Connection, user: types::User) -> (bool, String) {
     if !V::check_birthday(&user.birthday()) {
         return (false, "Birthday is not valid. A valid birthday must be submitted.".to_string())
@@ -41,9 +78,9 @@ pub fn users_to_row(connection: &sqlite::Connection, user: types::User) -> (bool
         log = log + "You cannot specify a new account as hidden, ignoring.\n";
     }
 
-    I::insert_user(connection, user.email(), )
+    I::insert_user(connection, &user.email(), &user.password(), &user.first_name(), &user.last_name(), &user.birthday(), &user.date_registered(), &user.phone(), &user.icon());
 
-    (true, "".to_string())
+    (true, log)
 }
 
 
@@ -89,7 +126,7 @@ pub fn teacher_to_row(connection: &sqlite::Connection, teacher: types::Teacher) 
     (true, "".to_string())
 }
 
-pub fn family_member_to_row(connection: &sqlite::Connection, family_member: types::FamilyMember) -> (bool, String){
+pub fn family_member_to_row(connection: &sqlite::Connection, mut family_member: types::FamilyMember) -> (bool, String){
 
     if !V::check_id(connection, family_member.user_id(), V::USERS){
         return (false, "Not able to add family member record, since user id ".to_string() + &family_member.user_id().to_string() + " does not have a corresponding record." )
@@ -110,6 +147,8 @@ pub fn family_member_to_row(connection: &sqlite::Connection, family_member: type
     }
 
     I::insert_family_member(connection, &family_member.user_id().to_string(), &family_member.notification_methods(), &family_member.email(), &family_member.phone());
+
+    (true, log)
 }
 
 pub fn assignment_to_row(connection: &sqlite::Connection, assignment: types::Assignment) -> (bool, String){

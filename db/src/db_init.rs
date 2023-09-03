@@ -242,6 +242,7 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
             class_id INTEGER,
             required INT DEFAULT 0,
             grade_scale STRING NOT NULL,
+            name STRING NOT NULL,
             description STRING,
             template STRING,
             FOREIGN KEY (class_id) REFERENCES classes(class_id)
@@ -254,7 +255,6 @@ pub fn init_database(path : PathBuf) -> sqlite::Connection {
             submission_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             user_id INTEGER NOT NULL,
             assignment_id INTEGER NOT NULL,
-            name STRING NOT NULL,
             contents STRING,
             grade STRING,
             FOREIGN KEY (user_id) REFERENCES users(user_id),
