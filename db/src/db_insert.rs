@@ -209,7 +209,7 @@ impl I {
             + I::VALUES
             + class_id
             + I::AND
-            + required
+            + &required
             + I::AND_S
             + grade_scale
             + I::S_AND_S

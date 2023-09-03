@@ -401,7 +401,7 @@ fn test_deletion() {
     I::insert_assignment(
         &connection,
         &"1".to_string(),
-        &"1".to_string(),
+        "1".to_string(),
         &"4 Point".to_string(),
         &"COUNT THE APPLES!".to_string(),
         &"Look at the picture, then figure out how many apples there are!".to_string(),

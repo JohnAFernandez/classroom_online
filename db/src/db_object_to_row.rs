@@ -5,6 +5,30 @@ use crate::db_types as types;
 
 use sqlite;
 
+
+pub fn family_member_to_row(connection: &sqlite::Connection, family_member: types::FamilyMember) -> (bool, String){
+
+    if !V::check_id(connection, family_member.user_id(), V::USERS){
+        return (false, "Not able to add family member record, since user id ".to_string() + &family_member.user_id().to_string() + " does not have a corresponding record." )
+    }
+
+    let mut log : String = "".to_owned();
+
+    if !family_member.email().is_empty() && !V::check_email(family_member.email()){
+        log = log + "Email address " + &family_member.email() + " was rejected because it is invalid.\n";
+        family_member.set_email("".to_string());
+    }
+
+    // TODO Add a check phone number here
+
+    if family_member.email().is_empty() && family_member.phone().is_empty(){
+        log = log + "Because there is no valid contact method, we cannot add this family member record.";
+        return (false, log);
+    }
+
+    I::insert_family_member(connection, &family_member.user_id().to_string(), &family_member.notification_methods(), &family_member.email(), &family_member.phone());
+}
+
 pub fn assignment_to_row(connection: &sqlite::Connection, assignment: types::Assignment) -> (bool, String){
     if !V::check_id(connection, assignment.class_id(), V::CLASSES){
         return (false, "Not able to add assignment record, since class id ".to_string() + &assignment.class_id().to_string() + " does not have a corresponding record." )
@@ -17,7 +41,6 @@ pub fn assignment_to_row(connection: &sqlite::Connection, assignment: types::Ass
     if assignment.grade_scale().is_empty(){
         return (false, "Assignment requires a grade scale before it can be added to the assignment record.".to_string())
     }
-
 
     I::insert_assignment(connection, &assignment.class_id().to_string(), if assignment.required() {"1".to_string()} else {"0".to_string()}, &assignment.grade_scale().to_string(), &assignment.name(), &assignment.description(), &assignment.template());
 

@@ -712,6 +712,10 @@ impl FamilyMember {
         return self.email.clone();
     }
 
+    pub fn set_email(&mut self, email: String) {
+        self.email = email;
+    }
+
     pub fn phone(&self) -> String {
         return self.phone.clone();
     }
