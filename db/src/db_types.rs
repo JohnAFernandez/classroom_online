@@ -1,5 +1,7 @@
+use serde::{Serialize, Deserialize};
+
 // need these to print results and make sure we can test against each other.
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct User {
     id: i64,
     email: String,
@@ -98,7 +100,7 @@ impl User {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Organization {
     id: i64,
     name: String,
@@ -173,7 +175,7 @@ impl Organization {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Administrator {
     id: i64,
     user_id: i64,
@@ -198,7 +200,7 @@ impl Administrator {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct School {
     id: i64,
     organization_id: i64,
@@ -294,7 +296,7 @@ impl School {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct AdministratorSchool {
     admin_id: i64,
     school_id: i64,
@@ -317,7 +319,7 @@ impl AdministratorSchool {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Teacher {
     teacher_id: i64,
     user_id: i64,
@@ -340,7 +342,7 @@ impl Teacher {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct EmployeeSupervisor {
     id: i64,
     user_id: i64,
@@ -391,7 +393,7 @@ impl EmployeeSupervisor {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct TeacherSchool {
     teacher_id: i64,
     school_id: i64,
@@ -415,7 +417,7 @@ impl TeacherSchool {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Subject {
     id: i64,
     name: String,
@@ -470,7 +472,7 @@ impl Subject {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Class {
     id: i64,
     school_id: i64,
@@ -546,7 +548,7 @@ impl Class {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct TeacherClass {
     teacher_id: i64,
     class_id: i64,
@@ -575,7 +577,7 @@ impl TeacherClass {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Student {
     id: i64,
     user_id: i64,
@@ -595,7 +597,7 @@ impl Student {
     }
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct StudentClass {
     student_id: i64,
     class_id: i64,
@@ -619,7 +621,7 @@ impl StudentClass {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Family {
     family_id: i64,
     name: String,
@@ -640,7 +642,7 @@ impl Family {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct FamilyUser {
     family_id: i64,
     user_id: i64,
@@ -670,7 +672,7 @@ impl FamilyUser {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct FamilyMember {
     id: i64,
     user_id: i64,
@@ -722,7 +724,7 @@ impl FamilyMember {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Assignment {
     id: i64,
     class_id: i64,
@@ -784,7 +786,7 @@ impl Assignment {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Submission {
     id: i64,
     user_id: i64,
@@ -826,7 +828,7 @@ impl Submission {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct Comment {
     id: i64,
     user_id: i64,
@@ -862,7 +864,7 @@ impl Comment {
 
 }
 
-#[derive(PartialEq, Eq, Debug)]
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct ChangeLogItem {
     id: i64,
     source_name: String,

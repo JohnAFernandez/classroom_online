@@ -202,8 +202,8 @@ fn test_database_creation_insertion_retrieval(){
     println!("\n\nUser: {:?}", user);
     println!("\nTEST user{:?}\n\n", test_user);
 
-
-    assert!(user == test_user);
+    // The problem with this one is that username has a sequential suffix, so we can't just compare the whole struct.
+    assert!(user.deleted() == test_user.deleted() && user.hidden() == test_user.hidden() && user.birthday() == test_user.birthday() && user.date_registered() == test_user.date_registered() && user.email() == test_user.email() && user.first_name() == test_user.first_name() && user.last_name() == test_user.last_name() && user.icon() == test_user.icon() && user.phone() == test_user.phone());
 
     let mut admin : types::Administrator = types::build_administrator(0, 0, "none".to_string());
     result = R::retrieve_details(&connection,R::ADMINISTRATORS, "1".to_string());
