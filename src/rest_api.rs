@@ -1,18 +1,37 @@
 use crate::db_types as types;
-use crate::db_retrieve as R;
+use crate::db_retrieve::R;
+use crate::db_row_to_object as rto;
 use crate::db_object_to_row as otr;
 
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
 use std::path::PathBuf;
 use sqlite;
 
-#[get("/user")]
-async fn get_user(req_body: String) -> HttpResponse {
+#[get("/user/{id}")]
+async fn get_user(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
 
-    ;
+    match R::retrieve_details(&connection,R::USERS, id.to_string()).await {
+        Ok(x) => { 
+            let user: types::User;
 
-    HttpResponse::Ok().body(req_body)
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                user = rto::row_to_user(&row).await;
+
+                match serde_json::to_string(&user) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
 }
 
 #[post("/user")]
