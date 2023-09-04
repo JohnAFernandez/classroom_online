@@ -25,7 +25,7 @@ pub async fn school_to_row(
     connection: &sqlite::Connection,
     school: types::School,
 ) -> (bool, String) {
-    if !V::check_id(connection, school.organization_id().await, V::SCHOOLS).await {
+    if !V::check_id(connection, school.organization_id().await, V::ORGANIZATIONS).await {
         return (
             false,
             "School record cannot be added because the organization id of ".to_string()
@@ -215,7 +215,7 @@ pub async fn teacher_to_row(
     connection: &sqlite::Connection,
     teacher: types::Teacher,
 ) -> (bool, String) {
-    if !V::check_id(connection, teacher.user_id().await, V::TEACHERS).await {
+    if !V::check_id(connection, teacher.user_id().await, V::USERS).await {
         return (
             false,
             "Not able to add teacher record, since user id ".to_string()
