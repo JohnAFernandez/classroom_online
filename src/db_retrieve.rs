@@ -376,7 +376,6 @@ impl R {
                     // retrieve the contents of the query.
                     for row in y.into_iter().map(|row| row.unwrap()) {
                         count = row.read::<i64,_>("item_count");
-                        println!("Got {} for {:?}", count, R::STRINGS[x].1);
                         string_out = string_out;
                     }
                 },
