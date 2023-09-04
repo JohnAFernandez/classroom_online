@@ -25,7 +25,7 @@ async fn main() -> std::io::Result<()> {
     match fs::remove_file(location) { Ok(_) => (), Err(_) => ()};
 
     // init the database if it has not been inited already
-    let connection = db_init::init_database(PathBuf::from(location));
+    db_init::init_database(PathBuf::from(location)).await;
 
     println!("Classroom Online Server has successfully started!  Bound to 127.0.0.1:8080",);
 
@@ -45,11 +45,15 @@ async fn main() -> std::io::Result<()> {
 async fn home_page() -> HttpResponse {
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
 
-    let mut welcome: String = "<h1>Welcome to Classroom Online!</h1>\n\nClassroom online is a work-in-progress classroom management app, but the database can be interacted with via our REST API.\n\nCurrent table statistics:\n".to_string();
+    let mut welcome: String = "<h1>Welcome to Classroom Online!</h1><br><br>Classroom online is a work-in-progress classroom management app, but the database can be interacted with via our REST API.<br><br>Current table statistics:<br><br>".to_string();
     let count = db_retrieve::R::retrieve_all_counts(&connection).await;
 
     for item in count {
-        welcome = welcome + &item.0 + &item.1.to_string() + &"\n\n";
+        if item.1 < 0{
+            welcome = welcome + &item.0 + &"<br>";
+        } else {
+            welcome = welcome + &item.0 + "&emsp;" + &item.1.to_string() + &"<br>";
+        }
     }
 
     HttpResponse::Ok().body(welcome)

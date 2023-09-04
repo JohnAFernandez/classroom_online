@@ -369,22 +369,22 @@ impl R {
         for x in 0..R::USER_CHANGE_LOG {
             let query: String = "SELECT COUNT(*) as item_count FROM ".to_string() + &R::STRINGS[x].0;
             let mut string_out: String = R::STRINGS[x].0.to_owned() + &": ".to_string();
-            let length = string_out.len();
             let mut count = -1;
 
             match connection.prepare(query) {
-                Ok(x) => {
+                Ok(y) => {
                     // retrieve the contents of the query.
-                    for row in x.into_iter().map(|row| row.unwrap()) {
+                    for row in y.into_iter().map(|row| row.unwrap()) {
                         count = row.read::<i64,_>("item_count");
-                        string_out = string_out + &count.to_string();
+                        println!("Got {} for {:?}", count, R::STRINGS[x].1);
+                        string_out = string_out;
                     }
                 },
 
                 Err(x) => string_out = string_out + "Errored out because of " + &x.to_string(),
             }
 
-            if length == string_out.len() {
+            if count == -1 {
                 string_out += &" Did not get results, despite statement working.";
             }
 

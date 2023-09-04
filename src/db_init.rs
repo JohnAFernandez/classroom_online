@@ -1,9 +1,6 @@
 use std::path::PathBuf;
 
 pub async fn init_database(path: PathBuf) -> sqlite::Connection {
-    if path.exists() {
-        return sqlite::open(path).unwrap();
-    }
 
     let connection = sqlite::open(path).unwrap();
 
