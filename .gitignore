@@ -24,8 +24,8 @@ hs_err_pid*
 replay_pid*
 
 # rust files
-db/target
-db/Cargo.lock
+target
+Cargo.lock
 .DS_Store
 
 # SQL files
