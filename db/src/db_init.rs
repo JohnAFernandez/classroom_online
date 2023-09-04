@@ -1,14 +1,14 @@
 use std::path::PathBuf;
 
-pub fn init_database(path : PathBuf) -> sqlite::Connection {
+pub async fn init_database(path: PathBuf) -> sqlite::Connection {
     if path.exists() {
         return sqlite::open(path).unwrap();
-    } 
+    }
 
     let connection = sqlite::open(path).unwrap();
 
     // TODO!  WE need some anscillary tables that will have to be checked.
-    // Not states, that can be done at the rust level.  But we will need to do zip codes 
+    // Not states, that can be done at the rust level.  But we will need to do zip codes
     // like that.  Also we need to do Disciplines .... Hmmmm
 
     // create users table. This is the basic information for all user types.

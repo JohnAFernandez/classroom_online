@@ -1,5 +1,3 @@
-
-
 // file for data verfication from insertion
 use chrono::Datelike;
 use sqlite;
@@ -7,7 +5,6 @@ use sqlite;
 pub struct V {}
 
 impl V {
-
     pub const USERS: usize = 0;
     pub const ORGANIZATIONS: usize = 1;
     pub const ADMINISTRATORS: usize = 2;
@@ -52,9 +49,7 @@ impl V {
         ("user_change_log", "change_id", ""),
     ];
 
-
-
-    pub fn check_id(connection: &sqlite::Connection, id: i64, table_id: usize) -> bool {
+    pub async fn check_id(connection: &sqlite::Connection, id: i64, table_id: usize) -> bool {
         if table_id > V::USER_CHANGE_LOG {
             panic!("FUNDAMENTAL ERROR IN YOUR SERVER PROGRAMMING! FIX ME!");
         }
@@ -76,7 +71,12 @@ impl V {
         return false;
     }
 
-    pub fn check_id_pair(connection: &sqlite::Connection, id_1: i64, id_2 : i64, table_id: usize) -> bool {
+    pub async fn check_id_pair(
+        connection: &sqlite::Connection,
+        id_1: i64,
+        id_2: i64,
+        table_id: usize,
+    ) -> bool {
         if table_id > V::USER_CHANGE_LOG {
             panic!("FUNDAMENTAL ERROR IN YOUR SERVER PROGRAMMING! FIX ME!");
         }
@@ -100,13 +100,12 @@ impl V {
         }
 
         return false;
-            
     }
 
     const AT: &str = "@";
     const PERIOD: &str = ".";
 
-    pub fn check_email(to_check: String) -> bool {
+    pub async fn check_email(to_check: String) -> bool {
         let check = to_check.find(V::AT);
 
         let loc: usize;
@@ -145,7 +144,7 @@ impl V {
 
     const MAX_NAME_LENGTH: usize = 256;
 
-    pub fn check_name(name: &String) -> bool {
+    pub async fn check_name(name: &String) -> bool {
         // if there's no text in a name, or it's bigger than 64 characters, then reject
         if name.is_empty() || name.len() > V::MAX_NAME_LENGTH {
             return false;
@@ -162,7 +161,7 @@ impl V {
         return true;
     }
 
-    pub fn check_org_school_name(name: &String) -> bool {
+    pub async fn check_org_school_name(name: &String) -> bool {
         if name.is_empty() || name.len() > V::MAX_NAME_LENGTH {
             return false;
         }
@@ -171,7 +170,7 @@ impl V {
             return false;
         }
 
-        if !name.chars().all(|x| char::is_alphanumeric(x)){
+        if !name.chars().all(|x| char::is_alphanumeric(x)) {
             return false;
         }
 
@@ -181,7 +180,7 @@ impl V {
     const MMDDYY_LENGTH: usize = 8;
     const MMDDYYYY_LENGTH: usize = 10;
 
-    pub fn check_birthday(bd: &String) -> bool {
+    pub async fn check_birthday(bd: &String) -> bool {
         if bd.len() != V::MMDDYY_LENGTH && bd.len() != V::MMDDYYYY_LENGTH {
             return false;
         }

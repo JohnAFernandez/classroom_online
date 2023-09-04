@@ -147,7 +147,7 @@ impl R {
     const TEACHER_SCHOOL_FIELDS: [&str; 2] = ["teacher_id", "school_id"];
     const ADMINISTRATOR_SCHOOL_FIELDS: [&str; 2] = ["administrator_id", "school_id"];
 
-    pub fn retrieve_details(
+    pub async fn retrieve_details(
         connection: &sqlite::Connection,
         table_id: usize,
         item_id: String,
@@ -363,7 +363,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_classes_from_school(
+    pub async fn retrieve_classes_from_school(
         connection: &sqlite::Connection,
         school_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -373,7 +373,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_administrator_from_user(
+    pub async fn retrieve_administrator_from_user(
         connection: &sqlite::Connection,
         user_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -383,7 +383,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_teacher_from_user(
+    pub async fn retrieve_teacher_from_user(
         connection: &sqlite::Connection,
         user_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -393,7 +393,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_student_from_user(
+    pub async fn retrieve_student_from_user(
         connection: &sqlite::Connection,
         user_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -403,7 +403,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_family_member_from_user(
+    pub async fn retrieve_family_member_from_user(
         connection: &sqlite::Connection,
         user_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -413,7 +413,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_schools_from_organization(
+    pub async fn retrieve_schools_from_organization(
         connection: &sqlite::Connection,
         organization_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -423,7 +423,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_teachers_from_school(
+    pub async fn retrieve_teachers_from_school(
         connection: &sqlite::Connection,
         school_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -433,7 +433,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_user_from_teacher(
+    pub async fn retrieve_user_from_teacher(
         connection: &sqlite::Connection,
         teacher_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -443,26 +443,26 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_user_from_administrator(
+    pub async fn retrieve_user_from_administrator(
         connection: &sqlite::Connection,
         administrator_id: i64,
-    ) -> Result<i64, sqlite::Error>{
+    ) -> Result<i64, sqlite::Error> {
         let query = "SELECT user_id FROM administrators WHERE administrator_id = ".to_owned()
             + &administrator_id.to_string();
 
-        match connection.prepare(query){
-            Ok(x)=> {
+        match connection.prepare(query) {
+            Ok(x) => {
                 for row in x.into_iter().map(|row| row.unwrap()) {
                     return Ok(row.read::<i64, _>(R::STRINGS[R::USERS].1));
-                } 
+                }
 
                 panic!("retrieve_user_from_administrator had no results, but did not encounter an error.  Investigate!");
-            },
-            Err(x)=>return Err(x),
+            }
+            Err(x) => return Err(x),
         }
     }
 
-    pub fn retrieve_user_from_family_member(
+    pub async fn retrieve_user_from_family_member(
         connection: &sqlite::Connection,
         member_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -472,7 +472,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_user_from_student(
+    pub async fn retrieve_user_from_student(
         connection: &sqlite::Connection,
         student_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -483,7 +483,7 @@ impl R {
     }
 
     // copy of String may be necessary.
-    pub fn retrieve_organization_from_name(
+    pub async fn retrieve_organization_from_name(
         connection: &sqlite::Connection,
         name: String,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -495,7 +495,7 @@ impl R {
     }
 
     // copy of String may be necessary.
-    pub fn retrieve_schools_from_name(
+    pub async fn retrieve_schools_from_name(
         connection: &sqlite::Connection,
         name: String,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -505,7 +505,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_administrators_from_school(
+    pub async fn retrieve_administrators_from_school(
         connection: &sqlite::Connection,
         school_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -516,7 +516,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_super_administrator_from_school(
+    pub async fn retrieve_super_administrator_from_school(
         connection: &sqlite::Connection,
         school_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {
@@ -527,7 +527,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub fn retrieve_assignments_from_class(
+    pub async fn retrieve_assignments_from_class(
         connection: &sqlite::Connection,
         class_id: i64,
     ) -> Result<Statement<'_>, sqlite::Error> {

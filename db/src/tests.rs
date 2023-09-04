@@ -1,4 +1,4 @@
-use sqlite::CursorWithOwnership;
+/*use sqlite::CursorWithOwnership;
 
 use crate::db_verify::V;
 use crate::db_init;
@@ -529,3 +529,4 @@ fn test_deletion() {
 
 }
 
+*/

@@ -1,4 +1,4 @@
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 // need these to print results and make sure we can test against each other.
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -17,7 +17,7 @@ pub struct User {
     deleted: bool,
 }
 
-pub fn build_user(
+pub async fn build_user(
     id: i64,
     email: String,
     username: String,
@@ -47,55 +47,60 @@ pub fn build_user(
     }
 }
 
+//pub async fn build_empty_user() -> User {
+//    let emp : String = "".to_string();
+//    build_user(0, emp, emp.copy(), emp.copy(), emp, emp, emp, emp, emp, emp, false, false)
+//}
+
 // some getter functions, because I don't want data to get clobbered by accident.
 impl User {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn email(&self) -> String {
+    pub async fn email(&self) -> String {
         return self.email.clone();
     }
 
-    pub fn username(&self) -> String {
+    pub async fn username(&self) -> String {
         return self.username.clone();
     }
 
     // this should not be used to send information to a client. This should only be used
     // for inbound information being applied to the database
-    pub fn password(&self) -> String {
+    pub async fn password(&self) -> String {
         return self.password.clone();
     }
 
-    pub fn first_name(&self) -> String {
+    pub async fn first_name(&self) -> String {
         return self.first_name.clone();
     }
 
-    pub fn last_name(&self) -> String {
+    pub async fn last_name(&self) -> String {
         return self.last_name.clone();
     }
 
-    pub fn birthday(&self) -> String {
+    pub async fn birthday(&self) -> String {
         return self.birthday.clone();
     }
 
-    pub fn date_registered(&self) -> String {
+    pub async fn date_registered(&self) -> String {
         return self.date_registered.clone();
     }
 
-    pub fn phone(&self) -> String {
+    pub async fn phone(&self) -> String {
         return self.phone.clone();
     }
 
-    pub fn icon(&self) -> String {
+    pub async fn icon(&self) -> String {
         return self.icon.clone();
     }
 
-    pub fn hidden(&self) -> bool {
+    pub async fn hidden(&self) -> bool {
         return self.hidden;
     }
 
-    pub fn deleted(&self) -> bool {
+    pub async fn deleted(&self) -> bool {
         return self.deleted;
     }
 }
@@ -113,7 +118,7 @@ pub struct Organization {
     country: String,
 }
 
-pub fn build_organization(
+pub async fn build_organization(
     id: i64,
     name: String,
     address1: String,
@@ -138,39 +143,39 @@ pub fn build_organization(
 }
 
 impl Organization {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn name(&self) -> String {
+    pub async fn name(&self) -> String {
         return self.name.clone();
     }
 
-    pub fn address1(&self) -> String {
+    pub async fn address1(&self) -> String {
         return self.address1.clone();
     }
 
-    pub fn address2(&self) -> String {
+    pub async fn address2(&self) -> String {
         return self.address2.clone();
     }
 
-    pub fn city(&self) -> String {
+    pub async fn city(&self) -> String {
         return self.city.clone();
     }
 
-    pub fn state(&self) -> String {
+    pub async fn state(&self) -> String {
         return self.state.clone();
     }
 
-    pub fn zip(&self) -> String {
+    pub async fn zip(&self) -> String {
         return self.zip.clone();
     }
 
-    pub fn phone(&self) -> String {
+    pub async fn phone(&self) -> String {
         return self.phone.clone();
     }
 
-    pub fn country(&self) -> String {
+    pub async fn country(&self) -> String {
         return self.country.clone();
     }
 }
@@ -182,20 +187,20 @@ pub struct Administrator {
     level: String,
 }
 
-pub fn build_administrator(id: i64, user_id: i64, level: String) -> Administrator {
+pub async fn build_administrator(id: i64, user_id: i64, level: String) -> Administrator {
     Administrator { id, user_id, level }
 }
 
 impl Administrator {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 
-    pub fn level(&self) -> String {
+    pub async fn level(&self) -> String {
         return self.level.clone();
     }
 }
@@ -216,7 +221,7 @@ pub struct School {
     country: String,
 }
 
-pub fn build_school(
+pub async fn build_school(
     id: i64,
     organization_id: i64,
     super_administrator_id: i64,
@@ -247,51 +252,51 @@ pub fn build_school(
 }
 
 impl School {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn organization_id(&self) -> i64 {
+    pub async fn organization_id(&self) -> i64 {
         return self.organization_id;
     }
 
-    pub fn super_administrator_id(&self) -> i64 {
+    pub async fn super_administrator_id(&self) -> i64 {
         return self.super_administrator_id;
     }
 
-    pub fn icon(&self) -> String {
+    pub async fn icon(&self) -> String {
         return self.icon.clone();
     }
 
-    pub fn name(&self) -> String {
+    pub async fn name(&self) -> String {
         return self.name.clone();
     }
 
-    pub fn address1(&self) -> String {
+    pub async fn address1(&self) -> String {
         return self.address1.clone();
     }
 
-    pub fn address2(&self) -> String {
+    pub async fn address2(&self) -> String {
         return self.address2.clone();
     }
 
-    pub fn city(&self) -> String {
+    pub async fn city(&self) -> String {
         return self.city.clone();
     }
 
-    pub fn state(&self) -> String {
+    pub async fn state(&self) -> String {
         return self.state.clone();
     }
 
-    pub fn zip(&self) -> String {
+    pub async fn zip(&self) -> String {
         return self.zip.clone();
     }
 
-    pub fn phone(&self) -> String {
+    pub async fn phone(&self) -> String {
         return self.phone.clone();
     }
 
-    pub fn country(&self) -> String {
+    pub async fn country(&self) -> String {
         return self.country.clone();
     }
 }
@@ -302,7 +307,7 @@ pub struct AdministratorSchool {
     school_id: i64,
 }
 
-pub fn build_administrator_school(admin_id: i64, school_id: i64) -> AdministratorSchool {
+pub async fn build_administrator_school(admin_id: i64, school_id: i64) -> AdministratorSchool {
     AdministratorSchool {
         admin_id,
         school_id,
@@ -310,11 +315,11 @@ pub fn build_administrator_school(admin_id: i64, school_id: i64) -> Administrato
 }
 
 impl AdministratorSchool {
-    pub fn admin_id(&self) -> i64 {
+    pub async fn admin_id(&self) -> i64 {
         return self.admin_id;
     }
 
-    pub fn school_id(&self) -> i64 {
+    pub async fn school_id(&self) -> i64 {
         return self.school_id;
     }
 }
@@ -325,7 +330,7 @@ pub struct Teacher {
     user_id: i64,
 }
 
-pub fn build_teacher(teacher_id: i64, user_id: i64) -> Teacher {
+pub async fn build_teacher(teacher_id: i64, user_id: i64) -> Teacher {
     Teacher {
         teacher_id,
         user_id,
@@ -333,11 +338,11 @@ pub fn build_teacher(teacher_id: i64, user_id: i64) -> Teacher {
 }
 
 impl Teacher {
-    pub fn teacher_id(&self) -> i64 {
+    pub async fn teacher_id(&self) -> i64 {
         return self.teacher_id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 }
@@ -348,10 +353,10 @@ pub struct EmployeeSupervisor {
     user_id: i64,
     administrator_id: i64,
     supervisor_name: String,
-    organization_id : i64,
+    organization_id: i64,
 }
 
-pub fn build_employee_supervisor(
+pub async fn build_employee_supervisor(
     id: i64,
     user_id: i64,
     administrator_id: i64,
@@ -368,27 +373,27 @@ pub fn build_employee_supervisor(
 }
 
 impl EmployeeSupervisor {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 
-    pub fn administrator_id(&self) -> i64 {
+    pub async fn administrator_id(&self) -> i64 {
         return self.administrator_id;
     }
 
-    pub fn supervisor_name(&self) -> String {
+    pub async fn supervisor_name(&self) -> String {
         return self.supervisor_name.clone();
     }
 
-    pub fn set_supervisor_name(&mut self, name_in : String) {
+    pub async fn set_supervisor_name(&mut self, name_in: String) {
         self.supervisor_name = name_in;
     }
 
-    pub fn organization_id(&self) -> i64 {
+    pub async fn organization_id(&self) -> i64 {
         return self.organization_id;
     }
 }
@@ -399,7 +404,7 @@ pub struct TeacherSchool {
     school_id: i64,
 }
 
-pub fn build_teacher_school(teacher_id: i64, school_id: i64) -> TeacherSchool {
+pub async fn build_teacher_school(teacher_id: i64, school_id: i64) -> TeacherSchool {
     TeacherSchool {
         teacher_id,
         school_id,
@@ -407,14 +412,13 @@ pub fn build_teacher_school(teacher_id: i64, school_id: i64) -> TeacherSchool {
 }
 
 impl TeacherSchool {
-    pub fn teacher_id(&self) -> i64 {
+    pub async fn teacher_id(&self) -> i64 {
         return self.teacher_id;
     }
 
-    pub fn school_id(&self) -> i64 {
+    pub async fn school_id(&self) -> i64 {
         return self.school_id;
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -427,7 +431,7 @@ pub struct Subject {
     discipline: String,
 }
 
-pub fn build_subject(
+pub async fn build_subject(
     id: i64,
     name: String,
     ap: bool,
@@ -446,30 +450,29 @@ pub fn build_subject(
 }
 
 impl Subject {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn name(&self) -> String {
+    pub async fn name(&self) -> String {
         return self.name.clone();
     }
 
-    pub fn ap(&self) -> bool {
+    pub async fn ap(&self) -> bool {
         return self.ap;
     }
 
-    pub fn ib(&self) -> bool {
+    pub async fn ib(&self) -> bool {
         return self.ib;
     }
 
-    pub fn target_year(&self) -> String {
+    pub async fn target_year(&self) -> String {
         return self.target_year.clone();
     }
 
-    pub fn discipline(&self) -> String {
+    pub async fn discipline(&self) -> String {
         return self.discipline.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -485,7 +488,7 @@ pub struct Class {
     days_scheduled: String,
 }
 
-pub fn build_class(
+pub async fn build_class(
     id: i64,
     school_id: i64,
     subject_id: i64,
@@ -510,42 +513,41 @@ pub fn build_class(
 }
 
 impl Class {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn school_id(&self) -> i64 {
+    pub async fn school_id(&self) -> i64 {
         return self.school_id;
     }
 
-    pub fn subject_id(&self) -> i64 {
+    pub async fn subject_id(&self) -> i64 {
         return self.subject_id;
     }
 
-    pub fn year(&self) -> String {
+    pub async fn year(&self) -> String {
         return self.year.clone();
     }
 
-    pub fn start_day(&self) -> String {
+    pub async fn start_day(&self) -> String {
         return self.start_day.clone();
     }
 
-    pub fn end_day(&self) -> String {
+    pub async fn end_day(&self) -> String {
         return self.end_day.clone();
     }
 
-    pub fn start_time(&self) -> i32 {
+    pub async fn start_time(&self) -> i32 {
         return self.start_time;
     }
 
-    pub fn end_time(&self) -> i32 {
+    pub async fn end_time(&self) -> i32 {
         return self.end_time;
     }
 
-    pub fn days_scheduled(&self) -> String {
+    pub async fn days_scheduled(&self) -> String {
         return self.days_scheduled.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -555,7 +557,7 @@ pub struct TeacherClass {
     role: String,
 }
 
-pub fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> TeacherClass {
+pub async fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> TeacherClass {
     TeacherClass {
         teacher_id,
         class_id,
@@ -564,15 +566,15 @@ pub fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> Teac
 }
 
 impl TeacherClass {
-    pub fn teacher_id(&self) -> i64 {
+    pub async fn teacher_id(&self) -> i64 {
         return self.teacher_id;
     }
 
-        pub fn class_id(&self) -> i64 {
+    pub async fn class_id(&self) -> i64 {
         return self.class_id;
     }
 
-    pub fn role(&self) -> String {
+    pub async fn role(&self) -> String {
         return self.role.clone();
     }
 }
@@ -583,16 +585,16 @@ pub struct Student {
     user_id: i64,
 }
 
-pub fn build_student(id: i64, user_id: i64) -> Student {
+pub async fn build_student(id: i64, user_id: i64) -> Student {
     Student { id, user_id }
 }
 
 impl Student {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 }
@@ -603,7 +605,7 @@ pub struct StudentClass {
     class_id: i64,
 }
 
-pub fn build_student_class(student_id: i64, class_id: i64) -> StudentClass {
+pub async fn build_student_class(student_id: i64, class_id: i64) -> StudentClass {
     StudentClass {
         student_id,
         class_id,
@@ -611,14 +613,13 @@ pub fn build_student_class(student_id: i64, class_id: i64) -> StudentClass {
 }
 
 impl StudentClass {
-    pub fn student_id(&self) -> i64 {
+    pub async fn student_id(&self) -> i64 {
         return self.student_id;
     }
 
-    pub fn class_id(&self) -> i64 {
+    pub async fn class_id(&self) -> i64 {
         return self.class_id;
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -627,19 +628,18 @@ pub struct Family {
     name: String,
 }
 
-pub fn build_family(family_id: i64, name: String) -> Family {
+pub async fn build_family(family_id: i64, name: String) -> Family {
     Family { family_id, name }
 }
 
 impl Family {
-    pub fn family_id(&self) -> i64 {
+    pub async fn family_id(&self) -> i64 {
         return self.family_id;
     }
 
-    pub fn name(&self) -> String {
+    pub async fn name(&self) -> String {
         return self.name.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -649,7 +649,7 @@ pub struct FamilyUser {
     relationship: String,
 }
 
-pub fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> FamilyUser {
+pub async fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> FamilyUser {
     FamilyUser {
         family_id,
         user_id,
@@ -658,18 +658,17 @@ pub fn build_family_user(family_id: i64, user_id: i64, relationship: String) -> 
 }
 
 impl FamilyUser {
-    pub fn family_id(&self) -> i64 {
+    pub async fn family_id(&self) -> i64 {
         return self.family_id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 
-    pub fn relationship(&self) -> String {
+    pub async fn relationship(&self) -> String {
         return self.relationship.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -681,7 +680,7 @@ pub struct FamilyMember {
     phone: String,
 }
 
-pub fn build_family_member(
+pub async fn build_family_member(
     id: i64,
     user_id: i64,
     notification_methods: String,
@@ -698,30 +697,29 @@ pub fn build_family_member(
 }
 
 impl FamilyMember {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 
-    pub fn notification_methods(&self) -> String {
+    pub async fn notification_methods(&self) -> String {
         return self.notification_methods.clone();
     }
 
-    pub fn email(&self) -> String {
+    pub async fn email(&self) -> String {
         return self.email.clone();
     }
 
-    pub fn set_email(&mut self, email: String) {
+    pub async fn set_email(&mut self, email: String) {
         self.email = email;
     }
 
-    pub fn phone(&self) -> String {
+    pub async fn phone(&self) -> String {
         return self.phone.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -735,7 +733,7 @@ pub struct Assignment {
     template: String,
 }
 
-pub fn build_assignment(
+pub async fn build_assignment(
     id: i64,
     class_id: i64,
     required: bool,
@@ -756,34 +754,33 @@ pub fn build_assignment(
 }
 
 impl Assignment {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn class_id(&self) -> i64 {
+    pub async fn class_id(&self) -> i64 {
         return self.class_id;
     }
 
-    pub fn required(&self) -> bool {
+    pub async fn required(&self) -> bool {
         return self.required;
     }
 
-    pub fn grade_scale(&self) -> String {
+    pub async fn grade_scale(&self) -> String {
         return self.grade_scale.clone();
     }
 
-    pub fn name(&self) -> String {
+    pub async fn name(&self) -> String {
         return self.name.clone();
     }
 
-    pub fn description(&self) -> String {
+    pub async fn description(&self) -> String {
         return self.description.clone();
     }
 
-    pub fn template(&self) -> String {
+    pub async fn template(&self) -> String {
         return self.template.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -795,7 +792,13 @@ pub struct Submission {
     grade: String,
 }
 
-pub fn build_submission(id: i64, user_id: i64, assignment_id: i64, contents: String, grade: String) -> Submission {
+pub async fn build_submission(
+    id: i64,
+    user_id: i64,
+    assignment_id: i64,
+    contents: String,
+    grade: String,
+) -> Submission {
     Submission {
         id,
         user_id,
@@ -806,26 +809,25 @@ pub fn build_submission(id: i64, user_id: i64, assignment_id: i64, contents: Str
 }
 
 impl Submission {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 
-    pub fn assignment_id(&self) -> i64{
+    pub async fn assignment_id(&self) -> i64 {
         return self.assignment_id;
     }
 
-    pub fn contents(&self) -> String {
+    pub async fn contents(&self) -> String {
         return self.contents.clone();
     }
 
-    pub fn grade(&self) -> String {
+    pub async fn grade(&self) -> String {
         return self.grade.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -836,7 +838,7 @@ pub struct Comment {
     contents: String,
 }
 
-pub fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String) -> Comment {
+pub async fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String) -> Comment {
     Comment {
         id,
         user_id,
@@ -846,22 +848,21 @@ pub fn build_comment(id: i64, user_id: i64, assignment_id: i64, contents: String
 }
 
 impl Comment {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn user_id(&self) -> i64 {
+    pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
 
-    pub fn assignment_id(&self) -> i64 {
+    pub async fn assignment_id(&self) -> i64 {
         return self.assignment_id;
     }
 
-    pub fn contents(&self) -> String {
+    pub async fn contents(&self) -> String {
         return self.contents.clone();
     }
-
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -873,7 +874,7 @@ pub struct ChangeLogItem {
     timestamp: String,
 }
 
-pub fn build_change_log_item(
+pub async fn build_change_log_item(
     id: i64,
     source_name: String,
     change_type: i32,
@@ -890,23 +891,23 @@ pub fn build_change_log_item(
 }
 
 impl ChangeLogItem {
-    pub fn id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.id;
     }
 
-    pub fn source_name(&self) -> String {
+    pub async fn source_name(&self) -> String {
         return self.source_name.clone();
     }
 
-    pub fn change_type(&self) -> i32 {
+    pub async fn change_type(&self) -> i32 {
         return self.change_type;
     }
 
-    pub fn old_value(&self) -> String {
+    pub async fn old_value(&self) -> String {
         return self.old_value.clone();
     }
 
-    pub fn timestamp(&self) -> String {
+    pub async fn timestamp(&self) -> String {
         return self.timestamp.clone();
     }
 }

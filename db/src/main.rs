@@ -12,31 +12,38 @@ mod rest_api;
 
 mod tests;
 
-use std::path::PathBuf;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use sqlite;
+use std::path::PathBuf;
+use std::fs;
+
+
 
 #[actix_web::main]
-async fn main() {
+async fn main() -> std::io::Result<()> {
+    let location = ".//src//db//db.sql";
+    match fs::remove_file(location) { Ok(_) => (), Err(_) => ()};
+
+    println!("1");
+    // init the database if it has not been inited already
+    let connection = db_init::init_database(PathBuf::from(location));
+
+    println!("2");
 
     HttpServer::new(|| {
         App::new()
-            .service(hello)
-            .service(echo)
-            .route("/hey", web::get().to(manual_hello))
-    })
+            .service(ping_the_server)
+            .service(rest_api::post_user)
+            .service(rest_api::post_organization)
+            .service(rest_api::post_school)
+        })
     .bind(("127.0.0.1", 8080))?
     .run()
-    .await;
-
-    // establish our database
-    let _connection = db_init::init_database(PathBuf::from(".//src//db//main.sql"));
-
-    // establish server's services here.
-    //    loop {
-    //       break;
-    //    }
-
-    println!("Connection listener for app section not yet implemented.  Aborting. ")
+    .await
 }
 
+#[get("/")]
+async fn ping_the_server() -> HttpResponse {
+    HttpResponse::Ok().body("You've reached the classroom online rest api.  Please submit your users.")
+}
 

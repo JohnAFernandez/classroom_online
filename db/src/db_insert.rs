@@ -1,8 +1,8 @@
 // This file is for insertion of new information into the database.
 // Data needs to be validated before these functions are called.
 
-use sqlite;
 use rand::Rng;
+use sqlite;
 
 pub struct I {}
 
@@ -27,7 +27,7 @@ impl I {
     // end of value insertion list where last item was sql string.
     const S_END: &str = "\");";
 
-    pub fn insert_user(
+    pub async fn insert_user(
         connection: &sqlite::Connection,
         email: &String,
         password: &String,
@@ -39,7 +39,7 @@ impl I {
         icon: &String,
     ) {
         // temporarily random until we can figure out a safe way to increment the suffix
-        // actually it should be easy using 
+        // actually it should be easy using
         let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
         let suffix: i32 = rng.gen();
 
@@ -48,12 +48,12 @@ impl I {
         let query: String = I::INSERT.to_owned() + "users (email, username, password, first_name, last_name, birthday, date_registered, phone, icon)" 
         + I::VALUES_S + email + I::S_AND_S + &username + I::S_AND_S + password + I::S_AND_S + first_name + I::S_AND_S + last_name + I::S_AND_S + birthday + I::S_AND_S + date_registered + I::S_AND_S + phone + I::S_AND_S + icon + I::S_END;
 
-        // TODO! This runction needs to alter the created user account to add the date registered 
+        // TODO! This runction needs to alter the created user account to add the date registered
 
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_organization(
+    pub async fn insert_organization(
         connection: &sqlite::Connection,
         name: &String,
         address1: &String,
@@ -87,7 +87,11 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_administrator(connection: &sqlite::Connection, user_id: &String, level: &String) {
+    pub async fn insert_administrator(
+        connection: &sqlite::Connection,
+        user_id: &String,
+        level: &String,
+    ) {
         let query: String = I::INSERT.to_owned()
             + "administrators (user_id, level)"
             + I::VALUES
@@ -99,7 +103,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_school(
+    pub async fn insert_school(
         connection: &sqlite::Connection,
         organization_id: &String,
         super_administrator_id: &String,
@@ -119,14 +123,14 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_teacher(connection: &sqlite::Connection, user_id: &String) {
+    pub async fn insert_teacher(connection: &sqlite::Connection, user_id: &String) {
         let query: String =
             I::INSERT.to_owned() + "teachers (user_id)" + I::VALUES + user_id + I::END;
 
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_subject(
+    pub async fn insert_subject(
         connection: &sqlite::Connection,
         name: String,
         ap: String,
@@ -151,7 +155,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_class(
+    pub async fn insert_class(
         connection: &sqlite::Connection,
         school_id: &String,
         subject_id: &String,
@@ -168,21 +172,21 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_student(connection: &sqlite::Connection, user_id: &String) {
+    pub async fn insert_student(connection: &sqlite::Connection, user_id: &String) {
         let query: String =
             I::INSERT.to_owned() + "students (user_id)" + I::VALUES + user_id + I::END;
 
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_family(connection: &sqlite::Connection, name: &String) {
+    pub async fn insert_family(connection: &sqlite::Connection, name: &String) {
         let query: String =
             I::INSERT.to_owned() + "families (name)" + I::VALUES_S + name + I::S_END;
 
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_family_member(
+    pub async fn insert_family_member(
         connection: &sqlite::Connection,
         user_id: &String,
         notification_methods: &String,
@@ -204,7 +208,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_assignment(
+    pub async fn insert_assignment(
         connection: &sqlite::Connection,
         class_id: &String,
         required: String,
@@ -232,7 +236,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_submission(
+    pub async fn insert_submission(
         connection: &sqlite::Connection,
         user_id: &String,
         assignment_id: &String,
@@ -254,7 +258,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_comments(
+    pub async fn insert_comments(
         connection: &sqlite::Connection,
         user_id: &String,
         assignment_id: &String,
@@ -273,7 +277,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_change_log(
+    pub async fn insert_change_log(
         connection: &sqlite::Connection,
         source_name: &String,
         type_of_change: &String,
@@ -295,7 +299,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_administrator_school(
+    pub async fn insert_administrator_school(
         connection: &sqlite::Connection,
         administrator_id: &String,
         school_id: &String,
@@ -311,7 +315,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_employee_supervisor(
+    pub async fn insert_employee_supervisor(
         connection: &sqlite::Connection,
         user_id: &String,
         administrator_id: &String,
@@ -333,7 +337,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_teachers_schools(
+    pub async fn insert_teachers_schools(
         connection: &sqlite::Connection,
         teacher_id: &String,
         school_id: &String,
@@ -349,7 +353,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_teachers_classes(
+    pub async fn insert_teachers_classes(
         connection: &sqlite::Connection,
         teacher_id: &String,
         class_id: &String,
@@ -368,7 +372,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_students_classes(
+    pub async fn insert_students_classes(
         connection: &sqlite::Connection,
         student_id: &String,
         class_id: &String,
@@ -384,7 +388,7 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub fn insert_families_users(
+    pub async fn insert_families_users(
         connection: &sqlite::Connection,
         family_id: &String,
         user_id: &String,
