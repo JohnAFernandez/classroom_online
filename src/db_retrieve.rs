@@ -199,7 +199,7 @@ impl R {
                     query = query + R::SCHOOL_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::SCHOOL_FIELDS[R::SCHOOL_FIELDS.len()]
+                    + R::SCHOOL_FIELDS[R::SCHOOL_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::SCHOOLS].0
                     + " WHERE "
@@ -212,7 +212,7 @@ impl R {
                     query = query + R::TEACHER_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::TEACHER_FIELDS[R::TEACHER_FIELDS.len()]
+                    + R::TEACHER_FIELDS[R::TEACHER_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::TEACHERS].0
                     + " WHERE "
@@ -225,7 +225,7 @@ impl R {
                     query = query + R::EMPLOYEES_SUPERVISOR_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::EMPLOYEES_SUPERVISOR_FIELDS[R::EMPLOYEES_SUPERVISOR_FIELDS.len()]
+                    + R::EMPLOYEES_SUPERVISOR_FIELDS[R::EMPLOYEES_SUPERVISOR_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::EMPLOYEES_SUPERVISORS].0
                     + " WHERE "
@@ -238,7 +238,7 @@ impl R {
                     query = query + R::SUBJECT_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::SUBJECT_FIELDS[R::SUBJECT_FIELDS.len()]
+                    + R::SUBJECT_FIELDS[R::SUBJECT_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::SUBJECTS].0
                     + " WHERE "
@@ -251,7 +251,7 @@ impl R {
                     query = query + R::CLASS_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::CLASS_FIELDS[R::CLASS_FIELDS.len()]
+                    + R::CLASS_FIELDS[R::CLASS_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::CLASSES].0
                     + " WHERE "
@@ -264,7 +264,7 @@ impl R {
                     query = query + R::STUDENT_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::STUDENT_FIELDS[R::STUDENT_FIELDS.len()]
+                    + R::STUDENT_FIELDS[R::STUDENT_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::STUDENTS].0
                     + " WHERE "
@@ -277,7 +277,7 @@ impl R {
                     query = query + R::FAMILY_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::FAMILY_FIELDS[R::FAMILY_FIELDS.len()]
+                    + R::FAMILY_FIELDS[R::FAMILY_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::FAMILIES].0
                     + " WHERE "
@@ -290,7 +290,7 @@ impl R {
                     query = query + R::FAMILY_MEMBER_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::FAMILY_MEMBER_FIELDS[R::FAMILY_MEMBER_FIELDS.len()]
+                    + R::FAMILY_MEMBER_FIELDS[R::FAMILY_MEMBER_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::FAMILY_MEMBERS].0
                     + " WHERE "
@@ -303,7 +303,7 @@ impl R {
                     query = query + R::ASSIGNMENT_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::ASSIGNMENT_FIELDS[R::ASSIGNMENT_FIELDS.len()]
+                    + R::ASSIGNMENT_FIELDS[R::ASSIGNMENT_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::ASSIGNMENTS].0
                     + " WHERE "
@@ -316,7 +316,7 @@ impl R {
                     query = query + R::SUBMISSION_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::SUBMISSION_FIELDS[R::SUBMISSION_FIELDS.len()]
+                    + R::SUBMISSION_FIELDS[R::SUBMISSION_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::SUBMISSIONS].0
                     + " WHERE "
@@ -329,7 +329,7 @@ impl R {
                     query = query + R::COMMENT_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::COMMENT_FIELDS[R::COMMENT_FIELDS.len()]
+                    + R::COMMENT_FIELDS[R::COMMENT_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::COMMENTS].0
                     + " WHERE "
@@ -342,7 +342,7 @@ impl R {
                     query = query + R::USER_CHANGE_LOG_FIELDS[i] + &", ".to_string()
                 }
                 query = query
-                    + R::USER_CHANGE_LOG_FIELDS[R::USER_CHANGE_LOG_FIELDS.len()]
+                    + R::USER_CHANGE_LOG_FIELDS[R::USER_CHANGE_LOG_FIELDS.len() - 1]
                     + &" FROM ".to_string()
                     + R::STRINGS[R::USER_CHANGE_LOG].0
                     + " WHERE "
