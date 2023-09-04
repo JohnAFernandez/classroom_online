@@ -318,7 +318,7 @@ async fn post_student_class(req_body: String) -> impl Responder {
     // connect to the database 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
 
-    let new_record: types::EmployeeSupervisor;
+    let new_record: types::StudentClass;
 
     // do we have a 
     match serde_json::from_str(&req_body) {
@@ -326,9 +326,50 @@ async fn post_student_class(req_body: String) -> impl Responder {
         Err(x) => return HttpResponse::UnprocessableEntity().body("Bad format for post request. See serde error: ".to_string() + &x.to_string()),
     }
 
-    match otr::employee_supervisor_to_row(&connection, new_record).await {
+    match otr::student_class_to_row(&connection, new_record).await {
         x if x.0 == true => HttpResponse::Ok().body(x.1 + &req_body),
         x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
         _=> HttpResponse::Ok().body(req_body),
     }
 }
+
+#[post("/teacher-class")]
+async fn post_teacher_class(req_body: String) -> impl Responder {
+    // connect to the database 
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    let new_record: types::TeacherClass;
+
+    // do we have a 
+    match serde_json::from_str(&req_body) {
+        Ok(x) => new_record = x,
+        Err(x) => return HttpResponse::UnprocessableEntity().body("Bad format for post request. See serde error: ".to_string() + &x.to_string()),
+    }
+
+    match otr::teacher_class_to_row(&connection, new_record).await {
+        x if x.0 == true => HttpResponse::Ok().body(x.1 + &req_body),
+        x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
+        _=> HttpResponse::Ok().body(req_body),
+    }
+}
+
+#[post("/administrator-school")]
+async fn post_administrator_school(req_body: String) -> impl Responder {
+    // connect to the database 
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    let new_record: types::AdministratorSchool;
+
+    // do we have a 
+    match serde_json::from_str(&req_body) {
+        Ok(x) => new_record = x,
+        Err(x) => return HttpResponse::UnprocessableEntity().body("Bad format for post request. See serde error: ".to_string() + &x.to_string()),
+    }
+
+    match otr::administrator_school_to_row(&connection, new_record).await {
+        x if x.0 == true => HttpResponse::Ok().body(x.1 + &req_body),
+        x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
+        _=> HttpResponse::Ok().body(req_body),
+    }
+}
+
