@@ -16,7 +16,7 @@ pub async fn family_to_row(
         );
     }
 
-    I::insert_family(connection, &family.name().await);
+    I::insert_family(connection, &family.name().await).await;
 
     (true, "Success!".to_string())
 }
@@ -491,7 +491,7 @@ pub async fn employee_supervisor_to_row(
 
                         if !name.is_empty() {
                             log = log + "Successfully found supervisor name \"" + &name + "\"";
-                            employee_supervisor.set_supervisor_name(name);
+                            employee_supervisor.set_supervisor_name(name).await;
                         }
 
                         break;
