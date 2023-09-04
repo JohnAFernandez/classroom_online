@@ -3,7 +3,7 @@ use crate::db_retrieve::R;
 use crate::db_row_to_object as rto;
 use crate::db_object_to_row as otr;
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, HttpResponse, Responder};
 use std::path::PathBuf;
 use sqlite;
 
@@ -33,6 +33,361 @@ async fn get_user(req_body: String, path: web::Path<u64>) -> HttpResponse {
 
     return HttpResponse::InternalServerError().body("Unknown Server Error.");
 }
+
+#[get("/administrator/{id}")]
+async fn get_administrator(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::ADMINISTRATORS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Administrator;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_administrator(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/organization/{id}")]
+async fn get_organization(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::ORGANIZATIONS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Organization;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_organization(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/school/{id}")]
+async fn get_school(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::SCHOOLS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::School;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_school(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+
+#[get("/teacher/{id}")]
+async fn get_teacher(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::TEACHERS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Teacher;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_teacher(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/employee_supervisor/{id}")]
+async fn get_employee_supervisor(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::EMPLOYEES_SUPERVISORS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::EmployeeSupervisor;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_employee_supervisor(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+
+#[get("/subject/{id}")]
+async fn get_subject(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::SUBJECTS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Subject;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_subject(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/class/{id}")]
+async fn get_class(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::CLASSES, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Class;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_class(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/student/{id}")]
+async fn get_student(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::STUDENTS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Student;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_student(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/family/{id}")]
+async fn get_family(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::FAMILIES, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Family;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_family(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/family-member/{id}")]
+async fn get_family_member(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::FAMILY_MEMBERS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::FamilyMember;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_family_member(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/assignment/{id}")]
+async fn get_assignment(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::ASSIGNMENTS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Assignment;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_assignment(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+#[get("/submission/{id}")]
+async fn get_submission(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::SUBMISSIONS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Submission;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_submission(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
+
+#[get("/comment/{id}")]
+async fn get_comment(req_body: String, path: web::Path<u64>) -> HttpResponse {
+    let id = path.into_inner();
+
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::COMMENTS, id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Comment;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_comment(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.");
+}
+
 
 #[post("/user")]
 async fn post_user(req_body: String) -> HttpResponse {

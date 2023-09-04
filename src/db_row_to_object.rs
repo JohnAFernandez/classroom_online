@@ -137,6 +137,13 @@ pub async fn row_to_student_class(row: &sqlite::Row) -> types::StudentClass {
     ).await
 }
 
+pub async fn row_to_student(row: &sqlite::Row) -> types::Student{
+    types::build_student(
+        row.read::<i64, _>("student_id"),
+        row.read::<i64, _>("user_id"),
+    ).await
+}
+
 pub async fn row_to_family(row: &sqlite::Row) -> types::Family {
     types::build_family(
         row.read::<i64, _>("family_id"),

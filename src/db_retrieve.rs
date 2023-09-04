@@ -1,4 +1,4 @@
-use sqlite::{Connection, Statement};
+use sqlite::Statement;
 
 pub struct R {}
 
