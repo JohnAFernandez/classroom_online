@@ -12,7 +12,7 @@ mod rest_api;
 
 mod tests;
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Route};
 use sqlite;
 use std::path::PathBuf;
 use std::fs;
@@ -24,18 +24,17 @@ async fn main() -> std::io::Result<()> {
     let location = ".//src//db//db.sql";
     match fs::remove_file(location) { Ok(_) => (), Err(_) => ()};
 
-    println!("1");
     // init the database if it has not been inited already
-    let connection = db_init::init_database(PathBuf::from(location));
+    let _connection = db_init::init_database(PathBuf::from(location));
 
-    println!("2");
+    println!("Classroom Online Server has successfully started!  Bound to 127.0.0.1:8080",);
 
     HttpServer::new(|| {
         App::new()
-            .service(ping_the_server)
             .service(rest_api::post_user)
             .service(rest_api::post_organization)
             .service(rest_api::post_school)
+            .service(home_page)
         })
     .bind(("127.0.0.1", 8080))?
     .run()
@@ -43,7 +42,16 @@ async fn main() -> std::io::Result<()> {
 }
 
 #[get("/")]
-async fn ping_the_server() -> HttpResponse {
-    HttpResponse::Ok().body("You've reached the classroom online rest api.  Please submit your users.")
+async fn home_page() -> HttpResponse {
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    let mut welcome: String = "<h1Welcome to Classroom Online!<h1>\n\nClassroom online is a work-in-progress classroom management app, but the database can be interacted with via our REST API.\n\nCurrent table statistics:\n".to_string();
+    let count = db_retrieve::R::retrieve_all_counts(&connection).await;
+
+    for item in count {
+        welcome = welcome + &item.0 + &item.1.to_string() + &"\n";
+    }
+
+    HttpResponse::Ok().body(welcome)
 }
 

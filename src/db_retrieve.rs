@@ -363,6 +363,37 @@ impl R {
         return connection.prepare(query);
     }
 
+    pub async fn retrieve_all_counts(connection: &sqlite::Connection) -> Vec<(String, i64)>{
+        let mut info_out : Vec<(String, i64)> = Vec::new();
+
+        for x in 0..R::USER_CHANGE_LOG {
+            let query: String = "SELECT COUNT(*) as item_count FROM ".to_string() + &R::STRINGS[x].0;
+            let mut string_out: String = R::STRINGS[x].0.to_owned() + &": ".to_string();
+            let length = string_out.len();
+            let mut count = -1;
+
+            match connection.prepare(query) {
+                Ok(x) => {
+                    // retrieve the contents of the query.
+                    for row in x.into_iter().map(|row| row.unwrap()) {
+                        count = row.read::<i64,_>("item_count");
+                        string_out = string_out + &count.to_string();
+                    }
+                },
+
+                Err(x) => string_out = string_out + "Errored out because of " + &x.to_string(),
+            }
+
+            if length == string_out.len() {
+                string_out += &" Did not get results, despite statement working.";
+            }
+
+            info_out.push((string_out, count));
+        }
+        
+        info_out
+    }
+
     pub async fn retrieve_classes_from_school(
         connection: &sqlite::Connection,
         school_id: i64,
