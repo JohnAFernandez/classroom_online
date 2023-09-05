@@ -4,7 +4,7 @@ use crate::db_delete::D;
 use crate::db_row_to_object as rto;
 use crate::db_object_to_row as otr;
 
-use actix_web::{get, post, patch, delete, web, HttpResponse, Responder};
+use actix_web::{get, post, delete, web, HttpResponse, Responder};
 use std::path::PathBuf;
 use sqlite;
 
@@ -792,10 +792,19 @@ async fn post_administrator_school(req_body: String) -> impl Responder {
 
 #[post("/teacher-school")]
 async fn post_teacher_school(req_body: String) -> impl Responder {
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
 
+    let new_record: types::TeacherSchool;
 
-    
-    _=> HttpResponse::Ok().body(req_body),
+    // do we have a 
+    match serde_json::from_str(&req_body) {
+        Ok(x) => new_record = x,
+        Err(x) => return HttpResponse::UnprocessableEntity().body("Bad format for post request. See serde error: ".to_string() + &x.to_string()),
+    }
 
-}
+    match otr::teacher_school_to_row(&connection, new_record).await {
+        x if x.0 == true => HttpResponse::Ok().body(x.1 + &req_body),
+        x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
+        _=> HttpResponse::Ok().body(req_body),
+    }}
 
