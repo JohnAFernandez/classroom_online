@@ -8,7 +8,7 @@ use std::path::PathBuf;
 use sqlite;
 
 #[get("/user/{id}")]
-async fn get_user(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_user(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -35,7 +35,7 @@ async fn get_user(req_body: String, path: web::Path<u64>) -> HttpResponse {
 }
 
 #[get("/administrator/{id}")]
-async fn get_administrator(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_administrator(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -62,7 +62,7 @@ async fn get_administrator(req_body: String, path: web::Path<u64>) -> HttpRespon
 }
 
 #[get("/organization/{id}")]
-async fn get_organization(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_organization(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -89,7 +89,7 @@ async fn get_organization(req_body: String, path: web::Path<u64>) -> HttpRespons
 }
 
 #[get("/school/{id}")]
-async fn get_school(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_school(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -117,7 +117,7 @@ async fn get_school(req_body: String, path: web::Path<u64>) -> HttpResponse {
 
 
 #[get("/teacher/{id}")]
-async fn get_teacher(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_teacher(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -144,7 +144,7 @@ async fn get_teacher(req_body: String, path: web::Path<u64>) -> HttpResponse {
 }
 
 #[get("/employee_supervisor/{id}")]
-async fn get_employee_supervisor(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_employee_supervisor(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -172,7 +172,7 @@ async fn get_employee_supervisor(req_body: String, path: web::Path<u64>) -> Http
 
 
 #[get("/subject/{id}")]
-async fn get_subject(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_subject(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -199,7 +199,7 @@ async fn get_subject(req_body: String, path: web::Path<u64>) -> HttpResponse {
 }
 
 #[get("/class/{id}")]
-async fn get_class(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_class(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -226,7 +226,7 @@ async fn get_class(req_body: String, path: web::Path<u64>) -> HttpResponse {
 }
 
 #[get("/student/{id}")]
-async fn get_student(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_student(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -253,7 +253,7 @@ async fn get_student(req_body: String, path: web::Path<u64>) -> HttpResponse {
 }
 
 #[get("/family/{id}")]
-async fn get_family(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_family(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -280,7 +280,7 @@ async fn get_family(req_body: String, path: web::Path<u64>) -> HttpResponse {
 }
 
 #[get("/family-member/{id}")]
-async fn get_family_member(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_family_member(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -307,7 +307,7 @@ async fn get_family_member(req_body: String, path: web::Path<u64>) -> HttpRespon
 }
 
 #[get("/assignment/{id}")]
-async fn get_assignment(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_assignment(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -334,7 +334,7 @@ async fn get_assignment(req_body: String, path: web::Path<u64>) -> HttpResponse 
 }
 
 #[get("/submission/{id}")]
-async fn get_submission(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_submission(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
@@ -362,7 +362,7 @@ async fn get_submission(req_body: String, path: web::Path<u64>) -> HttpResponse 
 
 
 #[get("/comment/{id}")]
-async fn get_comment(req_body: String, path: web::Path<u64>) -> HttpResponse {
+async fn get_comment(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
 
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
