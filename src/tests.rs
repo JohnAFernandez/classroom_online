@@ -167,6 +167,7 @@ async fn test_database_creation_insertion_retrieval(){
         &"1".to_string(),
         &"1".to_string(),
         &"Just a teacher, lol".to_string(),
+        "1".to_string(),
     ).await;
     I::insert_students_classes(&connection, &"1".to_string(), &"1".to_string()).await;
 
@@ -460,6 +461,7 @@ async fn test_deletion() {
         &"1".to_string(),
         &"1".to_string(),
         &"Just a teacher, lol".to_string(),
+        "1".to_string(),
     ).await;
     I::insert_students_classes(&connection, &"1".to_string(), &"1".to_string()).await;
 

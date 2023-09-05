@@ -555,13 +555,15 @@ pub struct TeacherClass {
     teacher_id: i64,
     class_id: i64,
     role: String,
+    active: bool,
 }
 
-pub async fn build_teacher_class(teacher_id: i64, class_id: i64, role: String) -> TeacherClass {
+pub async fn build_teacher_class(teacher_id: i64, class_id: i64, role: String, active: bool) -> TeacherClass {
     TeacherClass {
         teacher_id,
         class_id,
         role,
+        active,
     }
 }
 
@@ -576,6 +578,10 @@ impl TeacherClass {
 
     pub async fn role(&self) -> String {
         return self.role.clone();
+    }
+
+    pub async fn active(&self) -> bool {
+        return self.active;
     }
 }
 

@@ -1,9 +1,10 @@
 use crate::db_types as types;
 use crate::db_retrieve::R;
+use crate::db_delete::D;
 use crate::db_row_to_object as rto;
 use crate::db_object_to_row as otr;
 
-use actix_web::{get, post, web, HttpResponse, Responder};
+use actix_web::{get, post, patch, delete, web, HttpResponse, Responder};
 use std::path::PathBuf;
 use sqlite;
 
@@ -389,6 +390,48 @@ async fn get_comment(path: web::Path<u64>) -> HttpResponse {
 }
 
 
+#[get("/administrator-school/{admin_id}/{school_id}")]
+async fn get_administrator_school(path: web::Path<(u64, u64)>) -> HttpResponse {
+    let (admin_id, school_id) = path.into_inner();
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+
+    match R::retrieve_details_pair(&connection,R::COMMENTS, admin_id.to_string(), school_id.to_string()).await {
+        Ok(x) => { 
+            let object: types::Comment;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_comment(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+    
+    
+    return HttpResponse::InternalServerError().body("Unknown Server Error.")
+
+}
+
+#[delete("/teacher-class/{teacher_id}/{class_id}")]
+async fn delete_teacher_class(path: web::Path<(u64, u64)>) -> HttpResponse {
+    let (teacher_id, class_id) = path.into_inner();
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match D::delete_teacher_class(&connection, teacher_id as i64, class_id as i64).await{
+        x if x.0 == true => return HttpResponse::Ok().body(x.1),
+        x if x.0 == false => return HttpResponse::UnprocessableEntity().body(x.1),
+        _=> return HttpResponse::InternalServerError().body("Unknown Server Error."),   
+    }
+}
+
+
 #[post("/user")]
 async fn post_user(req_body: String) -> HttpResponse {
     // connect to the database 
@@ -745,5 +788,14 @@ async fn post_administrator_school(req_body: String) -> impl Responder {
         x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
         _=> HttpResponse::Ok().body(req_body),
     }
+}
+
+#[post("/teacher-school")]
+async fn post_teacher_school(req_body: String) -> impl Responder {
+
+
+    
+    _=> HttpResponse::Ok().body(req_body),
+
 }
 

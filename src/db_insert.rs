@@ -358,16 +358,19 @@ impl I {
         teacher_id: &String,
         class_id: &String,
         role: &String,
+        active: String,
     ) {
         let query: String = I::INSERT.to_owned()
-            + "teachers_classes (teacher_id, class_id, role)"
+            + "teachers_classes (teacher_id, class_id, role, active)"
             + I::VALUES
             + teacher_id
             + I::AND
             + class_id
             + I::AND_S
-            + role
-            + I::S_END;
+            + role 
+            + I::S_AND 
+            + &active
+            + I::END;
 
         connection.execute(query).unwrap();
     }

@@ -350,11 +350,11 @@ impl R {
                     + " = "
                     + &item_id
             }
-            R::FAMILIES_USERS => panic!("Not yet implemented"),
-            R::STUDENTS_CLASSES => panic!("Not yet implemented"),
-            R::TEACHER_CLASSES => panic!("Not yet implemented"),
-            R::TEACHERS_SCHOOLS => panic!("Not yet implemented"),
-            R::ADMINISTRATORS_SCHOOLS => panic!("Not yet implemented"),
+            R::FAMILIES_USERS => panic!("Wrong function called!"),
+            R::STUDENTS_CLASSES => panic!("Wrong function called!"),
+            R::TEACHER_CLASSES => panic!("Wrong function called!"),
+            R::TEACHERS_SCHOOLS => panic!("Wrong function called!"),
+            R::ADMINISTRATORS_SCHOOLS => panic!("Wrong function called!"),
             _ => panic!("Bad table type of {} sent to retrieve_details", table_id),
         }
 
@@ -362,6 +362,96 @@ impl R {
 
         return connection.prepare(query);
     }
+
+    pub async fn retrieve_details_pair(
+        connection: &sqlite::Connection,
+        table_id: usize,
+        item_id1: String,
+        item_id2: String,
+    ) -> Result<Statement<'_>, sqlite::Error> {
+        let mut query: String = "SELECT ".to_string();
+
+        match table_id {
+            R::FAMILIES_USERS=> {
+                query = query 
+                + R::FAMILIES_USERS_FIELDS[0] 
+                + ", " 
+                + R::FAMILIES_USERS_FIELDS[1] 
+                + "," 
+                + R::FAMILIES_USERS_FIELDS[2] 
+                + " FROM families_users WHERE " 
+                + R::FAMILIES_USERS_FIELDS[0] 
+                + " = " 
+                + &item_id1.to_string() 
+                + " AND " 
+                + R::FAMILIES_USERS_FIELDS[1] 
+                + " = " 
+                + &item_id2.to_string();
+            },
+            R::STUDENTS_CLASSES =>{
+                query = query 
+                + R::STUDENT_CLASS_FIELDS[0] 
+                + ", " 
+                + R::STUDENT_CLASS_FIELDS[1] 
+                + " FROM students_classes WHERE " 
+                + R::STUDENT_CLASS_FIELDS[0] 
+                + " = " 
+                + &item_id1.to_string() 
+                + " AND " 
+                + R::STUDENT_CLASS_FIELDS[1] 
+                + " = " 
+                + &item_id2.to_string();
+            },
+            R::TEACHER_CLASSES => {
+                query = query 
+                + R::TEACHER_CLASS_FIELDS[0] 
+                + ", " 
+                + R::TEACHER_CLASS_FIELDS[1] 
+                + ", "
+                + R::TEACHER_CLASS_FIELDS[2]
+                + " FROM teachers_classes WHERE " 
+                + R::TEACHER_CLASS_FIELDS[0] 
+                + " = " 
+                + &item_id1.to_string() 
+                + " AND " 
+                + R::STUDENT_CLASS_FIELDS[1] 
+                + " = " 
+                + &item_id2.to_string();
+            },
+            R::TEACHERS_SCHOOLS => {
+                query = query 
+                + R::TEACHER_SCHOOL_FIELDS[0] 
+                + ", " 
+                + R::TEACHER_SCHOOL_FIELDS[1] 
+                + " FROM teachers_schools WHERE " 
+                + R::TEACHER_SCHOOL_FIELDS[0] 
+                + " = " 
+                + &item_id1.to_string() 
+                + " AND " 
+                + R::TEACHER_SCHOOL_FIELDS[1] 
+                + " = " 
+                + &item_id2.to_string();
+            },
+            R::ADMINISTRATORS_SCHOOLS =>{
+                query = query 
+                + R::ADMINISTRATOR_SCHOOL_FIELDS[0] 
+                + ", " 
+                + R::ADMINISTRATOR_SCHOOL_FIELDS[1] 
+                + " FROM teachers_schools WHERE " 
+                + R::ADMINISTRATOR_SCHOOL_FIELDS[0] 
+                + " = " 
+                + &item_id1.to_string() 
+                + " AND " 
+                + R::ADMINISTRATOR_SCHOOL_FIELDS[1] 
+                + " = " 
+                + &item_id2.to_string();
+            },
+            _=> panic!("Bad table type of {} sent to retrieve_details_pair", table_id),
+        }
+
+        return connection.prepare(query);
+    }
+
 
     pub async fn retrieve_all_counts(connection: &sqlite::Connection) -> Vec<(String, i64)>{
         let mut info_out : Vec<(String, i64)> = Vec::new();

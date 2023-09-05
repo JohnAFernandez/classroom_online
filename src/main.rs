@@ -12,7 +12,7 @@ mod rest_api;
 
 mod tests;
 
-use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Route};
+use actix_web::{get, App, HttpResponse, HttpServer};
 use sqlite;
 use std::path::PathBuf;
 use std::fs;
@@ -56,6 +56,7 @@ async fn main() -> std::io::Result<()> {
             .service(rest_api::post_assignment)
             .service(rest_api::post_submission)
             .service(rest_api::post_comment)
+            .service(rest_api::post_administrator_school)
             .service(home_page)
         })
     .bind(("127.0.0.1", 8080))?

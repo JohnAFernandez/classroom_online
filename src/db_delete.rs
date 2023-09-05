@@ -273,7 +273,7 @@ impl D {
         // only delete a school if there are no associated classes
         match R::retrieve_assignments_from_class(connection, class_id).await {
             Ok(values) => {
-                if values.into_iter().next().is_none() {
+                if values.into_iter().next().is_some() {
                     return (
                         false,
                         "Could not delete Class ID ".to_owned()
@@ -313,4 +313,20 @@ impl D {
             }
         }
     }
+
+    pub async fn delete_teacher_class(connection: &sqlite::Connection, teacher_id: i64, class_id: i64) -> (bool, String){
+        if !V::check_id_pair(connection, teacher_id, class_id, V::TEACHERS_CLASSES).await{
+            return (false, format!("No matching record of teacher id {} and class {} exists to delete in the teacher-class table.", teacher_id, class_id))
+        }
+
+        let query: String = format!("DELETE FROM teacher_classes WHERE teacher_id = {} AND class_id = {}", teacher_id, class_id);
+
+        match connection.execute(query){
+            Ok(_) => return (true, "Success!".to_string()),
+            Err(x) => return (false, x.to_string())
+        }
+    }
+
 }
+
+

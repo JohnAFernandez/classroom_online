@@ -41,6 +41,8 @@ pub async fn school_to_row(
         );
     }
 
+    I::insert_school(&connection, &school.organization_id().await.to_string(), &school.super_administrator_id().await.to_string(), &school.icon().await, &school.name().await, &school.address1().await, &school.address2().await, &school.city().await, &school.state().await, &school.zip().await, &school.phone().await, &school.country().await).await;
+
     (true, "Success!".to_string())
 }
 
@@ -639,6 +641,7 @@ pub async fn teacher_class_to_row(
         &teacher_class.teacher_id().await.to_string(),
         &teacher_class.class_id().await.to_string(),
         &teacher_class.role().await,
+        if teacher_class.active().await == true { "1".to_string() } else { "0".to_string()},
     ).await;
 
     return (true, "".to_string());

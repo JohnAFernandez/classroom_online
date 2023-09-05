@@ -101,6 +101,7 @@ pub async fn init_database(path: PathBuf) -> sqlite::Connection {
             teacher_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
             user_id INTEGER UNIQUE,
             icon STRING,
+            active INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(user_id)
         );
     ";
@@ -168,6 +169,7 @@ pub async fn init_database(path: PathBuf) -> sqlite::Connection {
             teacher_id INTEGER NOT NULL,
             class_id INTEGER NOT NULL,
             role STRING,
+            active INTEGER NOT NULL,
             FOREIGN KEY (teacher_id) REFERENCES teachers(teacher_id),
             FOREIGN KEY (class_id) REFERENCES classes(class_id)
         );
