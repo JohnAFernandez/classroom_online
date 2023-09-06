@@ -368,8 +368,8 @@ async fn test_deletion() {
         &"APT 11111".to_string(),
         &"John land".to_string(),
         &"State of John".to_string(),
-        &"22222".to_string(),
-        &"8675309".to_string(),
+        &"#22222".to_string(),
+        &"#8675309".to_string(),
         &"Brazil".to_string(),
     ).await;
     I::insert_administrator(&connection, &"1".to_string(), &"John's boss.".to_string()).await;
@@ -383,8 +383,8 @@ async fn test_deletion() {
         &"UNIT 1".to_string(),
         &"Albaquerque".to_string(),
         &"NZ".to_string(),
-        &"28318".to_string(),
-        &"8675309".to_string(),
+        &"#28318".to_string(),
+        &"#8675309".to_string(),
         &"NEW ZEALAND".to_string(),
     ).await;
     I::insert_teacher(&connection, &"1".to_string(), &" ".to_string(), "1".to_string()).await;
@@ -524,8 +524,8 @@ async fn test_deletion() {
         &"APT 111".to_string(),
         &"John landIO".to_string(),
         &"State of BOB".to_string(),
-        &"22222".to_string(),
-        &"8675309".to_string(),
+        &"#22222".to_string(),
+        &"#8675309".to_string(),
         &"Brazil".to_string(),
     ).await;
 

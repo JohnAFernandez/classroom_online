@@ -99,6 +99,16 @@ pub async fn row_to_teacher_school(row: &sqlite::Row) -> types::TeacherSchool {
     ).await
 }
 
+pub async fn row_to_teacher_class(row: &sqlite::Row) -> types::TeacherClass {
+    types::build_teacher_class(
+        row.read::<i64, _>("teacher_id"),
+        row.read::<i64, _>("class_id"),
+        row.read::<&str, _>("role").to_string(), 
+        if row.read::<i64, _>("active") == 1 { true } else { false },
+    ).await
+}
+
+
 pub async fn row_to_subject(row: &sqlite::Row) -> types::Subject {
     types::build_subject(
         row.read::<i64, _>("subject_id"),

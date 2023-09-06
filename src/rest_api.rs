@@ -8,6 +8,16 @@ use actix_web::{get, post, delete, web, HttpResponse, Responder};
 use std::path::PathBuf;
 use sqlite;
 
+// Going to finish this later.  There's a lot to consider about retrieving numerous log entries.
+/*#[get("/log")]
+async fn get_log_100() -> HttpResponse {
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details(&connection,R::USERS, id.to_string()).await {
+
+
+}*/
+
 #[get("/user/{id}")]
 async fn get_user(path: web::Path<u64>) -> HttpResponse {
     let id = path.into_inner();
@@ -24,7 +34,7 @@ async fn get_user(path: web::Path<u64>) -> HttpResponse {
 
                 match serde_json::to_string(&user) {
                     Ok(x) => { 
-                        otr::change_log_to_row(&connection, types::build_log_item(id as i64, -1, -1, "Not Implemented".to_string(), "REST get_user".to_string(), chrono::Utc::now().to_string()).await);
+                        otr::change_log_to_row(&connection, types::build_log_item(id as i64, -1, -1, "Not Implemented".to_string(), "REST get_user".to_string(), chrono::Utc::now().to_string()).await).await;
                         return HttpResponse::Ok().body(x.to_string()) },
                     Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
                 }                
@@ -398,13 +408,13 @@ async fn get_administrator_school(path: web::Path<(u64, u64)>) -> HttpResponse {
     let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
 
 
-    match R::retrieve_details_pair(&connection,R::COMMENTS, admin_id.to_string(), school_id.to_string()).await {
+    match R::retrieve_details_pair(&connection,R::ADMINISTRATORS_SCHOOLS, admin_id.to_string(), school_id.to_string()).await {
         Ok(x) => { 
-            let object: types::Comment;
+            let object: types::AdministratorSchool;
 
             for row in x.into_iter().map(|row| row.unwrap()) {
 
-                object = rto::row_to_comment(&row).await;
+                object = rto::row_to_administrator_school(&row).await;
 
                 match serde_json::to_string(&object) {
                     Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
@@ -416,10 +426,68 @@ async fn get_administrator_school(path: web::Path<(u64, u64)>) -> HttpResponse {
         Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
     }
     
+    return HttpResponse::InternalServerError().body("Unknown Server Error.")
+
+}
+
+
+#[get("/teacher-school/{teacher_id}/{school_id}")]
+async fn get_teacher_school(path: web::Path<(u64, u64)>) -> HttpResponse {
+    let (teacher_id, school_id) = path.into_inner();
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+
+    match R::retrieve_details_pair(&connection,R::TEACHERS_SCHOOLS, teacher_id.to_string(), school_id.to_string()).await {
+        Ok(x) => { 
+            let object: types::TeacherSchool;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_teacher_school(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
     
     return HttpResponse::InternalServerError().body("Unknown Server Error.")
 
 }
+
+
+#[get("/teacher-class/{teacher_id}/{class_id}")]
+async fn get_teacher_class(path: web::Path<(u64, u64)>) -> HttpResponse {
+    let (teacher_id, class_id) = path.into_inner();
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+
+    match R::retrieve_details_pair(&connection,R::TEACHER_CLASSES, teacher_id.to_string(), class_id.to_string()).await {
+        Ok(x) => { 
+            let object: types::TeacherClass;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_teacher_class(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+    
+    return HttpResponse::InternalServerError().body("Unknown Server Error.")
+
+}
+
 
 #[delete("/teacher-class/{teacher_id}/{class_id}")]
 async fn delete_teacher_class(path: web::Path<(u64, u64)>) -> HttpResponse {
