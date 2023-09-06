@@ -344,7 +344,7 @@ pub async fn build_teacher(teacher_id: i64, user_id: i64, icon: String, active: 
 }
 
 impl Teacher {
-    pub async fn teacher_id(&self) -> i64 {
+    pub async fn id(&self) -> i64 {
         return self.teacher_id;
     }
 
