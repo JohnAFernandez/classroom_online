@@ -483,6 +483,25 @@ impl R {
         info_out
     }
 
+    pub async fn retrieve_user_from_administrator(
+        connection: &sqlite::Connection,
+        administrator_id: i64,
+    ) -> Result<i64, sqlite::Error> {
+        let query = "SELECT user_id FROM administrators WHERE administrator_id = ".to_owned()
+            + &administrator_id.to_string();
+
+        match connection.prepare(query) {
+            Ok(x) => {
+                for row in x.into_iter().map(|row| row.unwrap()) {
+                    return Ok(row.read::<i64, _>(R::STRINGS[R::USERS].1));
+                }
+
+                panic!("retrieve_user_from_administrator had no results, but did not encounter an error.  Investigate!");
+            }
+            Err(x) => return Err(x),
+        }
+    }
+
     pub async fn retrieve_classes_from_school(
         connection: &sqlite::Connection,
         school_id: i64,
@@ -492,6 +511,33 @@ impl R {
 
         return connection.prepare(query);
     }
+
+    pub async fn retrieve_schools_from_organization(
+        connection: &sqlite::Connection,
+        organization_id: i64,
+    ) -> Result<Statement<'_>, sqlite::Error> {
+        let query = "SELECT school_id FROM schools WHERE organization_id = ".to_owned()
+            + &organization_id.to_string();
+
+        return connection.prepare(query);
+    }
+
+    pub async fn retrieve_assignments_from_class(
+        connection: &sqlite::Connection,
+        class_id: i64,
+    ) -> Result<Statement<'_>, sqlite::Error> {
+        let query = "SELECT assignment_id FROM assignments WHERE class_id = ".to_owned()
+            + &class_id.to_string();
+
+        return connection.prepare(query);
+    }
+
+}
+
+
+
+// Not using these so far. Those above are "unused" because the code they call is unused.
+/*
 
     pub async fn retrieve_administrator_from_user(
         connection: &sqlite::Connection,
@@ -533,15 +579,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub async fn retrieve_schools_from_organization(
-        connection: &sqlite::Connection,
-        organization_id: i64,
-    ) -> Result<Statement<'_>, sqlite::Error> {
-        let query = "SELECT school_id FROM schools WHERE organization_id = ".to_owned()
-            + &organization_id.to_string();
 
-        return connection.prepare(query);
-    }
 
     pub async fn retrieve_teachers_from_school(
         connection: &sqlite::Connection,
@@ -561,25 +599,6 @@ impl R {
             "SELECT user_id FROM teachers WHERE teacher_id = ".to_owned() + &teacher_id.to_string();
 
         return connection.prepare(query);
-    }
-
-    pub async fn retrieve_user_from_administrator(
-        connection: &sqlite::Connection,
-        administrator_id: i64,
-    ) -> Result<i64, sqlite::Error> {
-        let query = "SELECT user_id FROM administrators WHERE administrator_id = ".to_owned()
-            + &administrator_id.to_string();
-
-        match connection.prepare(query) {
-            Ok(x) => {
-                for row in x.into_iter().map(|row| row.unwrap()) {
-                    return Ok(row.read::<i64, _>(R::STRINGS[R::USERS].1));
-                }
-
-                panic!("retrieve_user_from_administrator had no results, but did not encounter an error.  Investigate!");
-            }
-            Err(x) => return Err(x),
-        }
     }
 
     pub async fn retrieve_user_from_family_member(
@@ -647,13 +666,7 @@ impl R {
         return connection.prepare(query);
     }
 
-    pub async fn retrieve_assignments_from_class(
-        connection: &sqlite::Connection,
-        class_id: i64,
-    ) -> Result<Statement<'_>, sqlite::Error> {
-        let query = "SELECT assignment_id FROM assignments WHERE class_id = ".to_owned()
-            + &class_id.to_string();
 
-        return connection.prepare(query);
-    }
 }
+
+ */
