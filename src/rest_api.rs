@@ -489,6 +489,34 @@ async fn get_teacher_class(path: web::Path<(u64, u64)>) -> HttpResponse {
 }
 
 
+#[get("/administrator-school/{family_id}/{user_id}")]
+async fn get_family_user(path: web::Path<(u64, u64)>) -> HttpResponse {
+    let (family_id, user_id) = path.into_inner();
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+
+    match R::retrieve_details_pair(&connection,R::FAMILIES_USERS, family_id.to_string(), user_id.to_string()).await {
+        Ok(x) => { 
+            let object: types::FamilyUser;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_family_user(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+    
+    return HttpResponse::InternalServerError().body("Unknown Server Error.")
+
+}
+
 #[delete("/teacher-class/{teacher_id}/{class_id}")]
 async fn delete_teacher_class(path: web::Path<(u64, u64)>) -> HttpResponse {
     let (teacher_id, class_id) = path.into_inner();

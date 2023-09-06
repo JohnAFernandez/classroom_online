@@ -49,6 +49,7 @@ async fn main() -> std::io::Result<()> {
             .service(rest_api::get_teacher_class)
             .service(rest_api::get_teacher_school)
             .service(rest_api::get_administrator_school)
+            .service(rest_api::get_family_user)
             .service(rest_api::post_user)
             .service(rest_api::post_organization)
             .service(rest_api::post_school)

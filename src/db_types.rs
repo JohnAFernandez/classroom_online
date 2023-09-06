@@ -53,6 +53,8 @@ pub async fn build_user(
 //}
 
 // some getter functions, because I don't want data to get clobbered by accident.
+// Also, a lot of the id functions in this file are going to be unused until we implement
+// Database searching
 impl User {
     pub async fn id(&self) -> i64 {
         return self.id;
