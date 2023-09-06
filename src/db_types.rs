@@ -328,12 +328,16 @@ impl AdministratorSchool {
 pub struct Teacher {
     teacher_id: i64,
     user_id: i64,
+    icon: String,
+    active: bool,
 }
 
-pub async fn build_teacher(teacher_id: i64, user_id: i64) -> Teacher {
+pub async fn build_teacher(teacher_id: i64, user_id: i64, icon: String, active: bool) -> Teacher {
     Teacher {
         teacher_id,
         user_id,
+        icon,
+        active
     }
 }
 
@@ -345,6 +349,15 @@ impl Teacher {
     pub async fn user_id(&self) -> i64 {
         return self.user_id;
     }
+
+    pub async fn icon(&self) -> String {
+        return self.icon.clone();
+    }
+    pub async fn active(&self) -> bool {
+        return self.active;
+    }
+
+
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
@@ -872,45 +885,52 @@ impl Comment {
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
-pub struct ChangeLogItem {
-    id: i64,
-    source_name: String,
-    change_type: i32,
-    old_value: String,
+pub struct LogItem {
+    id1: i64,
+    id2: i64,
+    id3: i64,
+    source: String,
+    function: String,
     timestamp: String,
 }
 
-pub async fn build_change_log_item(
-    id: i64,
-    source_name: String,
-    change_type: i32,
-    old_value: String,
+pub async fn build_log_item(
+    id1: i64,
+    id2: i64,
+    id3: i64,
+    source: String,
+    function: String,
     timestamp: String,
-) -> ChangeLogItem {
-    ChangeLogItem {
-        id,
-        source_name,
-        change_type,
-        old_value,
+) -> LogItem {
+    LogItem {
+        id1,
+        id2,
+        id3,
+        source,
+        function,
         timestamp,
     }
 }
 
-impl ChangeLogItem {
-    pub async fn id(&self) -> i64 {
-        return self.id;
+impl LogItem {
+    pub async fn id1(&self) -> i64 {
+        return self.id1;
     }
 
-    pub async fn source_name(&self) -> String {
-        return self.source_name.clone();
+    pub async fn id2(&self) -> i64 {
+        return self.id1;
     }
 
-    pub async fn change_type(&self) -> i32 {
-        return self.change_type;
+    pub async fn id3(&self) -> i64 {
+        return self.id1;
     }
 
-    pub async fn old_value(&self) -> String {
-        return self.old_value.clone();
+    pub async fn source(&self) -> String {
+        return self.source.clone();
+    }
+
+    pub async fn function(&self) -> String {
+        return self.function.clone();
     }
 
     pub async fn timestamp(&self) -> String {

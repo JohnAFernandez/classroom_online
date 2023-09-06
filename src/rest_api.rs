@@ -23,7 +23,9 @@ async fn get_user(path: web::Path<u64>) -> HttpResponse {
                 user = rto::row_to_user(&row).await;
 
                 match serde_json::to_string(&user) {
-                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Ok(x) => { 
+                        otr::change_log_to_row(&connection, types::build_log_item(id as i64, -1, -1, "Not Implemented".to_string(), "REST get_user".to_string(), chrono::Utc::now().to_string()).await);
+                        return HttpResponse::Ok().body(x.to_string()) },
                     Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
                 }                
             }

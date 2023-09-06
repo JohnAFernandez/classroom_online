@@ -273,15 +273,15 @@ pub async fn init_database(path: PathBuf) -> sqlite::Connection {
     ";
     connection.execute(query).unwrap();
 
+    // function provides the ability to figure out what tables were involved.
     query = "
-        CREATE TABLE user_change_log (
-            change_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-            source_name STRING,
-            user_id INTEGER,
-            type_of_change INT,
-            old_value STRING,
-            timestamp STRING,
-            FOREIGN KEY (user_id) REFERENCES users(user_id)
+        CREATE TABLE change_log (
+            id1 INTEGER,
+            id2 INTEGER,
+            id3 INTEGER,
+            source STRING,
+            function STRING,
+            timestamp STRING
         );
     ";
     connection.execute(query).unwrap();

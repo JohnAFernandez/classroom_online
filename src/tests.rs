@@ -54,7 +54,6 @@ async fn test_database_creation_insertion_retrieval(){
     assert!(!V::check_id(&connection, 1, V::SUBMISSIONS).await);
     assert!(!V::check_id(&connection, 1, V::TEACHERS).await);
     assert!(!V::check_id(&connection, 1, V::USERS).await);
-    assert!(!V::check_id(&connection, 1, V::USER_CHANGE_LOG).await);
 
     I::insert_user(&connection, &"John@gmail.com".to_string(),  &"password123".to_string(), &"John".to_string(), &"Fernandez".to_string(), &"01/01/2010".to_string(), &"TODAY".to_string(), &"(305)8675309".to_string(), &"".to_string()).await;
 
@@ -92,7 +91,7 @@ async fn test_database_creation_insertion_retrieval(){
         &"(305)8675309".to_string(),
         &"NEW ZEALAND".to_string(),
     ).await;
-    I::insert_teacher(&connection, &"1".to_string()).await;
+    I::insert_teacher(&connection, &"1".to_string(), &" ".to_string(), "1".to_string()).await;
 
     I::insert_subject(
         &connection,
@@ -147,10 +146,12 @@ async fn test_database_creation_insertion_retrieval(){
     ).await;
     I::insert_change_log(
         &connection,
-        &"THE APP CREATOR SINGULARITUS".to_string(),
         &"1".to_string(),
-        &"I'm just testing stuff.".to_string(),
-        &"Pretty late....".to_string(),
+        &"-1".to_string(),
+        &"-1".to_string(),
+        &"THE APP CREATOR SINGULARITUS".to_string(),
+        &"TEST_FUNCTION".to_string(),
+        &"RIGHT NOW".to_string(),
     ).await;
     I::insert_administrator_school(&connection, &"1".to_string(), &"1".to_string()).await;
 
@@ -386,7 +387,7 @@ async fn test_deletion() {
         &"8675309".to_string(),
         &"NEW ZEALAND".to_string(),
     ).await;
-    I::insert_teacher(&connection, &"1".to_string()).await;
+    I::insert_teacher(&connection, &"1".to_string(), &" ".to_string(), "1".to_string()).await;
 
     I::insert_subject(
         &connection,
@@ -441,9 +442,11 @@ async fn test_deletion() {
     ).await;
     I::insert_change_log(
         &connection,
-        &"THE APP CREATOR SINGULARITUS".to_string(),
         &"1".to_string(),
-        &"I'm just testing stuff.".to_string(),
+        &"-1".to_string(),
+        &"-1".to_string(),
+        &"APP CREATOR JOHN F".to_string(),
+        &"TEST FUNCTION".to_string(),
         &"Pretty late....".to_string(),
     ).await;
     I::insert_administrator_school(&connection, &"1".to_string(), &"1".to_string()).await;
@@ -534,7 +537,7 @@ async fn test_deletion() {
     assert!(!result.0, "{}", result.1);
 
 
-    I::insert_teacher(&connection, &"2".to_string()).await;
+    I::insert_teacher(&connection, &"2".to_string(), &" ".to_string(), "1".to_string()).await;
 
     result = D::delete_teacher(&connection, 2).await;
     assert!(result.0, "{}", result.1);

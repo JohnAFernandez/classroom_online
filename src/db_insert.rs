@@ -123,9 +123,9 @@ impl I {
         connection.execute(query).unwrap();
     }
 
-    pub async fn insert_teacher(connection: &sqlite::Connection, user_id: &String) {
+    pub async fn insert_teacher(connection: &sqlite::Connection, user_id: &String, icon: &String, active: String) {
         let query: String =
-            I::INSERT.to_owned() + "teachers (user_id)" + I::VALUES + user_id + I::END;
+            I::INSERT.to_owned() + "teachers (user_id, icon, active)" + I::VALUES + user_id + I::AND_S + icon + I::S_AND + &active + I::END;
 
         connection.execute(query).unwrap();
     }
@@ -279,19 +279,25 @@ impl I {
 
     pub async fn insert_change_log(
         connection: &sqlite::Connection,
-        source_name: &String,
-        type_of_change: &String,
-        old_value: &String,
+        id1: &String,
+        id2: &String,
+        id3: &String,
+        source: &String,
+        function: &String,
         timestamp: &String,
     ) {
         let query: String = I::INSERT.to_owned()
-            + "user_change_log (source_name, type_of_change, old_value, timestamp)"
-            + I::VALUES_S
-            + source_name
-            + I::S_AND
-            + type_of_change
+            + "change_log (id1, id2, id3, source, function, timestamp)"
+            + I::VALUES
+            + id1
+            + I::AND
+            + id2
+            + I::AND
+            + id3
             + I::AND_S
-            + old_value
+            + source
+            + I::S_AND_S
+            + function
             + I::S_AND_S
             + timestamp
             + I::S_END;

@@ -226,7 +226,7 @@ pub async fn teacher_to_row(
         );
     }
 
-    I::insert_teacher(connection, &teacher.user_id().await.to_string()).await;
+    I::insert_teacher(connection, &teacher.user_id().await.to_string(), &teacher.icon().await, if teacher.active().await {"1".to_string()} else {"0".to_string()} ).await;
     (true, "".to_string())
 }
 
@@ -396,17 +396,19 @@ pub async fn comment_to_row(
     return (true, "".to_string());
 }
 
-pub async fn user_change_log_to_row(
+pub async fn change_log_to_row(
     connection: &sqlite::Connection,
-    log_item: types::ChangeLogItem,
+    log_item: types::LogItem,
 ) {
     I::insert_change_log(
         connection,
-        &log_item.source_name().await,
-        &log_item.change_type().await.to_string(),
-        &log_item.old_value().await.to_string(),
+        &log_item.id1().await.to_string(),
+        &log_item.id2().await.to_string(),
+        &log_item.id3().await.to_string(),
+        &log_item.source().await,
+        &log_item.function().await,
         &log_item.timestamp().await,
-    ).await
+    ).await;
 }
 
 pub async fn subject_to_row(connection: &sqlite::Connection, subject: types::Subject) {

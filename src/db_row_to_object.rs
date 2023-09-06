@@ -77,6 +77,8 @@ pub async fn row_to_teacher(row: &sqlite::Row) -> types::Teacher {
     types::build_teacher(
         row.read::<i64, _>("teacher_id"),
         row.read::<i64, _>("user_id"),
+        row.read::<&str, _>("icon").to_string(),
+        if row.read::<i64, _>("active") == 1 { true } else { false },
     ).await
 }
 
@@ -204,12 +206,13 @@ pub async fn row_to_comment(row: &sqlite::Row) -> types::Comment {
     ).await
 }
 
-pub async fn row_to_log_item(row: &sqlite::Row) -> types::ChangeLogItem {
-    types::build_change_log_item(
-        row.read::<i64, _>("change_id"),
+pub async fn row_to_log_item(row: &sqlite::Row) -> types::LogItem {
+    types::build_log_item(
+        row.read::<i64, _>("id1"),
+        row.read::<i64, _>("id2"),
+        row.read::<i64, _>("id3"),
         row.read::<&str, _>("source_name").to_string(),
-        row.read::<i64, _>("type") as i32,
-        row.read::<&str, _>("old_value").to_string(),
+        row.read::<&str, _>("function").to_string(),
         row.read::<&str, _>("timestamp").to_string(),
     ).await
 }

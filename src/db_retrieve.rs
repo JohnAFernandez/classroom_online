@@ -39,7 +39,7 @@ impl R {
         ("assignments", "assignment_id"),
         ("submissions", "submission_id"),
         ("comments", "comment_id"),
-        ("user_change_log", "change_id"),
+        ("change_log", "change_id"),
     ];
 
     const USER_FIELDS: [&str; 11] = [

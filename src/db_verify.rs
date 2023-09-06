@@ -26,7 +26,7 @@ impl V {
     pub const FAMILIES_USERS: usize = 18;
     pub const USER_CHANGE_LOG: usize = 19;
 
-    const STRINGS: [(&str, &str, &str); (V::USER_CHANGE_LOG + 1) as usize] = [
+    const STRINGS: [(&str, &str, &str); (V::USER_CHANGE_LOG) as usize] = [
         ("users", "user_id", ""),
         ("organizations", "organization_id", ""),
         ("administrators", "administrator_id", ""),
@@ -46,11 +46,10 @@ impl V {
         ("teachers_classes", "teacher_id", "class_id"),
         ("students_classes", "student_id", "class_id"),
         ("families_users", "family_id", "user_id"),
-        ("user_change_log", "change_id", ""),
     ];
 
     pub async fn check_id(connection: &sqlite::Connection, id: i64, table_id: usize) -> bool {
-        if table_id > V::USER_CHANGE_LOG {
+        if table_id > V::USER_CHANGE_LOG - 1{
             panic!("FUNDAMENTAL ERROR IN YOUR SERVER PROGRAMMING! FIX ME!");
         }
 
