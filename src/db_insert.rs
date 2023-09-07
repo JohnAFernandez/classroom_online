@@ -415,4 +415,23 @@ impl I {
 
         connection.execute(query).unwrap();
     }
+
+    pub async fn insert_student_school(
+        connection: &sqlite::Connection,
+        student_id: &String,
+        school_id: &String,
+        active: &String,
+    ) {
+        let query: String = I::INSERT.to_owned()
+        + "students_schools (student_id, school_id, active)"
+        + I::VALUES
+        + student_id
+        + I::AND
+        + school_id
+        + I::AND
+        + active
+        + I::END;
+
+        connection.execute(query).unwrap();
+    }
 }

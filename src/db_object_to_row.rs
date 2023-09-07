@@ -728,3 +728,27 @@ pub async fn administrator_school_to_row(
 
     return (true, "".to_string());
 }
+
+pub async fn student_school_to_row(connection: &sqlite::Connection, student_school: types::StudentSchool) -> (bool, String) {
+    if !V::check_id(connection, student_school.student_id().await, V::STUDENTS).await {
+        return ( false, "Not able to add student-school record, since student id ".to_string()
+        + &student_school.student_id().await.to_string()
+        + " does not have a corresponding record.",
+        );
+    }
+
+    if !V::check_id(connection, student_school.school_id().await, V::SCHOOLS).await {
+        return ( false, "Not able to add student-school record, since school id ".to_string()
+        + &student_school.school_id().await.to_string()
+        + " does not have a corresponding record.",
+        );
+    }
+
+    if V::check_id_pair(connection, student_school.student_id().await, student_school.school_id().await, V::STUDENTS_SCHOOLS).await{
+        return (false, "Not able to add administrator-school record, since that relationship already exists in the table.".to_string());
+    }
+
+    I::insert_student_school(connection, &student_school.student_id().await.to_string(), &student_school.school_id().await.to_string(), &student_school.active().await.to_string()).await;
+
+    return (true, "".to_string());
+}

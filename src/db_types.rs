@@ -887,6 +887,36 @@ impl Comment {
 }
 
 #[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
+pub struct StudentSchool {
+    student_id :i64,
+    school_id: i64,
+    active: bool
+}
+
+pub async fn build_student_school(student_id: i64, school_id: i64, active: bool) -> StudentSchool {
+    StudentSchool {
+        student_id,
+        school_id,
+        active,
+    }
+}
+
+impl StudentSchool {
+
+    pub async fn student_id(&self) -> i64 {
+        return self.student_id
+    }
+
+    pub async fn school_id(&self) -> i64 {
+        return self.student_id
+    }
+    pub async fn active(&self) -> i64 {
+        return self.student_id
+    }
+}
+
+
+#[derive(PartialEq, Eq, Debug, Serialize, Deserialize)]
 pub struct LogItem {
     id1: i64,
     id2: i64,

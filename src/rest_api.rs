@@ -516,6 +516,34 @@ async fn get_student_class(path: web::Path<(u64, u64)>) -> HttpResponse {
 
 }
 
+#[get("/student-school/{student_id}/{school_id}")]
+async fn get_student_school(path: web::Path<(u64, u64)>) -> HttpResponse {
+    let (student_id, school_id) = path.into_inner();
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    match R::retrieve_details_pair(&connection, R::STUDENTS_SCHOOLS, student_id.to_string(), school_id.to_string()).await {
+        Ok(x) => { 
+            let object: types::StudentSchool;
+
+            for row in x.into_iter().map(|row| row.unwrap()) {
+
+                object = rto::row_to_student_school(&row).await;
+
+                match serde_json::to_string(&object) {
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
+                }                
+            }
+            
+        },
+        Err(x) => return HttpResponse::BadRequest().body(x.to_string()),
+    }
+
+
+    return HttpResponse::InternalServerError().body("Unknown Server Error.")
+} 
+
+
 #[get("/administrator-school/{family_id}/{user_id}")]
 async fn get_family_user(path: web::Path<(u64, u64)>) -> HttpResponse {
     let (family_id, user_id) = path.into_inner();
@@ -931,5 +959,24 @@ async fn post_teacher_school(req_body: String) -> impl Responder {
         x if x.0 == true => HttpResponse::Ok().body(x.1 + &req_body),
         x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
         _=> HttpResponse::Ok().body(req_body),
-    }}
+    }
+}
 
+#[post("/student-school")]
+async fn post_student_school(req_body: String) -> impl Responder {
+    let connection = sqlite::open(PathBuf::from(".//src//db//db.sql")).unwrap();
+
+    let new_record: types::StudentSchool;
+
+    // do we have a 
+    match serde_json::from_str(&req_body) {
+        Ok(x) => new_record = x,
+        Err(x) => return HttpResponse::UnprocessableEntity().body("Bad format for post request. See serde error: ".to_string() + &x.to_string()),
+    }
+
+    match otr::student_school_to_row(&connection, new_record).await {
+        x if x.0 == true => HttpResponse::Ok().body(x.1 + &req_body),
+        x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
+        _=> HttpResponse::Ok().body(req_body),
+    }
+}

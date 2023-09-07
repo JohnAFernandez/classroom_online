@@ -273,6 +273,19 @@ pub async fn init_database(path: PathBuf) -> sqlite::Connection {
     ";
     connection.execute(query).unwrap();
 
+    query = "
+        CREATE TABLE students_schools (
+            student_id INTEGER NOT NULL,
+            school_id INTEGER NOT NULL,
+            active INTEGER NOT NULL,
+            FOREIGN KEY (student_id) REFERENCES students(student_id),
+            FOREIGN KEY (school_id) REFERENCES schools(school_id),
+            PRIMARY KEY (student_id, school_id)            
+        );
+    ";
+
+    connection.execute(query).unwrap();
+
     // function provides the ability to figure out what tables were involved.
     query = "
         CREATE TABLE change_log (

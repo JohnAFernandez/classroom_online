@@ -23,6 +23,7 @@ impl R {
     pub const TEACHER_CLASSES: usize = 17;
     pub const TEACHERS_SCHOOLS: usize = 18;
     pub const ADMINISTRATORS_SCHOOLS: usize = 19;
+    pub const STUDENTS_SCHOOLS: usize = 20;
 
     const STRINGS: [(&str, &str); (R::USER_CHANGE_LOG + 1) as usize] = [
         ("users", "user_id"),
@@ -146,6 +147,7 @@ impl R {
     const TEACHER_CLASS_FIELDS: [&str; 3] = ["teacher_id", "class_id", "role"];
     const TEACHER_SCHOOL_FIELDS: [&str; 2] = ["teacher_id", "school_id"];
     const ADMINISTRATOR_SCHOOL_FIELDS: [&str; 2] = ["administrator_id", "school_id"];
+    const STUDENT_SCHOOL_FIELDS: [&str; 3] = ["student_id", "school_id", "active"];
 
     pub async fn retrieve_details(
         connection: &sqlite::Connection,
@@ -355,6 +357,7 @@ impl R {
             R::TEACHER_CLASSES => panic!("Wrong function called!"),
             R::TEACHERS_SCHOOLS => panic!("Wrong function called!"),
             R::ADMINISTRATORS_SCHOOLS => panic!("Wrong function called!"),
+            R::STUDENTS_SCHOOLS => panic!("Wrong function called!"),
             _ => panic!("Bad table type of {} sent to retrieve_details", table_id),
         }
 
@@ -446,6 +449,22 @@ impl R {
                 + " = " 
                 + &item_id2.to_string();
             },
+            R::STUDENTS_SCHOOLS => {
+                query = query 
+                + R::STUDENT_SCHOOL_FIELDS[0] 
+                + ", " 
+                + R::STUDENT_SCHOOL_FIELDS[1] 
+                + ", "
+                + R::STUDENT_SCHOOL_FIELDS[2]
+                + " FROM students_schools WHERE " 
+                + R::ADMINISTRATOR_SCHOOL_FIELDS[0] 
+                + " = " 
+                + &item_id1.to_string() 
+                + " AND " 
+                + R::ADMINISTRATOR_SCHOOL_FIELDS[1] 
+                + " = " 
+                + &item_id2.to_string();
+            }
             _=> panic!("Bad table type of {} sent to retrieve_details_pair", table_id),
         }
 

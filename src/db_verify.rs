@@ -24,7 +24,8 @@ impl V {
     pub const TEACHERS_CLASSES: usize = 16;
     pub const STUDENTS_CLASSES: usize = 17;
     pub const FAMILIES_USERS: usize = 18;
-    pub const USER_CHANGE_LOG: usize = 19;
+    pub const STUDENTS_SCHOOLS: usize = 19;
+    pub const USER_CHANGE_LOG: usize = 20;
 
     const STRINGS: [(&str, &str, &str); (V::USER_CHANGE_LOG) as usize] = [
         ("users", "user_id", ""),
@@ -46,6 +47,7 @@ impl V {
         ("teachers_classes", "teacher_id", "class_id"),
         ("students_classes", "student_id", "class_id"),
         ("families_users", "family_id", "user_id"),
+        ("students_schools", "student_id", "school_id"),
     ];
 
     pub async fn check_id(connection: &sqlite::Connection, id: i64, table_id: usize) -> bool {

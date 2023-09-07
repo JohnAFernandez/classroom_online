@@ -216,6 +216,14 @@ pub async fn row_to_comment(row: &sqlite::Row) -> types::Comment {
     ).await
 }
 
+pub async fn row_to_student_school(row: &sqlite::Row) -> types::StudentSchool {
+    types::build_student_school(
+        row.read::<i64, _>("student_id"), 
+        row.read::<i64, _>("school_id"), 
+        if row.read::<i64, _>("comment_id") == 1 { true } else {false },
+    ).await
+}
+
 pub async fn row_to_log_item(row: &sqlite::Row) -> types::LogItem {
     types::build_log_item(
         row.read::<i64, _>("id1"),
