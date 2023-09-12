@@ -33,9 +33,7 @@ async fn get_user(path: web::Path<u64>) -> HttpResponse {
                 user = rto::row_to_user(&row).await;
 
                 match serde_json::to_string(&user) {
-                    Ok(x) => { 
-                        otr::change_log_to_row(&connection, types::build_log_item(id as i64, -1, -1, "Not Implemented".to_string(), "REST get_user".to_string(), chrono::Utc::now().to_string()).await).await;
-                        return HttpResponse::Ok().body(x.to_string()) },
+                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
                     Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
                 }                
             }
@@ -62,7 +60,7 @@ async fn get_administrator(path: web::Path<u64>) -> HttpResponse {
                 object = rto::row_to_administrator(&row).await;
 
                 match serde_json::to_string(&object) {
-                    Ok(x) => { return HttpResponse::Ok().body(x.to_string()) },
+                    Ok(x) => return HttpResponse::Ok().body(x.to_string()),
                     Err(x) => return HttpResponse::InternalServerError().body(x.to_string()),
                 }                
             }
@@ -599,7 +597,9 @@ async fn post_user(req_body: String) -> HttpResponse {
     }
 
     match otr::users_to_row(&connection, new_record).await {
-        x if x.0 == true => HttpResponse::Ok().body(x.1 + &req_body),
+        x if x.0 == true => {
+            otr::change_log_to_row(&connection, types::build_log_item(0 as i64, -1, -1, "Not Implemented".to_string(), "REST get_user".to_string(), chrono::Utc::now().to_string()).await).await;
+            HttpResponse::Ok().body(x.1 + &req_body) },
         x if x.0 == false => HttpResponse::UnprocessableEntity().body(x.1),
         _=> HttpResponse::Ok().body(req_body),
     }

@@ -52,7 +52,7 @@ impl V {
 
     pub async fn check_id(connection: &sqlite::Connection, id: i64, table_id: usize) -> bool {
         if table_id > V::USER_CHANGE_LOG - 1{
-            panic!("FUNDAMENTAL ERROR IN YOUR SERVER PROGRAMMING! FIX ME!");
+            panic!("FUNDAMENTAL ERROR IN YOUR SERVER PROGRAMMING! FIX ME! ID {}", table_id);
         }
 
         let query: String = "SELECT * FROM ".to_owned()

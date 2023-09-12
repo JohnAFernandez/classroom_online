@@ -37,13 +37,13 @@ impl I {
         date_registered: &String,
         phone: &String,
         icon: &String,
-    ) {
+    ) -> String {
         // temporarily random until we can figure out a safe way to increment the suffix
         // actually it should be easy using
         let mut rng: rand::rngs::ThreadRng = rand::thread_rng();
         let suffix: i32 = rng.gen();
 
-        let username: String = "troggy".to_string() + &suffix.to_string();
+        let username: String = "test".to_string() + &suffix.to_string();
 
         let query: String = I::INSERT.to_owned() + "users (email, username, password, first_name, last_name, birthday, date_registered, phone, icon)" 
         + I::VALUES_S + email + I::S_AND_S + &username + I::S_AND_S + password + I::S_AND_S + first_name + I::S_AND_S + last_name + I::S_AND_S + birthday + I::S_AND_S + date_registered + I::S_AND_S + phone + I::S_AND_S + icon + I::S_END;
@@ -51,6 +51,8 @@ impl I {
         // TODO! This runction needs to alter the created user account to add the date registered
 
         connection.execute(query).unwrap();
+
+        return username
     }
 
     pub async fn insert_organization(

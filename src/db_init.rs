@@ -286,6 +286,19 @@ pub async fn init_database(path: PathBuf) -> sqlite::Connection {
 
     connection.execute(query).unwrap();
 
+    // HERE BEGIN INTERNAL TABLES
+
+    // This table allows us to pick a sequential username for each user.
+    // It's so fair that it's fair!
+    query = "
+        CREATE TABLE username_prefixes (
+            prefix STRING,
+            count INTEGER
+        );
+    ";
+
+    connection.execute(query).unwrap();
+
     // function provides the ability to figure out what tables were involved.
     query = "
         CREATE TABLE change_log (

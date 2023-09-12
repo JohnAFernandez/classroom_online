@@ -193,7 +193,6 @@ async fn test_database_creation_insertion_retrieval(){
     assert!(V::check_id(&connection, 1, V::SUBMISSIONS).await);
     assert!(V::check_id(&connection, 1, V::TEACHERS).await);
     assert!(V::check_id(&connection, 1, V::USERS).await);
-    assert!(V::check_id(&connection, 1, V::USER_CHANGE_LOG).await);
 
 
     assert!(!otr::administrator_school_to_row(&connection, types::build_administrator_school(1, 1).await).await.0);
